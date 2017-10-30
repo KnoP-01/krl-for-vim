@@ -29,16 +29,16 @@ Extract the released archive into your `~/.vim/` or `%USERPROFILE%\vimfiles\`
 directory (depending on your System) keeping the folder structure. Overwrite
 krl.vim and krl.txt files from older installation. 
 
-To fully use these scripts put >
+To fully use these scripts put >  
     filetype plugin indent on
     syntax on
 in your .vimrc
 
-You may have to run >
+You may have to run >  
     :helptags ~/.vim/doc/
-or >
+or >  
     :helptags ~/vimfiles/doc/
-to use the help within Vim after installation. >
+to use the help within Vim after installation. >  
     :help krl
 
 Or just open the file .../doc/krl.txt
@@ -56,45 +56,45 @@ of different releases. Some features may work better when all files are loaded.
 
 `~/.vim/doc/krl.txt`
 Help file. This should help you to use these plugins to your best
-advantage. You may want to look into this file prior to installation.
-Requires >
+advantage. You may want to look into this file prior to installation.  
+Requires >  
     :helptags ~/.vim/doc
 
 `~/.vim/ftdetect/krl.vim`
 Detects KRL files based on their file name ending .src, .dat and .sub. To not
 interfere with other file types, .dat files are checked for the presence of a
-DEFDAT line or a &HEADER.
-Requires >
+DEFDAT line or a &HEADER.  
+Requires >  
     :filetype on
 
 `~/.vim/ftplugin/krl.vim`
 Sets various vim options and provide key mappings and folding. It supports
 commentary (vimscript #3695) and matchit (vimscript #39). All key mappings are
-optional.
-Requires >
+optional.  
+Requires >  
     :filetype plugin on
 
 `~/.vim/indent/krl.vim`
 Sets indent related vim options. Sets indention to 2 spaces by default,
-optional.
-Requires >
+optional.  
+Requires >  
     :filetype indent on
 
 `~/.vim/syntax/krl.vim`
 Does make life more colorful. Unfortunately some features of the other files
 may work better with syntax on. This should not stop you from trying syntax
-off if you like.
-Requires >
+off if you like.  
+Requires >  
     :syntax on
 
 ## tl:dr
-Q: Why so many options?
+Q: Why so many options?  
 A: I try not to interfere with user settings to much. So I made most of the
    settings that get changed optional.
 
 Q: I'm here to feed my kids, not to read. Do you have a quick suggestion on
-   krl settings for my |.vimrc|?
-A: Yes: >
+   krl settings for my |.vimrc|?  
+A: Yes: >  
     let g:krlMoveAroundKeyMap=1 " [[, ]], [] and ][ jumps around DEF/DEFFCT..
     let g:krlGoDefinitionKeyMap=1 " gd shows the declaration of curr. word
     let g:krlListDefKeyMap=1 " <leader>f shows all DEF/DEFFCT.. in curr. file
