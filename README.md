@@ -95,6 +95,7 @@ A: I try not to interfere with user settings to much. So I made most of the
 Q: I'm here to feed my kids, not to read. Do you have a quick suggestion on
    krl settings for my |.vimrc|?  
 A: Yes: >  
+
     let g:krlMoveAroundKeyMap=1 " [[, ]], [] and ][ jumps around DEF/DEFFCT..
     let g:krlGoDefinitionKeyMap=1 " gd shows the declaration of curr. word
     let g:krlListDefKeyMap=1 " <leader>f shows all DEF/DEFFCT.. in curr. file
