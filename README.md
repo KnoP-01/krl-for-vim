@@ -61,7 +61,7 @@ Or just open the file .../doc/krl.txt
 You may use all these independently from one another. Just don't mix versions
 of different releases. Some features may work better when all files are loaded.
 
-`~/.vim/doc/krl.txt`
+### `~/.vim/doc/krl.txt`
 Help file. This should help you to use these plugins to your best
 advantage. You may want to look into this file prior to installation.  
 Requires >
@@ -69,7 +69,7 @@ Requires >
     :helptags ~/.vim/doc
 
 
-`~/.vim/ftdetect/krl.vim`
+### `~/.vim/ftdetect/krl.vim`
 Detects KRL files based on their file name ending .src, .dat and .sub. To not
 interfere with other file types, .dat files are checked for the presence of a
 DEFDAT line or any &HEADER.  
@@ -78,7 +78,7 @@ Requires >
     :filetype on
 
 
-`~/.vim/ftplugin/krl.vim`
+### `~/.vim/ftplugin/krl.vim`
 Sets various vim options and provide key mappings and folding. It supports
 commentary ([vimscript #3695][7]) and matchit ([vimscript #39][8]). All key
 mappings are optional.  
@@ -87,7 +87,7 @@ Requires >
     :filetype plugin on
 
 
-`~/.vim/indent/krl.vim`
+### `~/.vim/indent/krl.vim`
 Sets indent related vim options. Sets indention to 2 spaces by default,
 optional.  
 Requires >
@@ -95,7 +95,7 @@ Requires >
     :filetype indent on
 
 
-`~/.vim/syntax/krl.vim`
+### `~/.vim/syntax/krl.vim`
 Does make life more colorful. Unfortunately some features of the other files
 may work better with syntax on. This should not stop you from trying syntax
 off if you like.  
