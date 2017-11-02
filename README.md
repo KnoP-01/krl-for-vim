@@ -2,9 +2,9 @@
 
 ## Introduction:
 
-Have a look at the ([tl:dr][2]) section of this readme to get a very quick
+Have a look at the [tl:dr][2] section of this readme to get a very quick
 overview over the most important options provided by KRL for Vim. For more
-details see the ([help][3]) file.
+details see the [help][3] file.
 
 KRL for Vim is a collection of Vim scripts to help programing KUKA industrial
 robots. 
@@ -20,12 +20,12 @@ It provides
 Most of this is optional, though some things are default on. Have a look in the
 help files krl-options section for more details.
 
-It supports VKRC files. Folding will get optimized for VKRC. Also try the
-gd mapping on a fold line with SPSMAKRO, UP or Marker.
+It supports VKRC files. Folding will get optimized for VKRC. Also try the gd
+mapping on a fold line with SPSMAKRO, UP or Marker.
 
 ## Installation:
 
-Extract the most recent ([release][1]) archive into your `~/.vim/` or
+Extract the most recent [release][1] archive into your `~/.vim/` or
 `%USERPROFILE%\vimfiles\` directory (depending on your System) keeping the
 folder structure. Overwrite krl.vim and krl.txt files from older installation. 
 
@@ -62,8 +62,8 @@ You may use all these independently from one another. Just don't mix versions
 of different releases. Some features may work better when all files are loaded.
 
 #### ~/.vim/doc/krl.txt
-Help file. This should help you to use these plugins to your best
-advantage. You may want to look into this file prior to installation.  
+Help file. This should help you to use these plugins to your best advantage.
+You may want to look into this file prior to installation.  
 Requires >
 
     :helptags ~/.vim/doc
@@ -80,7 +80,7 @@ Requires >
   
 #### ~/.vim/ftplugin/krl.vim
 Sets various vim options and provide key mappings and folding. It supports
-commentary ([vimscript #3695][7]) and matchit ([vimscript #39][8]). All key
+commentary [vimscript #3695][7] and matchit [vimscript #39][8]. All key
 mappings are optional.  
 Requires >
 
@@ -133,10 +133,10 @@ A: Yes: >
 
 ## Self promotion
 
-If you like this plugin please rate it on ([vim.org][4]). If you don't but you
+If you like this plugin please rate it on [vim.org][4]. If you don't but you
 think it could be useful if this or that would be different, don't hesitate to
-email me or even better open an ([issue][5]). With a little luck and good
-timing you may find me on ([#vim][6]) as KnoP if you have any question.
+email me or even better open an [issue][5] With a little luck and good
+timing you may find me on [#vim][6] as KnoP if you have any question.
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases
 [2]: https://github.com/KnoP-01/krl-for-vim#tldr
