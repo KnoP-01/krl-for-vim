@@ -23,6 +23,11 @@ help files krl-options section for more details.
 It supports VKRC files. Folding will get optimized for VKRC. Also try the gd
 mapping on a fold line with SPSMAKRO, UP or Marker.
 
+Note: Keep your files to be edited below the KRC/ folder if you plan to edit
+lots of files. This folder will be the root for 'path'.
+Note to linux users: Keep your files to be edited on a FAT file system. Some
+features need the case insensitive file system to work properly.
+
 ## Installation:
 
 Extract the most recent [release][1] archive into your `~/.vim/` or
