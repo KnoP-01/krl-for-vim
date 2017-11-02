@@ -131,9 +131,9 @@ A: Yes: >
     let g:krlCloseFolds=1 " switch folding to all
     " or else if you don't like any closed folds use:
     " let g:krlCloseFolds=2 " switch folding off
+    " let g:krlNoVerbose=1 " get rid of the messages
     " if you use colorscheme tortus use:
     " let g:krlNoHighLink=1 " even more colors 
-    " let g:krlNoVerbose=1 " get rid of the messages
     " don't forget
     " filetype plugin indent on
 
