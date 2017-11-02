@@ -421,7 +421,7 @@ if !exists("*s:KnopVerboseEcho()")
     "
     " dont start from within qf or loc window
     if getbufvar('%', "&buftype") == "quickfix" | return | endif
-    let l:declPrefix = '\c\v^\s*((global\s+)?(const\s+)?(bool|int|real|char|frame|pos|axis|e6pos|e6axis|signal)\s+[a-zA-Z0-9_,\[\] \t]*|(decl\s+)?(global\s+)?(struc|enum)\s+|decl\s+(global\s+)?(const\s+)?\w+\s+[a-zA-Z0-9_,\[\] \t]*)'
+    let l:declPrefix = '\c\v^\s*((global\s+)?(const\s+)?(bool|int|real|char|frame|pos|axis|e6pos|e6axis|signal|channel)\s+[a-zA-Z0-9_,\[\] \t]*|(decl\s+)?(global\s+)?(struc|enum)\s+|decl\s+(global\s+)?(const\s+)?\w+\s+[a-zA-Z0-9_,\[\] \t]*)'
     "
     " suche das naechste wort
     if search('\w','cW',line("."))
@@ -1240,6 +1240,8 @@ if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
   endif
   " setting starting behavior
   setlocal foldmethod=marker
+  " setlocal foldmethod=syntax
+  "
   setlocal foldtext=KrlFoldText()
   if exists("g:krlCloseFolds") && g:krlCloseFolds==1 || <SID>KrlIsVkrc() " close all folds; too sad, this is case sensitive. Default for VKRC
     setlocal foldmarker=FOLD,ENDFOLD
