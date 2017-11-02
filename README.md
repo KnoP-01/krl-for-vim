@@ -135,14 +135,13 @@ A: Yes: >
 
 If you like this plugin please rate it on [vim.org][4]. If you don't but you
 think it could be useful if this or that would be different, don't hesitate to
-email me or even better open an [issue][5] With a little luck and good
-timing you may find me on [#vim][6] as KnoP if you have any question.
+email me or even better open an [issue][5]. With a little luck and good
+timing you may find me on irc://irc.freenode.net/#vim as KnoP if you have any question.
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases
 [2]: https://github.com/KnoP-01/krl-for-vim#tldr
 [3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt
 [4]: https://vim.sourceforge.io/scripts/script.php?script_id=5344
 [5]: https://github.com/KnoP-01/krl-for-vim/issues
-[6]: irc://irc.freenode.net/#vim
 [7]: https://vim.sourceforge.io/scripts/script.php?script_id=3695
 [8]: https://vim.sourceforge.io/scripts/script.php?script_id=39
