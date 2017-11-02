@@ -1,7 +1,7 @@
 " Kuka Robot Language syntax file for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 1.5.1
+" Version: 1.5.2
 " Last Change: 12. Aug 2017
 " Credits: Thanks for contributions to this to Michael Jagusch
 "
@@ -26,42 +26,42 @@ syn case ignore
 " Comment
 " TODO Comment
 syn keyword krlTodo contained TODO FIXME XXX
-highlight link krlTodo Todo
+highlight default link krlTodo Todo
 " Debug Comment
 syn keyword krlDebug contained DEBUG
-highlight link krlDebug Debug
+highlight default link krlDebug Debug
 " Line Comment
 syn match krlComment /;.*$/ contains=krlTodo,krlDebug
-highlight link krlComment Comment
+highlight default link krlComment Comment
 " ---
 
 " Header
 syn match krlHeader /&\a\w*/
-highlight link krlHeader PreProc
+highlight default link krlHeader PreProc
 " ---
 
 " Operator
 " Boolean operator
 syn keyword krlBoolOperator AND OR EXOR NOT DIV MOD B_AND B_OR B_EXOR
-highlight link krlBoolOperator Operator
+highlight default link krlBoolOperator Operator
 " Arithmetic operator
 syn match krlArithOperator /[+-]/ containedin=krlFloat
 syn match krlArithOperator /\*\|\//
-highlight link krlArithOperator Operator
+highlight default link krlArithOperator Operator
 " Compare operator
 syn match krlCompOperator /[<>=]/
-highlight link krlCompOperator Operator
+highlight default link krlCompOperator Operator
 " Geometric operator
 " Do not move the : operator
 " Must be present befor krlParamdef
 syn match krlGeomOperator /[:]/ " containedin=krlLabel,krlParamdef
-highlight link krlGeomOperator Operator
+highlight default link krlGeomOperator Operator
 " ---
 
 " Type
 " any type (preceded by 'decl')
 syn match krlAnyType /\v((decl\s+|struc\s+|enum\s+)|(global\s+)|(const\s+)|(deffct\s+))+\w+>/ contains=krlStorageClass,krlType
-highlight link krlAnyType Type
+highlight default link krlAnyType Type
 " Simple data types
 syn match krlType /\v<(BOOL|CHAR|REAL|INT)>/ containedin=krlAnyType
 " External program and function
@@ -70,15 +70,15 @@ syn match krlType /\v<(EXT|EXTFCT)>/ containedin=krlAnyType
 syn match krlType /\v<(SIGNAL|CHANNEL)>/ containedin=krlAnyType
 " Struc and Enum
 " syn keyword krlType STRUC ENUM
-highlight link krlType Type
+highlight default link krlType Type
 " StorageClass
 syn match krlStorageClass /\v<(decl|struc|enum)>/ contained
 syn match krlStorageClass /\v<global>/ contained
 syn match krlStorageClass /\v<const>/ contained
-highlight link krlStorageClass StorageClass
+highlight default link krlStorageClass StorageClass
 " .dat file public
 syn keyword krlDatStorageClass public
-highlight link krlDatStorageClass StorageClass
+highlight default link krlDatStorageClass StorageClass
 " Parameter StorageClass
 " Do not move the :in/:out
 " Must be present after krlGeomOperator
@@ -86,41 +86,40 @@ highlight link krlDatStorageClass StorageClass
 " I tried, but don't know what to do about this
 syn match krlParamdef /[:]\s*in\>/
 syn match krlParamdef /[:]\s*out\>/
-highlight link krlParamdef StorageClass
+highlight default link krlParamdef StorageClass
 " Not a typedef but I like to have those highlighted
 " different then types, structures or strorage classes
 syn keyword krlTypedef DEF END DEFFCT ENDFCT DEFDAT ENDDAT
-highlight link krlTypedef Typedef
-" highlight link krlTypedef PreProc
+highlight default link krlTypedef Typedef
 " ---
 
 " Delimiter
 syn match krlDelimiter /\\\||\|\[\|\]\|[()]\|[,]/
-highlight link krlDelimiter Delimiter
+highlight default link krlDelimiter Delimiter
 " ---
 
 " Constant values
 " Boolean
 syn keyword krlBoolean TRUE FALSE containedin=krlStructVal
-highlight link krlBoolean Boolean
+highlight default link krlBoolean Boolean
 " Integer
 syn match krlInteger /\W[+-]\?\d\+/lc=1 containedin=krlStructVal
-highlight link krlInteger Number
+highlight default link krlInteger Number
 " Binary integer
 syn match krlBinaryInt /'b[01]\+'/ containedin=krlStructVal
-highlight link krlBinaryInt Number
+highlight default link krlBinaryInt Number
 " Hexadecimal integer
 syn match krlHexInt /'h[0-9a-fA-F]\+'/ containedin=krlStructVal
-highlight link krlHexInt Number
+highlight default link krlHexInt Number
 " Float
 syn match krlFloat /\W[+-]\?\d\+\.\?\d*\([eE][+-]\?\d\+\)\?/lc=1 containedin=krlStructVal
-highlight link krlFloat Float
+highlight default link krlFloat Float
 " String
 syn region krlString start=/"/ end=/"/ containedin=krlStructVal
-highlight link krlString String
+highlight default link krlString String
 " Enum
 syn match krlEnumVal /#\s*\a\w*/ containedin=krlStructVal
-highlight link krlEnumVal Constant
+highlight default link krlEnumVal Constant
 " ---
 
 " Structure
@@ -186,45 +185,45 @@ syn keyword krlEnum ESYS IPO_MODE CIRC_MODE CIRC_TYPE ORI_TYPE VAR_STATE
 syn keyword krlStructure KrlMsg_T KrlMsgParType_T KrlMsgPar_T KrlMsgOpt_T KrlMsgDlgSK_T
 syn keyword krlEnum EKrlMsgType
 "
-highlight link krlStructure Structure
-highlight link krlEnum Structure
+highlight default link krlStructure Structure
+highlight default link krlEnum Structure
 " ---
 
 " System variable
 syn match krlSysvars /\$\a[a-zA-Z0-9_.]*/
-highlight link krlSysvars Sysvars
+highlight default link krlSysvars Sysvars
 " ---
 
 " continue
 syn keyword krlContinue CONTINUE
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
       \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
-  highlight link krlContinue Continue
+  highlight default link krlContinue Continue
 else
-  highlight link krlContinue Statement
+  highlight default link krlContinue Statement
 endif
 " Statement
 " syn match krlStatement /\v^\s*(<global>\s+)?<INTERRUPT>(\s+<decl>)?/ contains=krlStorageClass
 syn match krlStatement /\v(<global>\s+)?<INTERRUPT>(\s+<decl>)?/ contains=krlStorageClass
 syn keyword krlStatement WAIT SEC ON OFF ENABLE DISABLE TRIGGER WHEN DISTANCE PATH DELAY DO PRIO IMPORT IS MINIMUM MAXIMUM CONFIRM ON_ERROR_PROCEED
-highlight link krlStatement Statement
+highlight default link krlStatement Statement
 " Conditional
 syn keyword krlConditional IF THEN ELSE ENDIF SWITCH CASE DEFAULT ENDSWITCH
-highlight link krlConditional Conditional
+highlight default link krlConditional Conditional
 " Repeat
 syn keyword krlRepeat FOR TO STEP ENDFOR WHILE ENDWHILE REPEAT UNTIL LOOP ENDLOOP EXIT
-highlight link krlRepeat Repeat
+highlight default link krlRepeat Repeat
 " Label
 syn keyword krlLabel GOTO
 " syn match krlLabel /^\s*\w\+:/
 syn match krlLabel /^\s*\w\+:\ze\s*\(;.*\)\?$/
-highlight link krlLabel Label
+highlight default link krlLabel Label
 " Keyword
 syn keyword krlKeyword ANIN ANOUT DIGIN
-highlight link krlKeyword Keyword
+highlight default link krlKeyword Keyword
 " Exception
 syn keyword krlException RETURN RESUME HALT
-highlight link krlException Exception
+highlight default link krlException Exception
 " ---
 
 " special keywords for movement commands
@@ -232,17 +231,17 @@ syn keyword krlMovement PTP LIN CIRC SPL SLIN SCIRC ASYPTP PTP_REL LIN_REL CIRC_
 syn keyword krlMovement ASYCANCEL BRAKE BRAKE_F
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
       \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
-  highlight link krlMovement Movement
+  highlight default link krlMovement Movement
 else
-  highlight link krlMovement Special
+  highlight default link krlMovement Special
 endif
 " movement modifiers
 syn keyword krlMoveMod CA C_PTP C_DIS C_VEL C_ORI SPLINE ENDSPLINE
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
       \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
-  highlight link krlMoveMod Movement
+  highlight default link krlMoveMod Movement
 else
-  highlight link krlMoveMod Special
+  highlight default link krlMoveMod Special
 endif
 " ---
 
@@ -250,10 +249,10 @@ endif
 " if they have the same name as a type
 " syn match krlNames /[a-zA-Z_][.a-zA-Z0-9_]*/ containedin=krlStructVal
 syn match krlNames contained /[a-zA-Z_][.a-zA-Z0-9_]*/
-highlight link krlNames None
+highlight default link krlNames None
 " Structure value
 syn region krlStructVal start=/{/ end=/}/ containedin=krlStructVal contains=krlNames
-highlight link krlStructVal krlDelimiter
+highlight default link krlStructVal krlDelimiter
 " ---
 
 " BuildInFunction
@@ -268,15 +267,15 @@ syn keyword krlBuildInFunction contained Err_Clear Err_Raise
 syn keyword krlBuildInFunction contained varstate EK EB LK sync MD_CMD MD_SETSTATE MBX_REC
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
       \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
-  highlight link krlBuildInFunction BuildInFunction
+  highlight default link krlBuildInFunction BuildInFunction
 else
-  highlight link krlBuildInFunction Function
+  highlight default link krlBuildInFunction Function
 endif
 " ---
 
 " Function
 syn match krlFunction /[a-zA-Z_]\w* *(/me=e-1 contains=krlBuildInFunction
-highlight link krlFunction Function
+highlight default link krlFunction Function
 " ---
 
 " Error
@@ -313,7 +312,7 @@ if exists("g:krlShowError") && g:krlShowError==1
   " syn match krlError /\v(^\s*\$?[^=;]+\s*\=[^=;][^;]+[^;<>=])@<=\=[^=]/
   " syn match krlError /\v^\s*(trigger\swhen\s)@<!(\$?[^=;]+\s*\=[^=;][^;]+[^;<>=])@<=\=[^=]/
   "
-  highlight link krlError Error
+  highlight default link krlError Error
 endif
 " ---
 
