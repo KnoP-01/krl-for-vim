@@ -110,6 +110,7 @@ Requires >
   
   
 ## tl:dr
+
 Q: Why so many options?  
 A: I try not to interfere with user settings to much. So I made most of the
    settings that get changed optional.
@@ -141,9 +142,10 @@ A: Yes: >
 If you like this plugin please rate it on [vim.org][4]. If you don't but you
 think it could be useful if this or that would be different, don't hesitate to
 email me or even better open an [issue][5]. With a little luck and good
-timing you may find me on irc://irc.freenode.net/#vim as KnoP if you have any question.
+timing you may find me on irc://irc.freenode.net/#vim as KnoP if you have any
+questions.
 
-[1]: https://github.com/KnoP-01/krl-for-vim/releases
+[1]: https://github.com/KnoP-01/krl-for-vim/releases/latest
 [2]: https://github.com/KnoP-01/krl-for-vim#tldr
 [3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt
 [4]: https://vim.sourceforge.io/scripts/script.php?script_id=5344
