@@ -2,9 +2,9 @@
 
 ## Introduction:
 
-Have a look at the bottom of this readme to get a very quick overview over the
-most important options provided by KRL for Vim. For more details see the help
-file.
+Have a look at the ([tl:dr][2]) section of this readme to get a very quick
+overview over the most important options provided by KRL for Vim. For more
+details see the ([help][3]) file.
 
 KRL for Vim is a collection of Vim scripts to help programing KUKA industrial
 robots. 
@@ -14,20 +14,20 @@ It provides
 * auto indention,
 * folding (case sensitive), 
 * mappings and settings to navigate through code in a backup folder structure and 
-* mappings to insert a body of a new def(fct?) based on user defined samples or
-  hopefully sane defaults. 
+* mappings to insert a body of a new def(fct?) based on user defined templates
+  or hopefully sane defaults. 
 
 Most of this is optional, though some things are default on. Have a look in the
 help files krl-options section for more details.
 
 It supports VKRC files. Folding will get optimized for VKRC. Also try the
-'gd'-mapping on a fold line with SPSMAKRO, UP or Marker.
+gd mapping on a fold line with SPSMAKRO, UP or Marker.
 
 ## Installation:
 
-Extract the released archive into your `~/.vim/` or `%USERPROFILE%\vimfiles\`
-directory (depending on your System) keeping the folder structure. Overwrite
-krl.vim and krl.txt files from older installation. 
+Extract the most recent ([release][1]) archive into your `~/.vim/` or
+`%USERPROFILE%\vimfiles\` directory (depending on your System) keeping the
+folder structure. Overwrite krl.vim and krl.txt files from older installation. 
 
 To fully use these scripts put >  
     filetype plugin indent on
@@ -63,14 +63,14 @@ Requires >
 `~/.vim/ftdetect/krl.vim`
 Detects KRL files based on their file name ending .src, .dat and .sub. To not
 interfere with other file types, .dat files are checked for the presence of a
-DEFDAT line or a &HEADER.  
+DEFDAT line or any &HEADER.  
 Requires >  
     :filetype on
 
 `~/.vim/ftplugin/krl.vim`
 Sets various vim options and provide key mappings and folding. It supports
-commentary (vimscript #3695) and matchit (vimscript #39). All key mappings are
-optional.  
+commentary ([vimscript #3695][7]) and matchit ([vimscript #39][8]). All key
+mappings are optional.  
 Requires >  
     :filetype plugin on
 
@@ -114,3 +114,18 @@ A: Yes: >
     " don't forget
     " filetype plugin indent on
 
+## Self promotion
+
+If you like this plugin please rate it on ([vim.org][4]). If you don't but you
+think it could be useful if this or that would be different, don't hesitate to
+email me or even better open an ([issue][5]). With a little luck and good
+timing you may find me on ([#vim][6]) if you have any question.
+
+[1]: https://github.com/KnoP-01/krl-for-vim/releases
+[2]: https://github.com/KnoP-01/krl-for-vim#tldr
+[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt
+[4]: https://vim.sourceforge.io/scripts/script.php?script_id=5344
+[5]: https://github.com/KnoP-01/krl-for-vim/issues
+[6]: irc://irc.freenode.net/#vim
+[7]: https://vim.sourceforge.io/scripts/script.php?script_id=3695
+[8]: https://vim.sourceforge.io/scripts/script.php?script_id=39
