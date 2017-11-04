@@ -154,7 +154,7 @@ questions.
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases/latest
 [2]: https://github.com/KnoP-01/krl-for-vim#tldr
-[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L156
+[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L154
 [6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L176
 [4]: https://vim.sourceforge.io/scripts/script.php?script_id=5344
 [5]: https://github.com/KnoP-01/krl-for-vim/issues
