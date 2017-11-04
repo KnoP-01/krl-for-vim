@@ -1,7 +1,7 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 1.0.4
+" Version: 1.0.6
 " Last Change: 12. Aug 2017
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "
@@ -1080,7 +1080,7 @@ if !exists("*s:KnopVerboseEcho()")
 
   " TODO decide: abandon this one?
   if exists("g:krlFormatComments") && g:krlFormatComments==1
-    function <SID>KrlFormatComments()
+    function KrlFormatComments()
       "
       normal! m'
       0
@@ -1107,7 +1107,7 @@ if !exists("*s:KnopVerboseEcho()")
         let l:numLastLine = (line("$") - 1)
       endwhile
       "
-    endfunction " <SID>KrlFormatComments()
+    endfunction " KrlFormatComments()
   endif
 
 " }}} Format Comments
@@ -1387,7 +1387,7 @@ nnoremap <silent><buffer> <plug>KrlListDef :call <SID>KrlListDef()<CR>
 nnoremap <silent><buffer> <plug>KrlListUse :call <SID>KrlListUsage()<cr>
 
 " format comments
-nnoremap <silent><buffer> <plug>KrlFormatComments :call <SID>KrlFormatComments()<CR>
+nnoremap <silent><buffer> <plug>KrlFormatComments :call KrlFormatComments()<CR>
 
 " auto form
 nnoremap <silent><buffer> <plug>KrlAutoForm                 :call <SID>KrlAutoForm("   ")<cr>
