@@ -27,8 +27,8 @@ and & into 'iskeyword'. This makes e.g. $ov\_pro, #initmov and &comment a
 decision, but it is as it is now. It's optional (g:krlNoKeyWord) anyway. Maybe 
 in the next major release the default will change.
 
-It supports VKRC files. Folding will get optimized for VKRC. Also try the gd
-mapping on a fold line with SPSMAKRO, UP or Marker.
+KRL for Vim supports VKRC files. Folding will get optimized for VKRC. Also try
+the gd mapping on a fold line with SPSMAKRO, UP or Marker.
 
 **Note:** Keep your files to be edited below the `KRC/` folder if you plan to edit
 lots of files. This folder will be the root for 'path'.
