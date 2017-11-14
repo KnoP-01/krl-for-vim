@@ -282,6 +282,9 @@ highlight default link krlFunction Function
 if exists("g:krlShowError") && g:krlShowError==1
   " some more or less common typos
   "
+  " should be interrupt (on|off) \w+
+  syn match krlShowError /\vinterrupt +\w+ +o(n|ff)>/
+  "
   syn match krlError /\v^\s*\zs(elseif>|esle>|endfi>|ednif>|ednwhile>|ednfor>|endfro>|ednloop>)/
   "
   " for bla==5 to 7...
