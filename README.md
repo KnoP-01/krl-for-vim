@@ -151,6 +151,7 @@ think it could be useful if this or that would be different, don't hesitate to
 email me or even better open an [issue][5]. With a little luck and good
 timing you may find me on irc://irc.freenode.net/#vim as KnoP if you have any
 questions.
+If you need assistance with your robot project visit [us][9].
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases/latest
 [2]: https://github.com/KnoP-01/krl-for-vim#tldr
@@ -160,3 +161,4 @@ questions.
 [5]: https://github.com/KnoP-01/krl-for-vim/issues
 [7]: https://vim.sourceforge.io/scripts/script.php?script_id=3695
 [8]: https://vim.sourceforge.io/scripts/script.php?script_id=39
+[9]: http://www.graeff.de
