@@ -60,7 +60,7 @@ highlight default link krlGeomOperator Operator
 
 " Type
 " any type (preceded by 'decl')
-syn match krlAnyType /\v((decl\s+|struc\s+|enum\s+)|(global\s+)|(const\s+)|(deffct\s+))+\w+>/ contains=krlStorageClass,krlType
+syn match krlAnyType /\v((decl\s+|struc\s+|enum\s+)|(global\s+)|(const\s+)|(deffct\s+))+\w+>/ contains=krlStorageClass,krlType,krlTypedef
 highlight default link krlAnyType Type
 " Simple data types
 syn match krlType /\v<(BOOL|CHAR|REAL|INT)>/ containedin=krlAnyType
