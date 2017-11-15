@@ -1,7 +1,7 @@
 " Kuka Robot Language syntax file for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 1.5.2
+" Version: 1.5.3
 " Last Change: 12. Aug 2017
 " Credits: Thanks for contributions to this to Michael Jagusch
 "
@@ -283,7 +283,7 @@ if exists("g:krlShowError") && g:krlShowError==1
   " some more or less common typos
   "
   " should be interrupt (on|off) \w+
-  syn match krlShowError /\vinterrupt +\w+ +o(n|ff)>/
+  syn match krlError /\vinterrupt +\w+ +o(n|ff)>/
   "
   syn match krlError /\v^\s*\zs(elseif>|esle>|endfi>|ednif>|ednwhile>|ednfor>|endfro>|ednloop>)/
   "
