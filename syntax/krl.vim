@@ -262,7 +262,7 @@ syn keyword krlBuildInFunction contained cClose cOpen cRead cWrite sRead sWrite
 syn keyword krlBuildInFunction contained forward inverse inv_pos
 syn keyword krlBuildInFunction contained get_sig_inf GetSysState pulse
 syn keyword krlBuildInFunction contained StrAdd StrClear StrCopy StrComp StrFind StrLen StrDeclLen StrToBool StrToInt StrToReal StrToString
-syn keyword krlBuildInFunction contained Clear_KrlMsg Set_KrlDlg Exists_KrlDlg Set_KrlMsg Exists_KrlMsg
+syn keyword krlBuildInFunction contained Clear_KrlMsg SET_SYSTEM_DATA Set_KrlDlg Exists_KrlDlg Set_KrlMsg Exists_KrlMsg
 syn keyword krlBuildInFunction contained Err_Clear Err_Raise
 syn keyword krlBuildInFunction contained varstate EK EB LK sync MD_CMD MD_SETSTATE MBX_REC
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
