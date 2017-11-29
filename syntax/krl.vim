@@ -1,7 +1,7 @@
 " Kuka Robot Language syntax file for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 1.5.3
+" Version: 1.5.4
 " Last Change: 12. Aug 2017
 " Credits: Thanks for contributions to this to Michael Jagusch
 "
@@ -127,6 +127,10 @@ highlight default link krlEnumVal Constant
 " /r1/mada/$*.dat, /r1/steu/$*.dat and
 " /r1/system/$config.dat as well as
 " basisTech, gripperTech and spotTech
+"
+" Predefined data types foud in kss functions
+syn keyword krlEnum EDIAGSTATE RDC_FS_STATE RET_C_PSYNC_E VAR_TYPE CANCEL_PSYNC_E SYS_VARS 
+syn keyword krlStructure SIGINF RW_RDC_FILE RW_MAM_FILE DIAGPAR_T ERROR_T STOPMESS CASE_SENSE_T MSGBUF_T E3POS E3AXIS DIAGOPT_T 
 "
 " Predefined structures for movement
 syn keyword krlStructure FRAME E6POS POS E6AXIS AXIS
@@ -257,12 +261,14 @@ highlight default link krlStructVal krlDelimiter
 
 " BuildInFunction
 syn keyword krlBuildInFunction contained abs sin cos acos tan atan atan2 sqrt
-syn keyword krlBuildInFunction contained b_not " maybe this one should move to Operator?! It's used like a function: b_not(bool)
+" maybe this one should move to Operator?! It's used like a function: b_not(bool)
+syn keyword krlBuildInFunction contained b_not 
 syn keyword krlBuildInFunction contained cClose cOpen cRead cWrite sRead sWrite
+syn keyword krlBuildInFunction contained DELETE_BACKWARD_BUFFER DIAG_START DIAG_STOP GET_DIAGSTATE IS_KEY_PRESSED GETCYCDEF GET_DECL_PLACE CHECKPIDONRDC PIDTORDC DELETE_PID_ON_RDC CAL_TO_RDC SET_MAM_ON_HD COPY_MAM_HD_TO_RDC CREATE_RDC_ARCHIVE RESTORE_RDC_ARCHIVE DELETE_RDC_CONTENT RDC_FILE_TO_HD CHECK_MAM_ON_RDC GET_RDC_FS_STATE TOOL_ADJ IOCTL CIOCTL WSPACEGIVE WSPACETAKE SYNCCMD CANCELPROGSYNC REMOTECMD REMOTEREAD ISMESSAGESET TIMER_LIMIT SET_KRLDLGANSWER GET_MSGBUFFER STRTOFRAME STRTOPOS STRTOE3POS STRTOE6POS STRTOAXIS STRTOE3AXIS STRTOE6AXIS VARTYPE FRAND GETVARSIZE MAXIMIZE_USEDXROBVERS SET_USEDXROBVERS SET_OPT_FILTER MD_GETSTATE MD_ASGN EB_TEST EO EMI_ENDPOS EMI_STARTPOS EMI_ACTPOS EMI_RECSTATE M_COMMENT
 syn keyword krlBuildInFunction contained forward inverse inv_pos
-syn keyword krlBuildInFunction contained get_sig_inf GetSysState pulse
+syn keyword krlBuildInFunction contained get_sig_inf GetSysState pulse GET_SYSTEM_DATA
 syn keyword krlBuildInFunction contained StrAdd StrClear StrCopy StrComp StrFind StrLen StrDeclLen StrToBool StrToInt StrToReal StrToString
-syn keyword krlBuildInFunction contained Clear_KrlMsg SET_SYSTEM_DATA Set_KrlDlg Exists_KrlDlg Set_KrlMsg Exists_KrlMsg
+syn keyword krlBuildInFunction contained Clear_KrlMsg SET_SYSTEM_DATA SET_SYSTEM_DATA_DELAYED Set_KrlDlg Exists_KrlDlg Set_KrlMsg Exists_KrlMsg
 syn keyword krlBuildInFunction contained Err_Clear Err_Raise
 syn keyword krlBuildInFunction contained varstate EK EB LK sync MD_CMD MD_SETSTATE MBX_REC
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
