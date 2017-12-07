@@ -162,7 +162,7 @@ syn keyword krlStructure MSG_T
 "
 " Predefined structures and enums found in /r1/system/$config.dat
 " BasisTech
-syn keyword krlStructure DIG_OUT_TYPE CTRL_IN_T CTRL_OUT_T FCT_OUT_T FCT_IN_T ODAT BASIS_SUGG_T OUT_SUGG_T MD_STATE MACHINE_DEF_T MACHINE_TOOL_T MACHINE_FRAME_T TRIGGER_PARA CONSTVEL_PARA CONDSTOP_PARA ADAT TM_SUGG_T TQM_TQDAT_T SPS_PROG_TYPE
+syn keyword krlStructure DIG_OUT_TYPE CTRL_IN_T CTRL_OUT_T FCT_OUT_T FCT_IN_T ODAT BASIS_SUGG_T OUT_SUGG_T MD_STATE MACHINE_DEF_T MACHINE_TOOL_T MACHINE_FRAME_T STOP TRIGGER_PARA CONSTVEL_PARA CONDSTOP_PARA ADAT TM_SUGG_T TQM_TQDAT_T SPS_PROG_TYPE
 syn keyword krlEnum BAS_COMMAND OUT_MODETYPE IPO_M_T APO_MODE_T FUNCT_TYPE P00_COMMAND
 "
 " GripperTech
@@ -231,7 +231,7 @@ highlight default link krlException Exception
 " ---
 
 " special keywords for movement commands
-syn keyword krlMovement PTP LIN CIRC SPL SLIN SCIRC ASYPTP PTP_REL LIN_REL CIRC_REL
+syn keyword krlMovement PTP LIN CIRC SPL SPTP SLIN SCIRC ASYPTP PTP_REL LIN_REL CIRC_REL
 syn keyword krlMovement ASYCANCEL BRAKE BRAKE_F
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
       \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
