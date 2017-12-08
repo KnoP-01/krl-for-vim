@@ -1,7 +1,7 @@
 " Kuka Robot Language syntax file for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 1.5.4
+" Version: 1.5.5
 " Last Change: 12. Aug 2017
 " Credits: Thanks for contributions to this to Michael Jagusch
 "
@@ -287,6 +287,9 @@ highlight default link krlFunction Function
 " Error
 if exists("g:krlShowError") && g:krlShowError==1
   " some more or less common typos
+  "
+  " vars or funcs >24 chars are not possible in krl. a234567890123456789012345
+  syn match krlError /\w\{25,}/ containedin=krlFunction,krlNames
   "
   " should be interrupt (on|off) \w+
   syn match krlError /\vinterrupt +\w+ +o(n|ff)>/
