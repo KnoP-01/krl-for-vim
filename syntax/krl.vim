@@ -1,7 +1,7 @@
 " Kuka Robot Language syntax file for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 1.5.2
+" Version: 1.5.5
 " Last Change: 12. Aug 2017
 " Credits: Thanks for contributions to this to Michael Jagusch
 "
@@ -60,7 +60,7 @@ highlight default link krlGeomOperator Operator
 
 " Type
 " any type (preceded by 'decl')
-syn match krlAnyType /\v((decl\s+|struc\s+|enum\s+)|(global\s+)|(const\s+)|(deffct\s+))+\w+>/ contains=krlStorageClass,krlType
+syn match krlAnyType /\v((decl\s+|struc\s+|enum\s+)|(global\s+)|(const\s+)|(deffct\s+))+\w+>/ contains=krlStorageClass,krlType,krlTypedef
 highlight default link krlAnyType Type
 " Simple data types
 syn match krlType /\v<(BOOL|CHAR|REAL|INT)>/ containedin=krlAnyType
@@ -127,6 +127,10 @@ highlight default link krlEnumVal Constant
 " /r1/mada/$*.dat, /r1/steu/$*.dat and
 " /r1/system/$config.dat as well as
 " basisTech, gripperTech and spotTech
+"
+" Predefined data types foud in kss functions
+syn keyword krlEnum EDIAGSTATE RDC_FS_STATE RET_C_PSYNC_E VAR_TYPE CANCEL_PSYNC_E SYS_VARS 
+syn keyword krlStructure SIGINF RW_RDC_FILE RW_MAM_FILE DIAGPAR_T ERROR_T STOPMESS CASE_SENSE_T MSGBUF_T E3POS E3AXIS DIAGOPT_T 
 "
 " Predefined structures for movement
 syn keyword krlStructure FRAME E6POS POS E6AXIS AXIS
@@ -205,7 +209,7 @@ endif
 " Statement
 " syn match krlStatement /\v^\s*(<global>\s+)?<INTERRUPT>(\s+<decl>)?/ contains=krlStorageClass
 syn match krlStatement /\v(<global>\s+)?<INTERRUPT>(\s+<decl>)?/ contains=krlStorageClass
-syn keyword krlStatement WAIT SEC ON OFF ENABLE DISABLE TRIGGER WHEN DISTANCE PATH DELAY DO PRIO IMPORT IS MINIMUM MAXIMUM CONFIRM ON_ERROR_PROCEED
+syn keyword krlStatement WAIT SEC ON OFF ENABLE DISABLE STOP TRIGGER WITH WHEN DISTANCE PATH ONSTART DELAY DO PRIO IMPORT IS MINIMUM MAXIMUM CONFIRM ON_ERROR_PROCEED
 highlight default link krlStatement Statement
 " Conditional
 syn keyword krlConditional IF THEN ELSE ENDIF SWITCH CASE DEFAULT ENDSWITCH
@@ -227,7 +231,7 @@ highlight default link krlException Exception
 " ---
 
 " special keywords for movement commands
-syn keyword krlMovement PTP LIN CIRC SPL SLIN SCIRC ASYPTP PTP_REL LIN_REL CIRC_REL
+syn keyword krlMovement PTP LIN CIRC SPL SPTP SLIN SCIRC ASYPTP PTP_REL LIN_REL CIRC_REL
 syn keyword krlMovement ASYCANCEL BRAKE BRAKE_F
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
       \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
@@ -257,14 +261,17 @@ highlight default link krlStructVal krlDelimiter
 
 " BuildInFunction
 syn keyword krlBuildInFunction contained abs sin cos acos tan atan atan2 sqrt
-syn keyword krlBuildInFunction contained b_not " maybe this one should move to Operator?! It's used like a function: b_not(bool)
+" maybe this one should move to Operator?! It's used like a function: b_not(bool)
+syn keyword krlBuildInFunction contained b_not 
 syn keyword krlBuildInFunction contained cClose cOpen cRead cWrite sRead sWrite
+syn keyword krlBuildInFunction contained DELETE_BACKWARD_BUFFER DIAG_START DIAG_STOP GET_DIAGSTATE IS_KEY_PRESSED GETCYCDEF GET_DECL_PLACE CHECKPIDONRDC PIDTORDC DELETE_PID_ON_RDC CAL_TO_RDC SET_MAM_ON_HD COPY_MAM_HD_TO_RDC CREATE_RDC_ARCHIVE RESTORE_RDC_ARCHIVE DELETE_RDC_CONTENT RDC_FILE_TO_HD CHECK_MAM_ON_RDC GET_RDC_FS_STATE TOOL_ADJ IOCTL CIOCTL WSPACEGIVE WSPACETAKE SYNCCMD CANCELPROGSYNC REMOTECMD REMOTEREAD ISMESSAGESET TIMER_LIMIT SET_KRLDLGANSWER GET_MSGBUFFER STRTOFRAME STRTOPOS STRTOE3POS STRTOE6POS STRTOAXIS STRTOE3AXIS STRTOE6AXIS VARTYPE FRAND GETVARSIZE MAXIMIZE_USEDXROBVERS SET_USEDXROBVERS SET_OPT_FILTER MD_GETSTATE MD_ASGN EB_TEST EO EMI_ENDPOS EMI_STARTPOS EMI_ACTPOS EMI_RECSTATE M_COMMENT
 syn keyword krlBuildInFunction contained forward inverse inv_pos
-syn keyword krlBuildInFunction contained get_sig_inf GetSysState pulse
+syn keyword krlBuildInFunction contained get_sig_inf GetSysState pulse GET_SYSTEM_DATA
 syn keyword krlBuildInFunction contained StrAdd StrClear StrCopy StrComp StrFind StrLen StrDeclLen StrToBool StrToInt StrToReal StrToString
-syn keyword krlBuildInFunction contained Clear_KrlMsg Set_KrlDlg Exists_KrlDlg Set_KrlMsg Exists_KrlMsg
+syn keyword krlBuildInFunction contained Clear_KrlMsg SET_SYSTEM_DATA SET_SYSTEM_DATA_DELAYED Set_KrlDlg Exists_KrlDlg Set_KrlMsg Exists_KrlMsg
 syn keyword krlBuildInFunction contained Err_Clear Err_Raise
 syn keyword krlBuildInFunction contained varstate EK EB LK sync MD_CMD MD_SETSTATE MBX_REC
+syn keyword krlBuildInFunction contained SVEL_JOINT STOOL2 SBASE SIPO_MODE SLOAD SACC_JOINT SGEAR_JERK SAPO_PTP SVEL_CP SACC_CP SAPO SORI_TYP SJERK 
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
       \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
   highlight default link krlBuildInFunction BuildInFunction
@@ -281,6 +288,12 @@ highlight default link krlFunction Function
 " Error
 if exists("g:krlShowError") && g:krlShowError==1
   " some more or less common typos
+  "
+  " vars or funcs >24 chars are not possible in krl. a234567890123456789012345
+  syn match krlError /\w\{25,}/ containedin=krlFunction,krlNames
+  "
+  " should be interrupt (on|off) \w+
+  syn match krlError /\vinterrupt +\w+ +o(n|ff)>/
   "
   syn match krlError /\v^\s*\zs(elseif>|esle>|endfi>|ednif>|ednwhile>|ednfor>|endfro>|ednloop>)/
   "

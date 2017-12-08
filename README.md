@@ -2,9 +2,8 @@
 
 ## Introduction:
 
-Have a look at [tl:dr][2] to get a very quick overview over the most 
-important options provided by KRL for Vim. For more details see the [help][3]
-file.
+Have a look at [tl:dr][2] to get a very quick overview over the most important
+options provided by KRL for Vim. For more details see the [help][3] file.
 
 KRL for Vim (7.4 or later) is a collection of Vim scripts to help programing
 KUKA industrial robots. 
