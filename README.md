@@ -15,8 +15,8 @@ It provides
 * folding (case sensitive), 
 * mappings and settings to navigate through code in a backup folder structure
   and 
-* mappings to insert a body of a new def(fct?) based on user defined templates
-  or hopefully sane defaults. 
+* mappings to insert a body of a new DEF, DEFFCT and DEFDAT based on user 
+  defined templates or hopefully sane defaults. 
 
 Most of this is optional, though some things are default on. Have a look in
 the [krl-options][6] section in the help for more details.
@@ -27,20 +27,22 @@ decision, but it is as it is now. It's optional (g:krlNoKeyWord) anyway. Maybe
 in the next major release the default will change.
 
 KRL for Vim supports VKRC files. Folding will get optimized for VKRC. Also try
-the gd mapping on a fold line with SPSMAKRO, UP or Marker.
+the gd mapping on a fold line with SPSMAKRO, UP or Marker. Editing is still 
+almost impossible, this is moslty useful for viewing.
 
-**Note:** Keep your files to be edited below the `KRC/` folder if you plan to edit
-lots of files. This folder will be the root for 'path'.
+**Note:** Keep your files to be edited in one folder or in a regular robot
+backup folder structure. KRL for Vim modifies 'path' by default accordingly.
 **Note to linux users:** Keep your files to be edited on a FAT file system. Some
 features need the case insensitive file system to work properly.
 
 ## Installation:
 
-Extract the most recent [release][1] archive into your `~/.vim/` or
-`%USERPROFILE%\vimfiles\` directory (depending on your System) keeping the
-folder structure. Overwrite krl.\* files from older installation. 
+Extract the most recent [release][1] and copy the folders 
+`/doc`, `/ftdetect`, `/ftplugin`, `/indent` and `/syntax` 
+into your `~/.vim/` or `%USERPROFILE%\vimfiles\` directory. 
+Overwrite krl.\* files from older installation. 
 
-To fully use these scripts put >
+To fully use these plugins put >
 
     filetype plugin indent on
     syntax on
@@ -81,9 +83,9 @@ Requires >
   
   
 #### ~/.vim/ftdetect/krl.vim
-Detects KRL files based on their file name ending .src, .dat and .sub. To not
-interfere with other file types, .dat files are checked for the presence of a
-DEFDAT line or any &HEADER.  
+Detects KRL files based on their file name and content. KRL files are checked
+for the presence of a DEF* line or any &HEADER. In case of an
+empty file you need to `:set filetype=krl` manually.  
 Requires >
 
     :filetype on
@@ -154,8 +156,8 @@ If you need assistance with your robot project [visit us][9].
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases/latest
 [2]: https://github.com/KnoP-01/krl-for-vim#tldr
-[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L154
-[6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L174
+[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L165
+[6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L186
 [4]: https://vim.sourceforge.io/scripts/script.php?script_id=5344
 [5]: https://github.com/KnoP-01/krl-for-vim/issues
 [7]: https://vim.sourceforge.io/scripts/script.php?script_id=3695
