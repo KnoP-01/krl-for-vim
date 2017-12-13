@@ -128,7 +128,7 @@ Requires >
 ~/.vim/ftdetect/krl.vim
 Detects KRL files based on their file name ending and content. KRL files are 
 checked for the presence of a DEF* line or any &HEADER. In case of an
-empty file you need to `:set filetype=rapid` manually.  
+empty file you need to `:set filetype=krl` manually.  
 Requires >
 
     :filetype on
