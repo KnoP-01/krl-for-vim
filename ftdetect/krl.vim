@@ -12,8 +12,9 @@ let s:keepcpo= &cpo
 set cpo&vim
 
 augroup krlftdetect
-  au!  BufNewFile,BufRead *.src,*.Src,*.SRC,*.sub,*.Sub,*.SUB if getline(nextnonblank(1)) =~ '\v\c^\s*(\&\w+|def(fct)?\s+[$]?\w+)' | set filetype=krl | endif
-  au!  BufNewFile,BufRead *.dat,*.Dat,*.DAT if getline(nextnonblank(1)) =~ '\v\c^\s*(\&\w+|defdat\s+[$]?\w+)' | set filetype=krl | endif
+  au!  BufNewFile *.src,*.Src,*.SRC,*.sub,*.Sub,*.SUB,*.dat,*.Dat,*.DAT setf krl
+  au!  BufRead *.src,*.Src,*.SRC,*.sub,*.Sub,*.SUB if getline(nextnonblank(1)) =~ '\v\c^\s*(\&\w+|def(fct)?\s+[$]?\w+)' | set filetype=krl | endif
+  au!  BufRead *.dat,*.Dat,*.DAT if getline(nextnonblank(1)) =~ '\v\c^\s*(\&\w+|defdat\s+[$]?\w+)' | set filetype=krl | endif
 augroup END
 
 let &cpo = s:keepcpo
