@@ -1262,7 +1262,7 @@ if exists("loaded_matchit")
         \.'^\s*\<switch\>:^\s*\<case\>:^\s*\<default\>:^\s*\<endswitch\>,'
         \.'^\s*\(global\s\+\)\?\<def\(fct\)\?\>:^\s*\<resume\>:^\s*\<return\>:^\s*\<end\(fct\)\?\>,'
         \.'^\s*\<defdat\>:^\s*\<enddat\>,'
-        \.'^\s*\<spile\>:^\s*\<endspile\>,'
+        \.'^\s*\<spline\>:^\s*\<endspline\>,'
         \.'^\s*;\s*\<fold\>:^\s*;\s*\<endfold\>'
   let b:match_ignorecase = 1 " KRL does ignore case
 endif
