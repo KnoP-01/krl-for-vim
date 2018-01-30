@@ -1,8 +1,8 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 1.0.6
-" Last Change: 12. Aug 2017
+" Version: 1.0.7
+" Last Change: 30. Jan 2018
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "
 " Suggestions of improvement are very welcome. Please email me!
@@ -1110,7 +1110,54 @@ if !exists("*s:KnopVerboseEcho()")
     endfunction " KrlFormatComments()
   endif
 
-" }}} Format Comments
+  " }}} Format Comments
+  " Function Text Objects with preceding comments {{{
+
+  function s:KrlFunctionWithCommentsTextObject()
+    silent! normal [[
+    " TODO eventuell fuer aF nur Kommentare mit gleicher einrueckung vor DEF et al
+    " mitnehmen
+    while line('.')>1 && getline(line('.')-1)=~'\v\c^\s*;(\s*(end)?fold)@!'
+      silent! normal! k
+    endwhile
+    silent! normal V][
+  endfunction " KrlFunctionWithCommentsTextObject()
+
+  " }}} Function Text Objects with preceding comments
+  " Fold Text Objects {{{
+
+  function s:KrlFoldTextObject(inner)
+    let l:foundFold = 0
+    let l:nEndfolds = 0
+    while l:foundFold==0 && line('.')>1 && search('\c^\s*;\s*fold\>','bcnW')
+      silent! normal! k
+      if getline(line('.'))=~'\c^\s*;\s*endfold\>'
+        let l:nEndfolds+=1
+      endif
+      if getline(line('.'))=~'\c\s*;\s*fold\>'
+        let l:nEndfolds-=1
+        if l:nEndfolds<0
+          let foundFold=1
+        endif
+      endif
+    endwhile
+    if l:foundFold>0
+      normal V%
+      if a:inner == 1
+        " eigentlich will ich an der stelle nur <esc> druecken um die visual
+        " selection wieder abzubrechen, aber das funktioniert irgendwie nicht,
+        " also dieser hack
+        normal! :<C-U><CR>
+        " normal! '<
+        normal! j
+        normal! V
+        normal! '>
+        normal! k
+      endif
+    endif
+  endfunction " KrlFoldTextObject()
+
+  " }}} Fold Text Objects
 endif " !exists("*s:KnopVerboseEcho()")
 " Vim Settings {{{
 
@@ -1265,6 +1312,11 @@ if exists("loaded_matchit")
         \.'^\s*\<spline\>:^\s*\<endspline\>,'
         \.'^\s*;\s*\<fold\>:^\s*;\s*\<endfold\>'
   let b:match_ignorecase = 1 " KRL does ignore case
+  " matchit makes fold text objects easy
+  vnoremap ao :<C-U>silent! call <SID>KrlFoldTextObject(0)<CR>
+  vnoremap io :<C-U>silent! call <SID>KrlFoldTextObject(1)<CR>
+  omap ao :silent! normal Vao<CR>
+  omap io :silent! normal Vio<CR>
 endif
 
 " }}} Match It
@@ -1285,6 +1337,13 @@ if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap==1
   vnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '^\(\s*;.*\n\)\@<!\(\s*;\)', 'bsW')<Bar>:unlet b:knopCount<cr>
   nnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\ze\n\s*([^;\t ]\|$)', 'se')<Bar>:unlet b:knopCount<cr>
   vnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\ze\n\s*([^;\t ]\|$)', 'seW')<Bar>:unlet b:knopCount<cr>
+  " inner and around function text objects
+  vnoremap aF :<C-U>silent! call <SID>KrlFunctionWithCommentsTextObject()<CR>
+  vnoremap af :<C-U>silent! normal [[V][<CR>
+  vnoremap if :<C-U>silent! normal [[jV][k<CR>
+  omap aF :silent! normal VaF<CR>
+  omap af :silent! normal Vaf<CR>
+  omap if :silent! normal Vif<CR>
 endif
 
 " }}} Move Around
