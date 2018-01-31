@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 1.0.7
-" Last Change: 30. Jan 2018
+" Last Change: 31. Jan 2018
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "
 " Suggestions of improvement are very welcome. Please email me!
@@ -1111,7 +1111,7 @@ if !exists("*s:KnopVerboseEcho()")
   endif
 
   " }}} Format Comments
-  " Function Text Objects with preceding comments {{{
+  " Function Text Object with preceding comments {{{
 
   function s:KrlFunctionWithCommentsTextObject()
     silent! normal [[
@@ -1123,8 +1123,8 @@ if !exists("*s:KnopVerboseEcho()")
     silent! normal V][
   endfunction " KrlFunctionWithCommentsTextObject()
 
-  " }}} Function Text Objects with preceding comments
-  " Fold Text Objects {{{
+  " }}} Function Text Object with preceding comments
+  " Fold Text Object {{{
 
   function s:KrlFoldTextObject(inner)
     let l:foundFold = 0
@@ -1157,7 +1157,7 @@ if !exists("*s:KnopVerboseEcho()")
     endif
   endfunction " KrlFoldTextObject()
 
-  " }}} Fold Text Objects
+  " }}} Fold Text Object
 endif " !exists("*s:KnopVerboseEcho()")
 " Vim Settings {{{
 
@@ -1300,7 +1300,7 @@ if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
 endif " has("folding") || g:krlCloseFolds!=2
 
 " }}} Vim Settings
-" Match It % {{{
+" Match It and Fold Text Object mapping {{{
 
 " matchit support
 if exists("loaded_matchit")
@@ -1313,14 +1313,14 @@ if exists("loaded_matchit")
         \.'^\s*;\s*\<fold\>:^\s*;\s*\<endfold\>'
   let b:match_ignorecase = 1 " KRL does ignore case
   " matchit makes fold text objects easy
-  vnoremap ao :<C-U>silent! call <SID>KrlFoldTextObject(0)<CR>
-  vnoremap io :<C-U>silent! call <SID>KrlFoldTextObject(1)<CR>
-  omap ao :silent! normal Vao<CR>
-  omap io :silent! normal Vio<CR>
+  vnoremap <silent><buffer> ao :<C-U>call <SID>KrlFoldTextObject(0)<CR>
+  vnoremap <silent><buffer> io :<C-U>call <SID>KrlFoldTextObject(1)<CR>
+  omap <silent><buffer> ao :normal Vao<CR>
+  omap <silent><buffer> io :normal Vio<CR>
 endif
 
-" }}} Match It
-" Move Around key mappings [[, [], ]] ... {{{
+" }}} Match It and Fold Text Object mapping
+" Move Around and Function Text Object key mappings {{{
 
 if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap==1
   " Move around functions
@@ -1338,15 +1338,15 @@ if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap==1
   nnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\ze\n\s*([^;\t ]\|$)', 'se')<Bar>:unlet b:knopCount<cr>
   vnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\ze\n\s*([^;\t ]\|$)', 'seW')<Bar>:unlet b:knopCount<cr>
   " inner and around function text objects
-  vnoremap aF :<C-U>silent! call <SID>KrlFunctionWithCommentsTextObject()<CR>
-  vnoremap af :<C-U>silent! normal [[V][<CR>
-  vnoremap if :<C-U>silent! normal [[jV][k<CR>
-  omap aF :silent! normal VaF<CR>
-  omap af :silent! normal Vaf<CR>
-  omap if :silent! normal Vif<CR>
+  vnoremap <silent><buffer> aF :<C-U>call <SID>KrlFunctionWithCommentsTextObject()<CR>
+  vnoremap <silent><buffer> af :<C-U>normal [[V][<CR>
+  vnoremap <silent><buffer> if :<C-U>normal [[jV][k<CR>
+  omap <silent><buffer> aF :normal VaF<CR>
+  omap <silent><buffer> af :normal Vaf<CR>
+  omap <silent><buffer> if :normal Vif<CR>
 endif
 
-" }}} Move Around
+" }}} Move Around and Function Text Object key mappings
 " Other configurable key mappings {{{
 
 if exists("g:krlGoDefinitionKeyMap") && g:krlGoDefinitionKeyMap==1
