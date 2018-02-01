@@ -1,15 +1,14 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 1.0.7
-" Last Change: 31. Jan 2018
+" Version: 1.1.0
+" Last Change: 01. Feb 2018
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "
 " Suggestions of improvement are very welcome. Please email me!
 "
 " ToDo's {{{
-" TODO  - make [[, [], ][ and ]] text objects
-"       - Clean .dat or highlight unused data in .dat (if .src is present)
+" TODO  - Clean .dat or highlight unused data in .dat (if .src is present)
 "       - make search for enum value declaration possible. Problem: there may be
 "         more then one enum that uses this value
 "       - find bug foldmethod=Manual. 2. mal die selbe datei oeffnen o.ae.
@@ -1111,51 +1110,78 @@ if !exists("*s:KnopVerboseEcho()")
   endif
 
   " }}} Format Comments
-  " Function Text Object with preceding comments {{{
+  " Function Text Object {{{
 
-  function s:KrlFunctionWithCommentsTextObject()
-    silent! normal [[
-    " TODO eventuell fuer aF nur Kommentare mit gleicher einrueckung vor DEF et al
-    " mitnehmen
-    while line('.')>1 && getline(line('.')-1)=~'\v\c^\s*;(\s*(end)?fold)@!'
-      silent! normal! k
-    endwhile
-    silent! normal V][
-  endfunction " KrlFunctionWithCommentsTextObject()
+  if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap==1 " depends on move around key mappings
+    function s:KrlFunctionTextObject(inner,withcomment)
+      if a:inner==1
+        let l:n = 1
+      else
+        let l:n = v:count1
+      endif
+      if getline('.')!~'\v\c^\s*end(fct|dat)?>'
+        silent normal ][
+      endif
+      silent normal [[
+      if a:inner==1
+        silent normal! j
+      elseif a:withcomment==1
+        while line('.')>1 && getline(line('.')-1)=~'\v\c^\s*;(\s*(end)?fold)@!'
+          silent normal! k
+        endwhile
+      endif
+      exec "silent normal V".l:n."]["
+      if a:inner==1
+        silent normal! k
+      elseif a:withcomment==1 && getline(line('.')+1)=~'^\s*$'
+        silent normal! j
+      endif
+    endfunction " KrlFunctionTextObject()
+  endif
 
-  " }}} Function Text Object with preceding comments
+  " }}} Function Text Object
   " Fold Text Object {{{
 
-  function s:KrlFoldTextObject(inner)
-    let l:foundFold = 0
-    let l:nEndfolds = 0
-    while l:foundFold==0 && line('.')>1 && search('\c^\s*;\s*fold\>','bcnW')
-      silent! normal! k
-      if getline(line('.'))=~'\c^\s*;\s*endfold\>'
-        let l:nEndfolds+=1
+  if exists("loaded_matchit") " depends on matchit
+    function s:KrlFoldTextObject(inner)
+      let l:col = col('.')
+      let l:line = line('.')
+      let l:foundFold = 0
+      let l:nEndfolds = v:count1
+      if getline('.')!~'\c^\s*;\s*fold\>' || l:nEndfolds>1 && search('\c^\s*;\s*fold\>','bnW')
+        while l:foundFold==0 && line('.')>1 && search('\c^\s*;\s*fold\>','bcnW')
+          silent normal! k
+          if getline(line('.'))=~'\c^\s*;\s*endfold\>'
+            let l:nEndfolds+=1
+          endif
+          if getline(line('.'))=~'\c^\s*;\s*fold\>'
+            let l:nEndfolds-=1
+            if l:nEndfolds==0
+              let foundFold=1
+            endif
+          endif
+        endwhile
+      else
+        let l:foundFold=1
       endif
-      if getline(line('.'))=~'\c\s*;\s*fold\>'
-        let l:nEndfolds-=1
-        if l:nEndfolds<0
-          let foundFold=1
+      if l:foundFold==1
+        silent normal 0V%
+        if a:inner == 1
+          " eigentlich will ich an der stelle nur <esc> druecken um die visual
+          " selection wieder abzubrechen, aber das funktioniert irgendwie
+          " nicht, also dieser hack
+          silent normal! :<C-U><CR>
+          " normal! '<
+          silent normal! j
+          silent normal! V
+          silent normal! '>
+          silent normal! k
         endif
+      else
+        call cursor(l:line,l:col)
       endif
-    endwhile
-    if l:foundFold>0
-      normal V%
-      if a:inner == 1
-        " eigentlich will ich an der stelle nur <esc> druecken um die visual
-        " selection wieder abzubrechen, aber das funktioniert irgendwie nicht,
-        " also dieser hack
-        normal! :<C-U><CR>
-        " normal! '<
-        normal! j
-        normal! V
-        normal! '>
-        normal! k
-      endif
-    endif
-  endfunction " KrlFoldTextObject()
+    endfunction " KrlFoldTextObject()
+  endif
 
   " }}} Fold Text Object
 endif " !exists("*s:KnopVerboseEcho()")
@@ -1315,14 +1341,14 @@ if exists("loaded_matchit")
   " matchit makes fold text objects easy
   vnoremap <silent><buffer> ao :<C-U>call <SID>KrlFoldTextObject(0)<CR>
   vnoremap <silent><buffer> io :<C-U>call <SID>KrlFoldTextObject(1)<CR>
-  omap <silent><buffer> ao :normal Vao<CR>
-  omap <silent><buffer> io :normal Vio<CR>
+  onoremap <silent><buffer> ao :<C-U>call <SID>KrlFoldTextObject(0)<CR>
+  onoremap <silent><buffer> io :<C-U>call <SID>KrlFoldTextObject(1)<CR>
 endif
 
 " }}} Match It and Fold Text Object mapping
 " Move Around and Function Text Object key mappings {{{
 
-if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap==1
+if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap>=1
   " Move around functions
   nnoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 'bs')<Bar>:unlet b:knopCount<CR>
   vnoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 'bsW')<Bar>:unlet b:knopCount<CR>
@@ -1337,13 +1363,15 @@ if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap==1
   vnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '^\(\s*;.*\n\)\@<!\(\s*;\)', 'bsW')<Bar>:unlet b:knopCount<cr>
   nnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\ze\n\s*([^;\t ]\|$)', 'se')<Bar>:unlet b:knopCount<cr>
   vnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\ze\n\s*([^;\t ]\|$)', 'seW')<Bar>:unlet b:knopCount<cr>
-  " inner and around function text objects
-  vnoremap <silent><buffer> aF :<C-U>call <SID>KrlFunctionWithCommentsTextObject()<CR>
-  vnoremap <silent><buffer> af :<C-U>normal [[V][<CR>
-  vnoremap <silent><buffer> if :<C-U>normal [[jV][k<CR>
-  omap <silent><buffer> aF :normal VaF<CR>
-  omap <silent><buffer> af :normal Vaf<CR>
-  omap <silent><buffer> if :normal Vif<CR>
+  if g:krlMoveAroundKeyMap==2
+    " inner and around function text objects
+    vnoremap <silent><buffer> aF :<C-U>call <SID>KrlFunctionTextObject(0,1)<CR>
+    vnoremap <silent><buffer> af :<C-U>call <SID>KrlFunctionTextObject(0,0)<CR>
+    vnoremap <silent><buffer> if :<C-U>call <SID>KrlFunctionTextObject(1,0)<CR>
+    omap <silent><buffer> aF :normal VaF<CR>
+    omap <silent><buffer> af :normal Vaf<CR>
+    omap <silent><buffer> if :normal Vif<CR>
+  endif
 endif
 
 " }}} Move Around and Function Text Object key mappings
