@@ -1148,6 +1148,10 @@ if !exists("*s:KnopVerboseEcho()")
       let l:line = line('.')
       let l:foundFold = 0
       let l:nEndfolds = v:count1
+      if getline('.')=~'\c^\s*;\s*fold\>'
+        " starte innerhalb des fold
+        silent normal! j
+      endif
       if getline('.')!~'\c^\s*;\s*fold\>' || l:nEndfolds>1 && search('\c^\s*;\s*fold\>','bnW')
         while l:foundFold==0 && line('.')>1 && search('\c^\s*;\s*fold\>','bcnW')
           silent normal! k
