@@ -1112,7 +1112,7 @@ if !exists("*s:KnopVerboseEcho()")
   " }}} Format Comments
   " Function Text Object {{{
 
-  if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap==1 " depends on move around key mappings
+  if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap>=1 " depends on move around key mappings
     function s:KrlFunctionTextObject(inner,withcomment)
       if a:inner==1
         let l:n = 1
