@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 2017 Nov 04
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 2018 Feb 22
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
@@ -67,13 +67,14 @@ and & into 'iskeyword'. This makes e.g. $ov_pro, #initmov and &comment a
 decision, but it is as it is now. It's optional anyway. Maybe in the next
 major release the default will change. See |krl-keyword-chars|.
 
-It supports VKRC files. Folding will get optimized for VKRC. Also try the gd
-mapping on a fold line with SPSMAKRO, UP or Marker.
+KRL for Vim supports VKRC files. Folding will get optimized for VKRC. Also try
+the gd mapping on a fold line with SPSMAKRO, UP or Marker. Editing is still 
+almost impossible, this is moslty useful for viewing.
 
 **Note:** Keep your files to be edited in one folder or in a regular robot
 backup folder structure. KRL for Vim modifies 'path' by default accordingly.
-Note to linux users: Keep your files to be edited on a FAT file system. Some
-features need the case insensitive file system to work properly.
+**Note to linux users:** Keep your files to be edited on a FAT file system. 
+Some features need the case insensitive file system to work properly.
 
 
                         *krl-tl:dr*

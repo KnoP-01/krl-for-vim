@@ -32,8 +32,8 @@ almost impossible, this is moslty useful for viewing.
 
 **Note:** Keep your files to be edited in one folder or in a regular robot
 backup folder structure. KRL for Vim modifies 'path' by default accordingly.
-**Note to linux users:** Keep your files to be edited on a FAT file system. Some
-features need the case insensitive file system to work properly.
+**Note to linux users:** Keep your files to be edited on a FAT file system. 
+Some features need the case insensitive file system to work properly.
 
 ## Installation:
 
