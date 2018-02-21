@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 1.5.6
-" Last Change: 13. Dec 2017
+" Last Change: 22. Feb 2018
 " Credits: Thanks for contributions to this to Michael Jagusch
 "
 " Suggestions of improvement are very welcome. Please email me!
@@ -231,8 +231,8 @@ highlight default link krlException Exception
 " ---
 
 " special keywords for movement commands
-syn keyword krlMovement PTP LIN CIRC SPL SPTP SLIN SCIRC ASYPTP PTP_REL LIN_REL CIRC_REL
-syn keyword krlMovement ASYCANCEL BRAKE BRAKE_F
+syn keyword krlMovement PTP LIN CIRC SPL SPTP SLIN SCIRC PTP_REL LIN_REL CIRC_REL
+syn keyword krlMovement ASYPTP ASYCONT ASYSTOP ASYCANCEL BRAKE BRAKE_F
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
       \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
   highlight default link krlMovement Movement
