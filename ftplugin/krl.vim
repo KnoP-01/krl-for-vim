@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 1.1.0
-" Last Change: 01. Feb 2018
+" Last Change: 22. Feb 2018
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "
 " Suggestions of improvement are very welcome. Please email me!
@@ -1042,7 +1042,7 @@ if !exists("*s:KnopVerboseEcho()")
       if !<SID>KrlIsVkrc()
         let l:nonecomment = '^[^;]*'
       endif
-      if s:KnopSearchPathForPatternNTimes('\c\v'.l:nonecomment.'<'.l:currentWord.'>',s:KnopPreparePath(&path,'*.src').' '.s:KnopPreparePath(&path,'*.sub').' '.s:KnopPreparePath(&path,'*.dat'),'','krl')==0
+      if s:KnopSearchPathForPatternNTimes('\c\v'.l:nonecomment.'<'.l:currentWord.'>',s:KnopPreparePath(&path,'*.src').' '.s:KnopPreparePath(&path,'*.sub').' '.s:KnopPreparePath(&path,'*.dat').' ','','krl')==0
         call setqflist(s:KnopUniqueListItems(getqflist()))
         " rule out DECL ENUM
         let l:qftmp1 = []
@@ -1372,9 +1372,9 @@ if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap>=1
     vnoremap <silent><buffer> aF :<C-U>call <SID>KrlFunctionTextObject(0,1)<CR>
     vnoremap <silent><buffer> af :<C-U>call <SID>KrlFunctionTextObject(0,0)<CR>
     vnoremap <silent><buffer> if :<C-U>call <SID>KrlFunctionTextObject(1,0)<CR>
-    omap <silent><buffer> aF :normal VaF<CR>
-    omap <silent><buffer> af :normal Vaf<CR>
-    omap <silent><buffer> if :normal Vif<CR>
+    onoremap <silent><buffer> aF :<C-U>call <SID>KrlFunctionTextObject(0,1)<CR>
+    onoremap <silent><buffer> af :<C-U>call <SID>KrlFunctionTextObject(0,0)<CR>
+    onoremap <silent><buffer> if :<C-U>call <SID>KrlFunctionTextObject(1,0)<CR>
   endif
 endif
 
