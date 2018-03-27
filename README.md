@@ -32,8 +32,8 @@ almost impossible, this is moslty useful for viewing.
 
 **Note:** Keep your files to be edited in one folder or in a regular robot
 backup folder structure. KRL for Vim modifies 'path' by default accordingly.
-**Note to linux users:** Keep your files to be edited on a FAT file system. Some
-features need the case insensitive file system to work properly.
+**Note to linux users:** Keep your files to be edited on a FAT file system. 
+Some features need the case insensitive file system to work properly.
 
 ## Installation:
 
@@ -128,6 +128,7 @@ Q: I'm here to feed my kids, not to read. Do you have a quick suggestion on
 A: Yes: >
 
     let g:krlMoveAroundKeyMap=1 " [[, ]], [] and ][ jumps around DEF/DEFFCT..
+    " let g:krlMoveAroundKeyMap=1 " also add textobjects af, aF and if 
     let g:krlGoDefinitionKeyMap=1 " gd shows the declaration of curr. word
     let g:krlListDefKeyMap=1 " <leader>f shows all DEF/DEFFCT.. in curr. file
     let g:krlListUsageKeyMap=1 " <leader>u shows all appearance of curr. word
