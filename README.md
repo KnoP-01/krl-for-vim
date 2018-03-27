@@ -128,7 +128,7 @@ Q: I'm here to feed my kids, not to read. Do you have a quick suggestion on
 A: Yes: >
 
     let g:krlMoveAroundKeyMap=1 " [[, ]], [] and ][ jumps around DEF/DEFFCT..
-    " let g:krlMoveAroundKeyMap=1 " also add textobjects af, aF and if 
+    " let g:krlMoveAroundKeyMap=2 " also add textobjects af, aF and if 
     let g:krlGoDefinitionKeyMap=1 " gd shows the declaration of curr. word
     let g:krlListDefKeyMap=1 " <leader>f shows all DEF/DEFFCT.. in curr. file
     let g:krlListUsageKeyMap=1 " <leader>u shows all appearance of curr. word
