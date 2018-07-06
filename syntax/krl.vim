@@ -240,7 +240,7 @@ else
   highlight default link krlMovement Special
 endif
 " movement modifiers
-syn keyword krlMoveMod CA C_PTP C_DIS C_VEL C_ORI SPLINE ENDSPLINE
+syn keyword krlMoveMod CA C_PTP C_DIS C_VEL C_ORI C_SPL SPLINE ENDSPLINE
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
       \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
   highlight default link krlMoveMod Movement
