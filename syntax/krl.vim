@@ -305,42 +305,58 @@ if exists("g:krlShowError") && g:krlShowError==1
   " some more or less common typos
   "
   " vars or funcs >24 chars are not possible in krl. a234567890123456789012345
-  syn match krlError /\w\{25,}/ containedin=krlFunction,krlNames,krlLabel,krlAnyType,krlEnumVal,krlSysvars
+  syn match krlError0 /\w\{25,}/ containedin=krlFunction,krlNames,krlLabel,krlAnyType,krlEnumVal,krlSysvars
   "
   " should be interrupt (on|off) \w+
-  syn match krlError /\vinterrupt +\w+ +o(n|ff)>/
+  syn match krlError1 /\vinterrupt[ \t(]+[_$a-zA-Z0-9]+[_$a-zA-Z0-9.\[\]()+\-*/]*[ \t)]+o%(n|ff)>/
   "
-  syn match krlError /\v^\s*\zs(elseif>|esle>|endfi>|ednif>|ednwhile>|ednfor>|endfro>|ednloop>)/
+  " more or less common misspellings. unnecessary. if misspelled they will not get their regular highlighting
+  " syn match krlError2 /\v^\s*\zs%(fasle|ture|elseif|esle|endfi|ednif|ednswitch|swithc|swtich|endswithc|endswtich|ednwhile|ednfor|endfro|ednloop|utnil|unitl)>/
   "
   " for bla==5 to 7...
   "        ||
-  syn match krlError /\v(^\s*for(\(|\s)+\$?\w+(\[|\]|\.|\+|\-|\*|\/|\w)*\s*)@<=[:=]\=/
+  syn match krlError3 /\v%(^\s*for%(\(|\s)+[_$a-zA-Z]+[_$a-zA-Z0-9.\[\]()+\-*/ ]*\s*)@<=[:=]\=/
   "
+  " TODO optimize performance
   " wait for a=b
   "           |
-  syn match krlError /\v(^\s*(return|wait\s+for|if|while|until|(global\s+)?interrupt\s+decl)[^;]+[^;<>=])@<=\=[^=]/
+  syn match krlError4 /\v%(^\s*%(return|wait\s+for|if|while|until|%(global\s+)?interrupt\s+decl)>[^;]+[^;<>=])@<=\=[^=]/
   "
   " wait for a><b
   "           ||
-  syn match krlError /\v(^\s*(return|wait\s+for|if|while|until|(global\s+)?interrupt\s+decl)[^;]+)@<=\>\s*\</
+  syn match krlError5 /\v%(^\s*%(return|wait\s+for|if|while|until|%(global\s+)?interrupt\s+decl)>[^;]+)@<=\>\s*\</
   "
   " if (a==5) (b==6) ...
   "         |||
-  syn match krlError /\v(^\s*(return|wait\s+for|if|while|until|(global\s+)?interrupt\s+decl)[^;]+[^;])@<=\)\s*\(/
+  syn match krlError6 /\v%(^\s*%(return|wait\s+for|if|while|until|%(global\s+)?interrupt\s+decl)>[^;]+[^;])@<=\)\s*\(/
   "
+  " TODO optimize performance
   " a == b + 1
   " a := b + 1
   "   ||
-  " syn match krlError /\v^\s*\$?\w+(\w|\[|\]|\+|\-|\*|\/)*\s*\zs[:=]\=/
-  syn match krlError /\v(^\s*\$?\w+(\w|\[|\]|\+|\-|\*|\/|\.)*\s*)@<=[:=]\=/
+  syn match krlError7 /\v%(^\s*%(return|wait\s+for|if|while|until|%(global\s+)?interrupt\s+decl)>[^;]+[^;])@1<!%(^\s*[_$a-zA-Z]+[_$a-zA-Z0-9.\[\]+\-*/]*\s*)@<=[:=]\=/
   "
-  " this one is tricky. Make sure this does not match trigger instructions
+  " this one is tricky. Make sure this does not match trigger instructions; OK, next try, now search for false positives
+  " TODO optimize performance
   " a = b and c or (int1=int2)
   "                     |
-  " syn match krlError /\v(^\s*\$?[^=;]+\s*\=[^=;][^;]+[^;<>=])@<=\=[^=]/
-  " syn match krlError /\v^\s*(trigger\swhen\s)@<!(\$?[^=;]+\s*\=[^=;][^;]+[^;<>=])@<=\=[^=]/
+  syn match krlError8 /\v(^\s*[_$a-zA-Z]+[_$a-zA-Z0-9.\[\]()+\-*/]*\s*\=[^;]*[^;<>=])@<=\=\ze[^=]/
   "
-  highlight default link krlError Error
+  " <(distance|delay|prio)> :=
+  " <(distance|delay|prio)> ==
+  "                         ||
+  syn match krlError9 /\v(^[^;]*<(distance|delay|prio|minimum|maximum)\s*)@<=[:=]\=/
+  "
+  highlight default link krlError0 Error
+  highlight default link krlError1 Error
+  highlight default link krlError2 Error
+  highlight default link krlError3 Error
+  highlight default link krlError4 Error
+  highlight default link krlError5 Error
+  highlight default link krlError6 Error
+  highlight default link krlError7 Error
+  highlight default link krlError8 Error
+  highlight default link krlError9 Error
 endif
 " }}} Error
 
