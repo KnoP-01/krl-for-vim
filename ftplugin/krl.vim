@@ -13,6 +13,7 @@
 "         more then one enum that uses this value
 "       - find bug foldmethod=Manual. 2. mal die selbe datei oeffnen o.ae.
 " }}} ToDo's
+
 " Init {{{
 
 " Only do this when not done yet for this buffer
@@ -39,8 +40,10 @@ if exists("g:krlLhsQuickfix")
 endif
 
 " }}} init
+
 " only declare functions once
 if !exists("*s:KnopVerboseEcho()")
+
   " Little Helper {{{
 
   if !exists("g:knopNoVerbose") || g:knopNoVerbose!=1
@@ -103,22 +106,17 @@ if !exists("*s:KnopVerboseEcho()")
   function s:KnopPreparePath(path,file)
     " prepares 'path' for use with vimgrep
     let l:path = substitute(a:path,'$',' ','') " make sure that space is the last char
-    echo "0 KnopPreparePath: " . l:path
     let l:path = substitute(l:path,'\v(^|[^\\])\zs,+',' ','g') " separate with spaces instead of comma
-    echo "1 KnopPreparePath: " . l:path
     let l:path = substitute(l:path, '\\,', ',', "g") " unescape comma and semicolon
     let l:path = substitute(l:path, '\\;', ';', "g")
-    echo "2 KnopPreparePath: " . l:path
     let l:path = substitute(l:path, "#", '\\#', "g") " escape #, % and `
     let l:path = substitute(l:path, "%", '\\%', "g")
     let l:path = substitute(l:path, '`', '\\`', "g")
     " let l:path = substitute(l:path, '{', '\\{', "g") " I don't get curly braces to work
     " let l:path = substitute(l:path, '}', '\\}', "g")
-    echo "3 KnopPreparePath: " . l:path
     let l:path = substitute(l:path, '\*\* ', '**/'.a:file.' ', "g") " append a / to **, . and ..
     let l:path = substitute(l:path, '\.\. ', '../'.a:file.' ', "g")
     let l:path = substitute(l:path, '\. ', './'.a:file.' ', "g")
-    echo "6 KnopPreparePath: " . l:path
     return l:path
   endfunction " s:KnopPreparePath()
 
@@ -201,6 +199,7 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " <SID>KnopNTimesSearch()
 
   " }}} Little Helper
+
   " Krl Helper {{{
 
   function <SID>KrlIsVkrc()
@@ -345,6 +344,7 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " s:KrlCurrentWordIs()
 
   " }}} krl Helper
+
   " Go Definition {{{
 
   function s:KrlSearchVkrcMarker(currentWord)
@@ -533,6 +533,7 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " <SID>KrlGoDefinition()
 
   " }}} Go Definition
+
   " Auto Form {{{
 
   function s:KrlGetGlobal(sAction)
@@ -985,6 +986,7 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " <SID>KrlAutoForm()
 
   " }}} Auto Form
+
   " List Def/Usage {{{
 
   function <SID>KrlListDef()
@@ -1007,6 +1009,7 @@ if !exists("*s:KnopVerboseEcho()")
         augroup krlDelTmpFile
           au!
           au VimLeavePre * call delete(g:krlTmpFile)
+          au VimLeavePre * call delete(g:krlTmpFile . "~")
         augroup END
       endif
       execute 'silent save! ' . g:krlTmpFile
@@ -1110,6 +1113,7 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " <SID>KrlListUsage()
 
   " }}} List Def/Usage
+
   " Format Comments {{{
 
   " TODO decide: abandon this one?
@@ -1145,6 +1149,7 @@ if !exists("*s:KnopVerboseEcho()")
   endif
 
   " }}} Format Comments
+
   " Function Text Object {{{
 
   if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap>=1 " depends on move around key mappings
@@ -1175,6 +1180,7 @@ if !exists("*s:KnopVerboseEcho()")
   endif
 
   " }}} Function Text Object
+
   " Fold Text Object {{{
 
   if exists("loaded_matchit") " depends on matchit
@@ -1184,6 +1190,7 @@ if !exists("*s:KnopVerboseEcho()")
       let l:foundFold = 0
       let l:nEndfolds = v:count1
       if getline('.')=~'\c^\s*;\s*fold\>'
+            \&& l:nEndfolds>1
         " starte innerhalb des fold
         silent normal! j
       endif
@@ -1223,7 +1230,9 @@ if !exists("*s:KnopVerboseEcho()")
   endif
 
   " }}} Fold Text Object
+
 endif " !exists("*s:KnopVerboseEcho()")
+
 " Vim Settings {{{
 
 " default on; no option
@@ -1284,80 +1293,63 @@ if (!exists("g:krlNoPath") || g:krlNoPath!=1)
   "   endif
   elseif s:pathcurrfile =~ '\v\c\/program(\/[^/]+){,2}$'
     let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/program)\/((<program>)@!.)*$', '\1' ,'g')
-    echo "*** program folder added ***"
     let s:krlpath=s:pathcurrfile. '/**,'
     let s:pathcurrfile = substitute(s:pathcurrfile, '\cprogram$', 'System' ,'')
-    echo "FINDDIR: " . s:KnopFnameescape4Finddir(s:pathcurrfile)
     if finddir(s:KnopFnameescape4Finddir(s:pathcurrfile))!=''
       let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-      echo "*** system folder added ***"
     endif
     let s:pathcurrfile = substitute(s:pathcurrfile, '\csystem$', 'Mada' ,'')
     if finddir(s:pathcurrfile)!=''
       let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-      echo "*** mada folder added ***"
     endif
     let s:pathcurrfile = substitute(s:pathcurrfile, '\cmada$', 'TP' ,'')
     if finddir(s:pathcurrfile)!=''
       let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-      echo "*** tp folder added ***"
     endif
   elseif s:pathcurrfile =~ '\v\c\/system(\/[^/]+){,2}$'
     let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/system)\/((<system>)@!.)*$', '\1' ,'g')
     let s:krlpath=s:pathcurrfile. '/**,'
-    echo "*** system folder added ***"
     let s:pathcurrfile = substitute(s:pathcurrfile, '\csystem$', 'Program' ,'')
     if finddir(s:pathcurrfile)!=''
       let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-      echo "*** program folder added ***"
     endif
     let s:pathcurrfile = substitute(s:pathcurrfile, '\cprogram$', 'Mada' ,'')
     if finddir(s:pathcurrfile)!=''
       let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-      echo "*** mada folder added ***"
     endif
     let s:pathcurrfile = substitute(s:pathcurrfile, '\cmada$', 'TP' ,'')
     if finddir(s:pathcurrfile)!=''
       let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-      echo "*** tp folder added ***"
     endif
   elseif s:pathcurrfile =~ '\v\c\/mada(\/[^/]+){,2}$'
     let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/mada)\/((<mada>)@!.)*$', '\1' ,'g')
     let s:krlpath=s:pathcurrfile. '/**,'
-    echo "*** mada folder added ***"
     let s:pathcurrfile = substitute(s:pathcurrfile, '\cmada$', 'Program' ,'')
     if finddir(s:pathcurrfile)!=''
       let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-      echo "*** program folder added ***"
     endif
     let s:pathcurrfile = substitute(s:pathcurrfile, '\cprogram$', 'System' ,'')
     if finddir(s:pathcurrfile)!=''
       let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-      echo "*** system folder added ***"
     endif
     let s:pathcurrfile = substitute(s:pathcurrfile, '\csystem$', 'TP' ,'')
     if finddir(s:pathcurrfile)!=''
       let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-      echo "*** tp folder added ***"
     endif
   elseif s:pathcurrfile =~ '\v\c\/tp(\/[^/]+){,2}$'
     let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/tp)\/((<tp>)@!.)*$', '\1' ,'g')
     let s:krlpath=s:pathcurrfile. '/**,'
-    echo "*** tp folder added ***"
     let s:pathcurrfile = substitute(s:pathcurrfile, '\ctp$', 'Program' ,'')
     if finddir(s:pathcurrfile)!=''
       let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-      echo "*** program folder added ***"
     endif
     let s:pathcurrfile = substitute(s:pathcurrfile, '\cprogram$', 'System' ,'')
     if finddir(s:pathcurrfile)!=''
       let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-      echo "*** system folder added ***"
     endif
     let s:pathcurrfile = substitute(s:pathcurrfile, '\csystem$', 'Mada' ,'')
     if finddir(s:pathcurrfile)!=''
       let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-      echo "*** mada folder added ***"
     endif
   else
     " ACHTUNG: behalte die problematik im Auge das . der Pfad zur aktuellen
@@ -1365,13 +1357,8 @@ if (!exists("g:krlNoPath") || g:krlNoPath!=1)
     let s:krlpath='./**'
   endif
 
-  echo "   s:krlpath: "
-  echo s:krlpath
-
   execute "setlocal path+=".s:krlpath
   setlocal path-=/usr/include
-  echo "   &path: "
-  echo &path
 
   let b:undo_ftplugin = b:undo_ftplugin." pa<"
 endif
@@ -1394,11 +1381,13 @@ if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
   else " close only PTP|LIN|CIRC movement folds, also case sensitive
     setlocal foldmarker=%CMOVE,ENDFOLD
   endif
+  "
   let b:undo_ftplugin = b:undo_ftplugin." fdm< fdt< fmr<"
   "
 endif " has("folding") || g:krlCloseFolds!=2
 
 " }}} Vim Settings
+
 " Match It and Fold Text Object mapping {{{
 
 " matchit support
@@ -1419,6 +1408,7 @@ if exists("loaded_matchit")
 endif
 
 " }}} Match It and Fold Text Object mapping
+
 " Move Around and Function Text Object key mappings {{{
 
 if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap>=1
@@ -1448,6 +1438,7 @@ if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap>=1
 endif
 
 " }}} Move Around and Function Text Object key mappings
+
 " Other configurable key mappings {{{
 
 if exists("g:krlGoDefinitionKeyMap") && g:krlGoDefinitionKeyMap==1
@@ -1536,6 +1527,7 @@ if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
 endif
 
 " }}} Configurable mappings
+
 " <PLUG> mappings {{{
 
 " gd mimic
@@ -1582,14 +1574,14 @@ nnoremap <silent><buffer> <plug>KrlAutoFormGlobalFctE6Axis  :call <SID>KrlAutoFo
 if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
   nnoremap <silent><buffer> <plug>KrlCloseAllFolds :setlocal foldmarker=FOLD,ENDFOLD foldlevel=0<CR>
   nnoremap <silent><buffer> <plug>KrlCloseLessFolds :if <SID>KrlIsVkrc()<CR>setlocal foldmarker=FOLD,ENDFOLD foldlevel=1<CR>else<CR>setlocal foldmarker=%CMOVE,ENDFOLD foldlevel=0<CR>endif<CR>
-  nnoremap <silent><buffer> <plug>KrlCloseNoFolds :setlocal foldmarker={{{,}}}<CR>
+  nnoremap <silent><buffer> <plug>KrlCloseNoFolds :setlocal foldmarker<<CR>
 endif
 
 " }}} <plug> mappings
-" Finish {{{
 
+" Finish {{{
 let &cpo = s:keepcpo
 unlet s:keepcpo
-
 " }}} Finish
+
 " vim:sw=2 sts=2 et fdm=marker
