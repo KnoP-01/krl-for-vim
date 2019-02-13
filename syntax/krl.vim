@@ -48,9 +48,24 @@ highlight default link krlTodo Todo
 " Debug Comment
 syn keyword krlDebug contained DEBUG
 highlight default link krlDebug Debug
-" Line Comment
-syn match krlComment /;.*$/ contains=krlTodo,krlDebug
+"
+"
+" Comment and Folding
+" none move fold comment until second ;
+syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ contained containedin=krlFold contains=krlSingleQuoteString
+" move fold comment until second ;
+syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*<%(ptp|lin|circ)>[^;]*/ contained containedin=krlFold contains=krlInteger,krlMovement,krlDelimiter,krlGeomOperator,krlCompOperator
+" Comment without Fold, also includes endfold lines and fold line part after second ;
+syn match krlComment /\c\v;%(%(<fold>)@!.)*$/ containedin=krlFold contains=krlTodo,krlDebug
+highlight default link krlFoldComment Comment
 highlight default link krlComment Comment
+"
+if exists("g:krlFoldSyntax") && g:krlFoldSyntax==1
+  " force syncing from start
+  syn sync fromstart
+  " Fold region from fold line to endfold line
+  syn region krlFold start=/\c\v^\s*;\s*fold>.*$/ end=/\c\v^\s*;\s*endfold>.*$/ transparent fold keepend extend
+endif
 " }}} Comment and Folding 
 
 " Header {{{

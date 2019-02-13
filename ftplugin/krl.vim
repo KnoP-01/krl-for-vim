@@ -1182,6 +1182,7 @@ if !exists("*s:KnopVerboseEcho()")
 
   if exists("loaded_matchit") " depends on matchit
     function s:KrlFoldTextObject(inner)
+      " TODO fixme!
       let l:col = col('.')
       let l:line = line('.')
       let l:foundFold = 0
@@ -1372,15 +1373,19 @@ if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
       return substitute(getline(v:foldstart), '\v\c(;\s*<FOLD>\s+|;[^;]*$)', '', 'g')
     endfunction
   endif
-  " setting starting behavior
-  setlocal foldmethod=marker
-  " setlocal foldmethod=syntax
-  "
   setlocal foldtext=KrlFoldText()
-  if exists("g:krlCloseFolds") && g:krlCloseFolds==1 || <SID>KrlIsVkrc() " close all folds; too sad, this is case sensitive. Default for VKRC
-    setlocal foldmarker=FOLD,ENDFOLD
-  else " close only PTP|LIN|CIRC movement folds, also case sensitive
-    setlocal foldmarker=%CMOVE,ENDFOLD
+  "
+  if exists("g:krlFoldSyntax") && g:krlFoldSyntax==1
+    setlocal foldmethod=syntax
+  else
+    setlocal foldmethod=marker
+    if exists("g:krlCloseFolds") && g:krlCloseFolds==1 || <SID>KrlIsVkrc()
+      " close all folds. Default for VKRC
+      setlocal foldmarker=FOLD,ENDFOLD
+    else
+      " close only PTP|LIN|CIRC movement folds
+      setlocal foldmarker=%CMOVE,ENDFOLD
+    endif
   endif
   "
   let b:undo_ftplugin = b:undo_ftplugin." fdm< fdt< fmr<"
@@ -1575,7 +1580,7 @@ nnoremap <silent><buffer> <plug>KrlAutoFormGlobalFctE6Axis  :call <SID>KrlAutoFo
 if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
   nnoremap <silent><buffer> <plug>KrlCloseAllFolds :setlocal foldmarker=FOLD,ENDFOLD foldlevel=0<CR>
   nnoremap <silent><buffer> <plug>KrlCloseLessFolds :if <SID>KrlIsVkrc()<CR>setlocal foldmarker=FOLD,ENDFOLD foldlevel=1<CR>else<CR>setlocal foldmarker=%CMOVE,ENDFOLD foldlevel=0<CR>endif<CR>
-  nnoremap <silent><buffer> <plug>KrlCloseNoFolds :setlocal foldmarker<<CR>
+  nnoremap <silent><buffer> <plug>KrlCloseNoFolds :if &foldmethod=~'marker'<CR>setlocal foldmarker<<CR>else<CR>setlocal foldlevel=99<CR>endif<CR>
 endif
 
 " }}} <plug> mappings
