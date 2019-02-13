@@ -9,6 +9,7 @@
 "
 "
 
+" Init {{{
 " Remove any old syntax stuff that was loaded (5.x) or quit when a syntax file
 " was already loaded (6.x).
 if version < 600
@@ -23,24 +24,42 @@ set cpo&vim
 " krl does ignore case
 syn case ignore
 
-" Comment
+" if !exists("*<SID>KrlIsVkrc()")
+"   function <SID>KrlIsVkrc()
+"     if bufname("%") =~ '\c\v(folge|up|makro(saw|sps|step|trigger)?)\d*.src'
+"       for l:s in range(1,8)
+"         if getline(l:s) =~ '\c\v^\s*\&param\s+tpvw_version\s*.*$'
+"           return 1
+"         endif
+"       endfor
+"     endif
+"     return 0
+"   endfunction " <SID>KrlIsVkrc()
+" endif
+
+" }}} init
+
+" Comment and Folding {{{ 
+"
+" Special Comment
 " TODO Comment
 syn keyword krlTodo contained TODO FIXME XXX
 highlight default link krlTodo Todo
+"
 " Debug Comment
 syn keyword krlDebug contained DEBUG
 highlight default link krlDebug Debug
 " Line Comment
 syn match krlComment /;.*$/ contains=krlTodo,krlDebug
 highlight default link krlComment Comment
-" ---
+" }}} Comment and Folding 
 
-" Header
+" Header {{{
 syn match krlHeader /&\a\w*/
 highlight default link krlHeader PreProc
-" ---
+" }}} Header
 
-" Operator
+" Operator {{{
 " Boolean operator
 syn keyword krlBoolOperator AND OR EXOR NOT DIV MOD B_AND B_OR B_EXOR
 highlight default link krlBoolOperator Operator
@@ -56,9 +75,9 @@ highlight default link krlCompOperator Operator
 " Must be present befor krlParamdef
 syn match krlGeomOperator /[:]/ " containedin=krlLabel,krlParamdef
 highlight default link krlGeomOperator Operator
-" ---
+" }}} Operator
 
-" Type
+" Type, StorageClass and Typedef {{{
 " any type (preceded by 'decl')
 syn match krlAnyType /\v((decl\s+|struc\s+|enum\s+)|(global\s+)|(const\s+)|(deffct\s+))+\w+>/ contains=krlStorageClass,krlType,krlTypedef
 highlight default link krlAnyType Type
@@ -82,8 +101,6 @@ highlight default link krlDatStorageClass StorageClass
 " Parameter StorageClass
 " Do not move the :in/:out
 " Must be present after krlGeomOperator
-" This will generate false highlight if a frame is called "in" or "out"
-" I tried, but don't know what to do about this
 syn match krlParamdef /[:]\s*in\>/
 syn match krlParamdef /[:]\s*out\>/
 highlight default link krlParamdef StorageClass
@@ -91,14 +108,14 @@ highlight default link krlParamdef StorageClass
 " different then types, structures or strorage classes
 syn keyword krlTypedef DEF END DEFFCT ENDFCT DEFDAT ENDDAT
 highlight default link krlTypedef Typedef
-" ---
+" }}} Type, StorageClass and Typedef
 
-" Delimiter
+" Delimiter {{{
 syn match krlDelimiter /\\\||\|\[\|\]\|[()]\|[,]/
 highlight default link krlDelimiter Delimiter
-" ---
+" }}} Delimiter
 
-" Constant values
+" Constant values {{{
 " Boolean
 syn keyword krlBoolean TRUE FALSE containedin=krlStructVal
 highlight default link krlBoolean Boolean
@@ -115,20 +132,23 @@ highlight default link krlHexInt Number
 syn match krlFloat /\W[+-]\?\d\+\.\?\d*\([eE][+-]\?\d\+\)\?/lc=1 containedin=krlStructVal
 highlight default link krlFloat Float
 " String
-syn region krlString start=/"/ end=/"/ containedin=krlStructVal
+syn region krlString start=/"/ end=/"/ oneline containedin=krlStructVal
 highlight default link krlString String
+" String within a fold line " NOT USED
+" syn region krlSingleQuoteString start=/'/ end=/'/ oneline contained
+" highlight default link krlSingleQuoteString String
 " Enum
 syn match krlEnumVal /#\s*\a\w*/ containedin=krlStructVal
 highlight default link krlEnumVal Constant
-" ---
+" }}} Constant values
 
-" Structure
+" Predefined Structure and Enum {{{
 " Predefined structures and enums found in
 " /r1/mada/$*.dat, /r1/steu/$*.dat and
 " /r1/system/$config.dat as well as
 " basisTech, gripperTech and spotTech
 "
-" Predefined data types foud in kss functions
+" Predefined data types found in kss functions
 syn keyword krlEnum EDIAGSTATE RDC_FS_STATE RET_C_PSYNC_E VAR_TYPE CANCEL_PSYNC_E SYS_VARS 
 syn keyword krlStructure SIGINF RW_RDC_FILE RW_MAM_FILE DIAGPAR_T ERROR_T STOPMESS CASE_SENSE_T MSGBUF_T E3POS E3AXIS DIAGOPT_T 
 "
@@ -191,13 +211,14 @@ syn keyword krlEnum EKrlMsgType
 "
 highlight default link krlStructure Structure
 highlight default link krlEnum Structure
-" ---
+" }}} Predefined Structure and Enum
 
-" System variable
-syn match krlSysvars /\$\a[a-zA-Z0-9_.]*/
+" System variable {{{
+syn match krlSysvars /\<\$\a[a-zA-Z0-9_.]*/
 highlight default link krlSysvars Sysvars
-" ---
+" }}} System variable
 
+" Statements, keywords et al {{{
 " continue
 syn keyword krlContinue CONTINUE
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
@@ -206,9 +227,9 @@ if exists("g:krlNoHighlight") && g:krlNoHighlight==1
 else
   highlight default link krlContinue Statement
 endif
-" Statement
-" syn match krlStatement /\v^\s*(<global>\s+)?<INTERRUPT>(\s+<decl>)?/ contains=krlStorageClass
+" interrupt
 syn match krlStatement /\v(<global>\s+)?<INTERRUPT>(\s+<decl>)?/ contains=krlStorageClass
+" keywords
 syn keyword krlStatement WAIT SEC ON OFF ENABLE DISABLE STOP TRIGGER WITH WHEN DISTANCE PATH ONSTART DELAY DO PRIO IMPORT IS MINIMUM MAXIMUM CONFIRM ON_ERROR_PROCEED
 highlight default link krlStatement Statement
 " Conditional
@@ -228,9 +249,9 @@ highlight default link krlKeyword Keyword
 " Exception
 syn keyword krlException RETURN RESUME HALT
 highlight default link krlException Exception
-" ---
+" }}} Statements, keywords et al
 
-" special keywords for movement commands
+" special keywords for movement commands {{{
 syn keyword krlMovement PTP LIN CIRC SPL SPTP SLIN SCIRC PTP_REL LIN_REL CIRC_REL
 syn keyword krlMovement ASYPTP ASYCONT ASYSTOP ASYCANCEL BRAKE BRAKE_F
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
@@ -247,21 +268,19 @@ if exists("g:krlNoHighlight") && g:krlNoHighlight==1
 else
   highlight default link krlMoveMod Special
 endif
-" ---
+" }}} special keywords for movement commands
 
+" Structure value {{{
 " avoid coloring structure component names
-" if they have the same name as a type
-" syn match krlNames /[a-zA-Z_][.a-zA-Z0-9_]*/ containedin=krlStructVal
 syn match krlNames contained /[a-zA-Z_][.a-zA-Z0-9_]*/
 highlight default link krlNames None
 " Structure value
-syn region krlStructVal start=/{/ end=/}/ containedin=krlStructVal contains=krlNames
+syn region krlStructVal start=/{/ end=/}/ oneline containedin=krlStructVal contains=krlNames
 highlight default link krlStructVal krlDelimiter
-" ---
+" }}} Structure value
 
-" BuildInFunction
+" BuildInFunction {{{
 syn keyword krlBuildInFunction contained abs sin cos acos tan atan atan2 sqrt
-" maybe this one should move to Operator?! It's used like a function: b_not(bool)
 syn keyword krlBuildInFunction contained b_not 
 syn keyword krlBuildInFunction contained cClose cOpen cRead cWrite sRead sWrite cast_from cast_to
 syn keyword krlBuildInFunction contained DELETE_BACKWARD_BUFFER DIAG_START DIAG_STOP GET_DIAGSTATE IS_KEY_PRESSED GETCYCDEF GET_DECL_PLACE CHECKPIDONRDC PIDTORDC DELETE_PID_ON_RDC CAL_TO_RDC SET_MAM_ON_HD COPY_MAM_HD_TO_RDC CREATE_RDC_ARCHIVE RESTORE_RDC_ARCHIVE DELETE_RDC_CONTENT RDC_FILE_TO_HD CHECK_MAM_ON_RDC GET_RDC_FS_STATE TOOL_ADJ IOCTL CIOCTL WSPACEGIVE WSPACETAKE SYNCCMD CANCELPROGSYNC REMOTECMD REMOTEREAD ISMESSAGESET TIMER_LIMIT SET_KRLDLGANSWER GET_MSGBUFFER STRTOFRAME STRTOPOS STRTOE3POS STRTOE6POS STRTOAXIS STRTOE3AXIS STRTOE6AXIS VARTYPE FRAND GETVARSIZE MAXIMIZE_USEDXROBVERS SET_USEDXROBVERS SET_OPT_FILTER MD_GETSTATE MD_ASGN EB_TEST EO EMI_ENDPOS EMI_STARTPOS EMI_ACTPOS EMI_RECSTATE M_COMMENT
@@ -278,14 +297,14 @@ if exists("g:krlNoHighlight") && g:krlNoHighlight==1
 else
   highlight default link krlBuildInFunction Function
 endif
-" ---
+" }}} BuildInFunction
 
-" Function
+" Function {{{
 syn match krlFunction /[a-zA-Z_]\w* *(/me=e-1 contains=krlBuildInFunction
 highlight default link krlFunction Function
-" ---
+" }}} Function
 
-" Error
+" Error {{{
 if exists("g:krlShowError") && g:krlShowError==1
   " some more or less common typos
   "
@@ -327,12 +346,13 @@ if exists("g:krlShowError") && g:krlShowError==1
   "
   highlight default link krlError Error
 endif
-" ---
+" }}} Error
 
+" Finish {{{
 let &cpo = s:keepcpo
 unlet s:keepcpo
 
 let b:current_syntax = "krl"
+" }}} Finish
 
-" vim:sw=2 sts=2 et
-
+" vim:sw=2 sts=2 et fdm=marker
