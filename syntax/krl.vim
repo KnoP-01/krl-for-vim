@@ -24,18 +24,18 @@ set cpo&vim
 " krl does ignore case
 syn case ignore
 
-" if !exists("*<SID>KrlIsVkrc()")
-"   function <SID>KrlIsVkrc()
-"     if bufname("%") =~ '\c\v(folge|up|makro(saw|sps|step|trigger)?)\d*.src'
-"       for l:s in range(1,8)
-"         if getline(l:s) =~ '\c\v^\s*\&param\s+tpvw_version\s*.*$'
-"           return 1
-"         endif
-"       endfor
-"     endif
-"     return 0
-"   endfunction " <SID>KrlIsVkrc()
-" endif
+if !exists("*<SID>KrlIsVkrc()")
+  function <SID>KrlIsVkrc()
+    if bufname("%") =~ '\c\v(folge|up|makro(saw|sps|step|trigger)?)\d*.src'
+      for l:s in range(1,8)
+        if getline(l:s) =~ '\c\v^\s*\&param\s+tpvw_version\s*.*$'
+          return 1
+        endif
+      endfor
+    endif
+    return 0
+  endfunction " <SID>KrlIsVkrc()
+endif
 
 " }}} init
 
@@ -52,7 +52,8 @@ highlight default link krlDebug Debug
 "
 " Comment and Folding
 " none move fold comment until second ;
-syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ contained containedin=krlFold contains=krlSingleQuoteString
+" syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ contained containedin=krlFold contains=krlSingleQuoteString
+syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ containedin=krlFold " contains=krlSingleQuoteString
 " move fold comment until second ;
 syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*<%(ptp|lin|circ)>[^;]*/ contained containedin=krlFold contains=krlInteger,krlMovement,krlDelimiter,krlGeomOperator,krlCompOperator
 " Comment without Fold, also includes endfold lines and fold line part after second ;
@@ -60,11 +61,21 @@ syn match krlComment /\c\v;%(%(<fold>)@!.)*$/ containedin=krlFold contains=krlTo
 highlight default link krlFoldComment Comment
 highlight default link krlComment Comment
 "
-if exists("g:krlFoldSyntax") && g:krlFoldSyntax==1
-  " force syncing from start
-  syn sync fromstart
-  " Fold region from fold line to endfold line
-  syn region krlFold start=/\c\v^\s*;\s*fold>.*$/ end=/\c\v^\s*;\s*endfold>.*$/ transparent fold keepend extend
+if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
+  if exists("g:krlFoldSyntax") && g:krlFoldSyntax==1
+    " force syncing from start
+    syn sync fromstart
+    if exists("g:krlCloseFolds") && g:krlCloseFolds==1 || <SID>KrlIsVkrc()
+      " close all folds. Default for VKRC
+      " Fold region from fold line to endfold line
+      " NOTE1: modify in both ftplugin/krl.vim as well as in syntax/krl.vim
+      syn region krlFold start=/\c\v^\s*;\s*fold>.*$/ end=/\c\v^\s*;\s*endfold>.*$/ transparent fold keepend extend
+    else
+      " close move folds
+      " NOTE2: modify in both ftplugin/krl.vim as well as in syntax/krl.vim
+      syn region krlFold start=/\c\v^\s*;\s*fold>[^;]*<%(ptp|lin|circ)>.*$/ end=/\c\v^\s*;\s*endfold>.*$/ transparent fold keepend extend
+    endif
+  endif
 endif
 " }}} Comment and Folding 
 

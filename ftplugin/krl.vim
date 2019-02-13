@@ -1367,14 +1367,68 @@ endif
 
 " folding
 if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
-  "
+
   if !exists("*KrlFoldText")
-    function! KrlFoldText()
+
+    function KrlFoldText()
       return substitute(getline(v:foldstart), '\v\c(;\s*<FOLD>\s+|;[^;]*$)', '', 'g')
     endfunction
-  endif
+
+    function <SID>KrlFoldLevel(lvl)
+
+      if a:lvl == 2
+
+        " close all folds
+        if &foldmethod=~'marker'
+          setlocal foldmarker=FOLD,ENDFOLD foldlevel=0
+        elseif &foldmethod=~'syntax'
+          if <SID>KrlIsVkrc()
+            setlocal foldlevel=0
+          else
+            " NOTE1: modify in both ftplugin/krl.vim as well as in syntax/krl.vim
+            syn clear krlFold
+            syn region krlFold start=/\c\v^\s*;\s*fold>.*$/ end=/\c\v^\s*;\s*endfold>.*$/ transparent fold keepend extend
+            setlocal foldlevel=0
+          endif
+        endif
+        return
+
+      elseif a:lvl == 1
+
+        " close move folds
+        if &foldmethod=~'marker'
+          if <SID>KrlIsVkrc()
+            setlocal foldmarker=FOLD,ENDFOLD foldlevel=1
+          else
+            setlocal foldmarker=%CMOVE,ENDFOLD foldlevel=0
+          endif
+        elseif &foldmethod=~'syntax'
+          if <SID>KrlIsVkrc()
+            setlocal foldlevel=1
+          else
+            " NOTE2: modify in both ftplugin/krl.vim as well as in syntax/krl.vim
+            syn clear krlFold
+            syn region krlFold start=/\c\v^\s*;\s*fold>[^;]*<%(ptp|lin|circ)>.*$/ end=/\c\v^\s*;\s*endfold>.*$/ transparent fold keepend extend
+            setlocal foldlevel=0
+          endif
+        endif
+        return
+
+      endif " a:lvl
+
+      " close no folds
+      if &foldmethod=~'marker'
+        setlocal foldmarker<
+      elseif &foldmethod=~'syntax'
+        setlocal foldlevel=99
+      endif
+
+    endfunction " <SID>KrlFoldLevel
+
+  endif " !exists("*KrlFoldText")
+
   setlocal foldtext=KrlFoldText()
-  "
+
   if exists("g:krlFoldSyntax") && g:krlFoldSyntax==1
     setlocal foldmethod=syntax
   else
@@ -1387,9 +1441,9 @@ if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
       setlocal foldmarker=%CMOVE,ENDFOLD
     endif
   endif
-  "
-  let b:undo_ftplugin = b:undo_ftplugin." fdm< fdt< fmr<"
-  "
+
+  let b:undo_ftplugin = b:undo_ftplugin." fdm< fdt< fmr< fdl<"
+
 endif " has("folding") || g:krlCloseFolds!=2
 
 " }}} Vim Settings
@@ -1519,16 +1573,8 @@ endif " g:krlAutoFormKeyMap
 if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
   " compatiblity
   if exists("g:krlFoldKeyMap") && g:krlFoldKeyMap==1
-    if <SID>KrlIsVkrc() " closing move folds fails in VKRC files
-      nnoremap <silent><buffer> <F3> :setlocal foldlevel=0<CR>
-    else " closing all folds (well, case sensitiv)
-      nnoremap <silent><buffer> <F3> :setlocal foldmarker=FOLD,ENDFOLD<CR>
-    endif
-    if <SID>KrlIsVkrc() " closing move folds fails in VKRC files
-      nnoremap <silent><buffer> <F2> :setlocal foldlevel=1<CR>
-    else " closing only move folds
-      nnoremap <silent><buffer> <F2> :setlocal foldmarker=%CMOVE,ENDFOLD<CR>
-    endif
+    nnoremap <silent><buffer> <F3> :call <SID>KrlFoldLevel(2)<CR>
+    nnoremap <silent><buffer> <F2> :call <SID>KrlFoldLevel(1)<CR>
   endif
 endif
 
@@ -1578,9 +1624,9 @@ nnoremap <silent><buffer> <plug>KrlAutoFormGlobalFctE6Axis  :call <SID>KrlAutoFo
 
 " folding
 if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
-  nnoremap <silent><buffer> <plug>KrlCloseAllFolds :setlocal foldmarker=FOLD,ENDFOLD foldlevel=0<CR>
-  nnoremap <silent><buffer> <plug>KrlCloseLessFolds :if <SID>KrlIsVkrc()<CR>setlocal foldmarker=FOLD,ENDFOLD foldlevel=1<CR>else<CR>setlocal foldmarker=%CMOVE,ENDFOLD foldlevel=0<CR>endif<CR>
-  nnoremap <silent><buffer> <plug>KrlCloseNoFolds :if &foldmethod=~'marker'<CR>setlocal foldmarker<<CR>else<CR>setlocal foldlevel=99<CR>endif<CR>
+  nnoremap <silent><buffer> <plug>KrlCloseAllFolds  :call <SID>KrlFoldLevel(2)<CR>
+  nnoremap <silent><buffer> <plug>KrlCloseLessFolds :call <SID>KrlFoldLevel(1)<CR>
+  nnoremap <silent><buffer> <plug>KrlCloseNoFolds   :call <SID>KrlFoldLevel(0)<CR>
 endif
 
 " }}} <plug> mappings
