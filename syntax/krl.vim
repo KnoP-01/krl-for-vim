@@ -45,7 +45,6 @@ syn case ignore
 " TODO Comment
 syn keyword krlTodo contained TODO FIXME XXX
 highlight default link krlTodo Todo
-"
 " Debug Comment
 syn keyword krlDebug contained DEBUG
 highlight default link krlDebug Debug
@@ -65,7 +64,7 @@ syn keyword krlBoolOperator AND OR EXOR NOT DIV MOD B_AND B_OR B_EXOR
 highlight default link krlBoolOperator Operator
 " Arithmetic operator
 syn match krlArithOperator /[+-]/ containedin=krlFloat
-syn match krlArithOperator /\*\|\//
+syn match krlArithOperator /[*/]/
 highlight default link krlArithOperator Operator
 " Compare operator
 syn match krlCompOperator /[<>=]/
@@ -79,21 +78,18 @@ highlight default link krlGeomOperator Operator
 
 " Type, StorageClass and Typedef {{{
 " any type (preceded by 'decl')
-syn match krlAnyType /\v((decl\s+|struc\s+|enum\s+)|(global\s+)|(const\s+)|(deffct\s+))+\w+>/ contains=krlStorageClass,krlType,krlTypedef
+" TODO optimize performance
+syn match krlAnyType /\v%(%(decl\s+|struc\s+|enum\s+)|%(global\s+)|%(const\s+)|%(deffct\s+))+\w+>/ contains=krlStorageClass,krlType,krlTypedef
 highlight default link krlAnyType Type
 " Simple data types
-syn match krlType /\v<(BOOL|CHAR|REAL|INT)>/ containedin=krlAnyType
+syn keyword krlType BOOL CHAR REAL INT containedin=krlAnyType
 " External program and function
-syn match krlType /\v<(EXT|EXTFCT)>/ containedin=krlAnyType
+syn keyword krlType EXT EXTFCT containedin=krlAnyType
 " Communication
-syn match krlType /\v<(SIGNAL|CHANNEL)>/ containedin=krlAnyType
-" Struc and Enum
-" syn keyword krlType STRUC ENUM
+syn keyword krlType SIGNAL CHANNEL containedin=krlAnyType
 highlight default link krlType Type
 " StorageClass
-syn match krlStorageClass /\v<(decl|struc|enum)>/ contained
-syn match krlStorageClass /\v<global>/ contained
-syn match krlStorageClass /\v<const>/ contained
+syn keyword krlStorageClass decl global const struc enum contained
 highlight default link krlStorageClass StorageClass
 " .dat file public
 syn keyword krlDatStorageClass public
@@ -111,7 +107,7 @@ highlight default link krlTypedef Typedef
 " }}} Type, StorageClass and Typedef
 
 " Delimiter {{{
-syn match krlDelimiter /\\\||\|\[\|\]\|[()]\|[,]/
+syn match krlDelimiter /[\\|\[\](),]/
 highlight default link krlDelimiter Delimiter
 " }}} Delimiter
 
@@ -129,14 +125,14 @@ highlight default link krlBinaryInt Number
 syn match krlHexInt /'h[0-9a-fA-F]\+'/ containedin=krlStructVal
 highlight default link krlHexInt Number
 " Float
-syn match krlFloat /\W[+-]\?\d\+\.\?\d*\([eE][+-]\?\d\+\)\?/lc=1 containedin=krlStructVal
+syn match krlFloat /\W[+-]\?\d\+\.\?\d*\%([eE][+-]\?\d\+\)\?/lc=1 containedin=krlStructVal
 highlight default link krlFloat Float
 " String
 syn region krlString start=/"/ end=/"/ oneline containedin=krlStructVal
 highlight default link krlString String
-" String within a fold line " NOT USED
-" syn region krlSingleQuoteString start=/'/ end=/'/ oneline contained
-" highlight default link krlSingleQuoteString String
+" String within a fold line " NOT USED may be used in krlComment for none move folds
+syn region krlSingleQuoteString start=/'/ end=/'/ oneline contained
+highlight default link krlSingleQuoteString String
 " Enum
 syn match krlEnumVal /#\s*\a\w*/ containedin=krlStructVal
 highlight default link krlEnumVal Constant
@@ -227,8 +223,8 @@ if exists("g:krlNoHighlight") && g:krlNoHighlight==1
 else
   highlight default link krlContinue Statement
 endif
-" interrupt
-syn match krlStatement /\v(<global>\s+)?<INTERRUPT>(\s+<decl>)?/ contains=krlStorageClass
+" interrupt 
+syn match krlStatement /\v\c%(<global>\s+)?<INTERRUPT>%(\s+<decl>)?/ contains=krlStorageClass
 " keywords
 syn keyword krlStatement WAIT SEC ON OFF ENABLE DISABLE STOP TRIGGER WITH WHEN DISTANCE PATH ONSTART DELAY DO PRIO IMPORT IS MINIMUM MAXIMUM CONFIRM ON_ERROR_PROCEED
 highlight default link krlStatement Statement
@@ -240,8 +236,7 @@ syn keyword krlRepeat FOR TO STEP ENDFOR WHILE ENDWHILE REPEAT UNTIL LOOP ENDLOO
 highlight default link krlRepeat Repeat
 " Label
 syn keyword krlLabel GOTO
-" syn match krlLabel /^\s*\w\+:/
-syn match krlLabel /^\s*\w\+:\ze\s*\(;.*\)\?$/
+syn match krlLabel /^\s*\w\+:\ze\s*\%(;.*\)\?$/
 highlight default link krlLabel Label
 " Keyword
 syn keyword krlKeyword ANIN ANOUT DIGIN
@@ -272,7 +267,8 @@ endif
 
 " Structure value {{{
 " avoid coloring structure component names
-syn match krlNames contained /[a-zA-Z_][.a-zA-Z0-9_]*/
+syn match krlNames /\.[a-zA-Z_][.a-zA-Z0-9_$]*/
+syn match krlNames contained /[a-zA-Z_][.a-zA-Z0-9_$]*/
 highlight default link krlNames None
 " Structure value
 syn region krlStructVal start=/{/ end=/}/ oneline containedin=krlStructVal contains=krlNames
@@ -309,7 +305,7 @@ if exists("g:krlShowError") && g:krlShowError==1
   " some more or less common typos
   "
   " vars or funcs >24 chars are not possible in krl. a234567890123456789012345
-  syn match krlError /\w\{25,}/ containedin=krlFunction,krlNames,krlLabel,krlAnyType
+  syn match krlError /\w\{25,}/ containedin=krlFunction,krlNames,krlLabel,krlAnyType,krlEnumVal,krlSysvars
   "
   " should be interrupt (on|off) \w+
   syn match krlError /\vinterrupt +\w+ +o(n|ff)>/
