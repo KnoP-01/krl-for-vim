@@ -36,17 +36,16 @@ syn keyword krlDebug contained DEBUG
 highlight default link krlDebug Debug
 "
 "
-" Comment and Folding
+" Comment
+" NOTE1: Comment highlighting must harmonize with ftplugin/krl.vim folding (see krlFold)
 " none move fold comment until second ;
-" syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ contained containedin=krlFold contains=krlSingleQuoteString
 syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ containedin=krlFold " contains=krlSingleQuoteString
 " move fold comment until second ;
-syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*<%(ptp|lin|circ)>[^;]*/ contained containedin=krlFold contains=krlInteger,krlMovement,krlDelimiter,krlGeomOperator,krlCompOperator
+syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*<%(ptp|lin|circ)>[^;]*/ containedin=krlFold contains=krlInteger,krlMovement,krlDelimiter
 " Comment without Fold, also includes endfold lines and fold line part after second ;
 syn match krlComment /\c\v;%(%(<fold>)@!.)*$/ containedin=krlFold contains=krlTodo,krlDebug
 highlight default link krlFoldComment Comment
 highlight default link krlComment Comment
-"
 " }}} Comment and Folding 
 
 " Header {{{
@@ -127,8 +126,8 @@ highlight default link krlFloat Float
 syn region krlString start=/"/ end=/"/ oneline containedin=krlStructVal
 highlight default link krlString String
 " String within a fold line " NOT USED may be used in krlComment for none move folds
-syn region krlSingleQuoteString start=/'/ end=/'/ oneline contained
-highlight default link krlSingleQuoteString String
+" syn region krlSingleQuoteString start=/'/ end=/'/ oneline contained
+" highlight default link krlSingleQuoteString String
 " Enum
 syn match krlEnumVal /#\s*\a\w*/ containedin=krlStructVal
 highlight default link krlEnumVal Constant
@@ -243,7 +242,7 @@ highlight default link krlException Exception
 " }}} Statements, keywords et al
 
 " special keywords for movement commands {{{
-syn keyword krlMovement PTP LIN CIRC SPL SPTP SLIN SCIRC PTP_REL LIN_REL CIRC_REL
+syn keyword krlMovement PTP LIN CIRC SPL SPTP SLIN SCIRC PTP_REL LIN_REL CIRC_REL SPTP_REL SLIN_REL SCIRC_REL
 syn keyword krlMovement ASYPTP ASYCONT ASYSTOP ASYCANCEL BRAKE BRAKE_F
 if exists("g:krlNoHighlight") && g:krlNoHighlight==1
       \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
