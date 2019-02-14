@@ -148,7 +148,8 @@ if !exists("*s:KnopVerboseEcho()")
       execute l:cmd
     augroup END
     if l:useSyntax!='' 
-      set syntax=l:useSyntax 
+      let l:cmd = 'set syntax='.l:useSyntax 
+      execute l:cmd
     endif
     if exists('g:knopPositionQf') && s:KnopQfCompatible() 
       unlet g:knopPositionQf
