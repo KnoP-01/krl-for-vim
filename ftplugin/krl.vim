@@ -129,8 +129,13 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " s:KnopQfCompatible()
 
   let g:knopPositionQf=1
-  function s:KnopOpenQf(ft)
+  function s:KnopOpenQf(useSyntax)
     if getqflist()==[] | return -1 | endif
+    if b:current_syntax!=a:useSyntax
+      let l:useSyntax=''
+    else
+      let l:useSyntax=a:useSyntax
+    endif
     cwindow 4
     if getbufvar('%', "&buftype")!="quickfix"
       let l:getback=1
@@ -143,7 +148,9 @@ if !exists("*s:KnopVerboseEcho()")
       let l:cmd = 'au BufWinLeave <buffer='.bufnr('%').'> let g:knopPositionQf=1'
       execute l:cmd
     augroup END
-    if a:ft!='' | let &filetype=a:ft | endif
+    if l:useSyntax!='' 
+      set syntax=krl 
+    endif
     if exists('g:knopPositionQf') && s:KnopQfCompatible() 
       unlet g:knopPositionQf
       if get(g:,'knopRhsQuickfix',0)
@@ -159,7 +166,7 @@ if !exists("*s:KnopVerboseEcho()")
     return 0
   endfunction " s:KnopOpenQf()
 
-  function s:KnopSearchPathForPatternNTimes(Pattern,path,n,ft)
+  function s:KnopSearchPathForPatternNTimes(Pattern,path,n,useSyntax)
     let l:cmd = ':noautocmd ' . a:n . 'vimgrep /' . a:Pattern . '/j ' . a:path
     try
       execute l:cmd
@@ -176,7 +183,7 @@ if !exists("*s:KnopVerboseEcho()")
     if a:n == 1
       call setqflist(s:KnopUniqueListItems(getqflist()))
     endif
-    if s:KnopOpenQf(a:ft)==-1
+    if s:KnopOpenQf(a:useSyntax)==-1
       call s:KnopVerboseEcho("No match found")
       return -1
     endif
