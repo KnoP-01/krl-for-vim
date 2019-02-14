@@ -1409,6 +1409,7 @@ if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
             " NOTE2: modify in both ftplugin/krl.vim as well as in syntax/krl.vim
             syn clear krlFold
             syn region krlFold start=/\c\v^\s*;\s*fold>[^;]*<%(ptp|lin|circ)>.*$/ end=/\c\v^\s*;\s*endfold>.*$/ transparent fold keepend extend
+            syn region krlFold start=/\c\v^\s*;\s*fold>.*$/ end=/\c\v^\s*;\s*endfold>.*$/ transparent keepend extend
             setlocal foldlevel=0
           endif
         endif
@@ -1429,16 +1430,56 @@ if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
 
   setlocal foldtext=KrlFoldText()
 
+  if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
+    if exists("g:krlFoldSyntax") && g:krlFoldSyntax==1
+      " force syncing from start
+      syn sync fromstart
+      if exists("g:krlCloseFolds") && g:krlCloseFolds==1 || <SID>KrlIsVkrc()
+        " close all folds. Default for VKRC
+        " NOTE1: modify in both ftplugin/krl.vim as well as in syntax/krl.vim
+        syn region krlFold start=/\c\v^\s*;\s*fold>.*$/ end=/\c\v^\s*;\s*endfold>.*$/ transparent fold keepend extend
+      else
+        " close move folds
+        " NOTE2: modify in both ftplugin/krl.vim as well as in syntax/krl.vim
+        syn region krlFold start=/\c\v^\s*;\s*fold>[^;]*<%(ptp|lin|circ)>.*$/ end=/\c\v^\s*;\s*endfold>.*$/ transparent fold keepend extend
+        syn region krlFold start=/\c\v^\s*;\s*fold>.*$/ end=/\c\v^\s*;\s*endfold>.*$/ transparent keepend extend
+      endif
+    endif
+  endif  
   if exists("g:krlFoldSyntax") && g:krlFoldSyntax==1
     setlocal foldmethod=syntax
-  else
+    if <SID>KrlIsVkrc() 
+      if bufname("%")=~'\c\v(folge|up)\d*.src'
+        if exists("g:krlCloseFolds") && g:krlCloseFolds==1
+          setlocal foldlevel=0
+        else
+          setlocal foldlevel=1
+        endif
+      endif
+    endif
+  else " g:krlFoldSyntax==1
     setlocal foldmethod=marker
-    if exists("g:krlCloseFolds") && g:krlCloseFolds==1 || <SID>KrlIsVkrc()
+    if exists("g:krlCloseFolds") && g:krlCloseFolds==1
       " close all folds. Default for VKRC
-      setlocal foldmarker=FOLD,ENDFOLD
+      if <SID>KrlIsVkrc()
+        setlocal foldmarker=FOLD,ENDFOLD
+        setlocal foldlevel=0
+      else
+        setlocal foldmarker=FOLD,ENDFOLD
+      endif
     else
       " close only PTP|LIN|CIRC movement folds
-      setlocal foldmarker=%CMOVE,ENDFOLD
+      if <SID>KrlIsVkrc() 
+        if bufname("%")=~'\c\v(folge|up)\d*.src'
+          setlocal foldmarker=FOLD,ENDFOLD
+          setlocal foldlevel=1
+        else
+          setlocal foldmarker=FOLD,ENDFOLD
+          setlocal foldlevel=0
+        endif
+      else
+        setlocal foldmarker=%CMOVE,ENDFOLD
+      endif
     endif
   endif
 
