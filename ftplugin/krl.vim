@@ -139,7 +139,6 @@ if !exists("*s:KnopVerboseEcho()")
     cwindow 4
     if getbufvar('%', "&buftype")!="quickfix"
       let l:getback=1
-      " noautocmd copen
       copen
     endif
     augroup KnopOpenQf
@@ -149,7 +148,7 @@ if !exists("*s:KnopVerboseEcho()")
       execute l:cmd
     augroup END
     if l:useSyntax!='' 
-      set syntax=krl 
+      set syntax=l:useSyntax 
     endif
     if exists('g:knopPositionQf') && s:KnopQfCompatible() 
       unlet g:knopPositionQf
