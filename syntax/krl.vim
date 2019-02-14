@@ -1,7 +1,7 @@
 " Kuka Robot Language syntax file for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 1.5.7
+" Version: 1.5.8
 " Last Change: 22. Feb 2018
 " Credits: Thanks for contributions to this to Michael Jagusch
 "
@@ -20,6 +20,14 @@ endif
 
 let s:keepcpo= &cpo
 set cpo&vim
+
+if get(g:,'krlNoHighlight',0) && !exists("g:krlNoHighLink")
+  let g:krlNoHighLink=g:krlNoHighlight
+  unlet g:krlNoHighlight
+endif
+if !get(g:,'krlNoHighLink',0)
+  let g:krlNoHighLink=0
+endif
 
 " krl does ignore case
 syn case ignore
@@ -212,8 +220,7 @@ highlight default link krlSysvars Sysvars
 " Statements, keywords et al {{{
 " continue
 syn keyword krlContinue CONTINUE
-if exists("g:krlNoHighlight") && g:krlNoHighlight==1
-      \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
+if g:krlNoHighLink
   highlight default link krlContinue Continue
 else
   highlight default link krlContinue Statement
@@ -244,16 +251,14 @@ highlight default link krlException Exception
 " special keywords for movement commands {{{
 syn keyword krlMovement PTP LIN CIRC SPL SPTP SLIN SCIRC PTP_REL LIN_REL CIRC_REL SPTP_REL SLIN_REL SCIRC_REL
 syn keyword krlMovement ASYPTP ASYCONT ASYSTOP ASYCANCEL BRAKE BRAKE_F
-if exists("g:krlNoHighlight") && g:krlNoHighlight==1
-      \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
+if g:krlNoHighLink
   highlight default link krlMovement Movement
 else
   highlight default link krlMovement Special
 endif
 " movement modifiers
 syn keyword krlMoveMod CA C_PTP C_DIS C_VEL C_ORI C_SPL SPLINE ENDSPLINE
-if exists("g:krlNoHighlight") && g:krlNoHighlight==1
-      \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
+if g:krlNoHighLink
   highlight default link krlMoveMod Movement
 else
   highlight default link krlMoveMod Special
@@ -267,7 +272,7 @@ syn match krlNames contained /[a-zA-Z_][.a-zA-Z0-9_$]*/
 highlight default link krlNames None
 " Structure value
 syn region krlStructVal start=/{/ end=/}/ oneline containedin=krlStructVal contains=krlNames
-highlight default link krlStructVal krlDelimiter
+highlight default link krlStructVal Delimiter
 " }}} Structure value
 
 " BuildInFunction {{{
@@ -282,8 +287,7 @@ syn keyword krlBuildInFunction contained Clear_KrlMsg SET_SYSTEM_DATA SET_SYSTEM
 syn keyword krlBuildInFunction contained Err_Clear Err_Raise
 syn keyword krlBuildInFunction contained varstate EK EB LK sync MD_CMD MD_SETSTATE MBX_REC
 syn keyword krlBuildInFunction contained SVEL_JOINT STOOL2 SBASE SIPO_MODE SLOAD SACC_JOINT SGEAR_JERK SAPO_PTP SVEL_CP SACC_CP SAPO SORI_TYP SJERK 
-if exists("g:krlNoHighlight") && g:krlNoHighlight==1
-      \|| exists("g:krlNoHighLink") && g:krlNoHighLink==1
+if g:krlNoHighLink
   highlight default link krlBuildInFunction BuildInFunction
 else
   highlight default link krlBuildInFunction Function
@@ -296,7 +300,7 @@ highlight default link krlFunction Function
 " }}} Function
 
 " Error {{{
-if exists("g:krlShowError") && g:krlShowError==1
+if get(g:,'krlShowError',0)
   " some more or less common typos
   "
   " vars or funcs >24 chars are not possible in krl. a234567890123456789012345
