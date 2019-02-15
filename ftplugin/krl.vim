@@ -1108,7 +1108,9 @@ if !exists("*s:KnopVerboseEcho()")
           endif
         endfor
         call setqflist(l:qfresult)
-        call s:KnopOpenQf('krl')
+        if getbufvar('%', "&buftype")=="quickfix"
+          set syntax=krl
+        endif
       endif
       let &isk = l:keepisk
     else

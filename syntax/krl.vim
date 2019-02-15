@@ -269,7 +269,7 @@ endif
 " avoid coloring structure component names
 syn match krlNames /\.[a-zA-Z_][.a-zA-Z0-9_$]*/
 syn match krlNames contained /[a-zA-Z_][.a-zA-Z0-9_$]*/
-highlight default link krlNames None
+" highlight default link krlNames None
 " Structure value
 syn region krlStructVal start=/{/ end=/}/ oneline containedin=krlStructVal contains=krlNames
 highlight default link krlStructVal Delimiter
