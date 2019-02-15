@@ -131,11 +131,6 @@ if !exists("*s:KnopVerboseEcho()")
   let g:knopPositionQf=1
   function s:KnopOpenQf(useSyntax)
     if getqflist()==[] | return -1 | endif
-    if b:current_syntax!=a:useSyntax
-      let l:useSyntax=''
-    else
-      let l:useSyntax=a:useSyntax
-    endif
     cwindow 4
     if getbufvar('%', "&buftype")!="quickfix"
       let l:getback=1
@@ -147,8 +142,8 @@ if !exists("*s:KnopVerboseEcho()")
       let l:cmd = 'au BufWinLeave <buffer='.bufnr('%').'> let g:knopPositionQf=1'
       execute l:cmd
     augroup END
-    if l:useSyntax!='' 
-      let l:cmd = 'set syntax='.l:useSyntax 
+    if a:useSyntax!='' 
+      let l:cmd = 'set syntax='.a:useSyntax 
       execute l:cmd
     endif
     if exists('g:knopPositionQf') && s:KnopQfCompatible() 
@@ -1100,17 +1095,16 @@ if !exists("*s:KnopVerboseEcho()")
             call add(l:qftmp2,l:i)
           endif
         endfor
-        " rule out if l:currentWord is part of a strings
+        " rule out if l:currentWord is part of a strings and inside a backup file
         let l:qfresult = []
         for l:i in l:qftmp2
-          if get(l:i,'text') =~ '\v\c^([^"]*"[^"]*"[^"]*)*[^"]*'.l:currentWord
+          if bufname(get(l:i,'bufnr')) !~ '\~$'
+                \&& get(l:i,'text') =~ '\v\c^([^"]*"[^"]*"[^"]*)*[^"]*'.l:currentWord
             call add(l:qfresult,l:i)
           endif
         endfor
         call setqflist(l:qfresult)
-        if getbufvar('%', "&buftype")=="quickfix"
-          set syntax=krl
-        endif
+        call s:KnopOpenQf('krl')
       endif
       let &isk = l:keepisk
     else

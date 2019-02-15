@@ -1075,15 +1075,7 @@ Related krl options:
   |g:krlAutoComment|
 
 Set |g:krlFormatComments| to format comments automatically when entered, with
-|gq| or with |:call| KrlFormatComments().
-
-The function KrlFormatComments() formats all comments in the whole file,
-unless they are fold lines. Use or map to your need: >
-    :call KrlFormatComments()
-    :nnoremap <leader>Q :call KrlFormatComments()<CR>
-
-This function may not be overly useful, but since it's there I will not delete
-it.
+|gq|.
 
 Set |g:krlAutoComment| to continue a comment automatically after hitting 
 i_<CR> , |o| or |O| on a comment line.
