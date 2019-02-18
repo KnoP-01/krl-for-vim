@@ -1,8 +1,8 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 1.1.1
-" Last Change: 22. Feb 2018
+" Version: 1.1.2
+" Last Change: 18. Feb 2019
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "
 " Suggestions of improvement are very welcome. Please email me!
@@ -452,8 +452,6 @@ if !exists("*s:KnopVerboseEcho()")
 
   function <SID>KrlGoDefinition()
     "
-    " dont start from within qf or loc window
-    if getbufvar("%", "&buftype") == "quickfix" | return | endif
     let l:declPrefix = '\c\v^\s*((global\s+)?(const\s+)?(bool|int|real|char|frame|pos|axis|e6pos|e6axis|signal|channel)\s+[a-zA-Z0-9_,\[\] \t]*|(decl\s+)?(global\s+)?(struc|enum)\s+|decl\s+(global\s+)?(const\s+)?\w+\s+[a-zA-Z0-9_,\[\] \t]*)'
     "
     " suche das naechste wort
@@ -908,7 +906,6 @@ if !exists("*s:KnopVerboseEcho()")
   function <SID>KrlAutoForm(sAction)
     " check input
     if a:sAction !~ '^[ lg][ adf][ abcfiprx6]$' | return | endif
-    if getbufvar('%', "&buftype") == "quickfix" | return | endif
     "
     let l:sGlobal = s:KrlGetGlobal(a:sAction)
     if l:sGlobal == ''
@@ -989,8 +986,6 @@ if !exists("*s:KnopVerboseEcho()")
   " List Def/Usage {{{
 
   function <SID>KrlListDef()
-    " dont start from within qf or loc window
-    if getbufvar('%', "&buftype")=="quickfix" | return | endif
     " list defs in qf
     if s:KnopSearchPathForPatternNTimes('\v\c^\s*(global\s+)?def(fct)?>','%','','krl')==0
       if getqflist()==[] | return | endif
@@ -1237,7 +1232,6 @@ endif " format comments
 
 " path for gf, :find etc
 if (!exists("g:krlNoPath") || g:krlNoPath!=1) 
-      \&& getbufvar('%', "&buftype")!="quickfix" " dont set path for qf
 
   let s:pathcurrfile = s:KnopFnameescape4Path(substitute(expand("%:p:h"), '\\', '/', 'g'))
   if s:pathcurrfile =~ '\v\c\/krc(\/[^/]+){,4}$'

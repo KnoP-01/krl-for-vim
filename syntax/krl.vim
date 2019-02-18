@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 1.5.8
-" Last Change: 22. Feb 2018
+" Last Change: 18. Feb 2019
 " Credits: Thanks for contributions to this to Michael Jagusch
 "
 " Suggestions of improvement are very welcome. Please email me!
@@ -21,12 +21,22 @@ endif
 let s:keepcpo= &cpo
 set cpo&vim
 
-if get(g:,'krlNoHighlight',0) && !exists("g:krlNoHighLink")
-  let g:krlNoHighLink=g:krlNoHighlight
+" if krlNoHighLink exists it overrides krlNoHighlight
+if exists("g:krlNoHighLink")
+  silent! unlet g:krlNoHighlight
+endif
+" if krlNoHighlight still exists it's pushed to krlNoHighLink
+if exists("g:krlNoHighlight")
+  let g:krlNoHighLink = g:krlNoHighlight
   unlet g:krlNoHighlight
 endif
-if !get(g:,'krlNoHighLink',0)
-  let g:krlNoHighLink=0
+" if colorscheme is tortus krlNoHighLink defaults to 1
+if get(g:,'colors_name'," ")=="tortus" && !exists("g:krlNoHighLink")
+  let g:krlNoHighLink=1 
+endif
+" krlNoHighLink defaults to 0 if it's not initialized yet or 0
+if !get(g:,"krlNoHighLink",0)
+  let g:krlNoHighLink=0 
 endif
 
 " krl does ignore case
@@ -63,7 +73,7 @@ highlight default link krlHeader PreProc
 
 " Operator {{{
 " Boolean operator
-syn keyword krlBoolOperator AND OR EXOR NOT DIV MOD B_AND B_OR B_EXOR
+syn keyword krlBoolOperator AND OR EXOR NOT DIV MOD B_AND B_OR B_EXOR B_NOT
 highlight default link krlBoolOperator Operator
 " Arithmetic operator
 syn match krlArithOperator /[+-]/ containedin=krlFloat
@@ -87,7 +97,7 @@ highlight default link krlAnyType Type
 " Simple data types
 syn keyword krlType BOOL CHAR REAL INT containedin=krlAnyType
 " External program and function
-syn keyword krlType EXT EXTFCT containedin=krlAnyType
+syn keyword krlType EXT EXTFCT EXTFCTP EXTP containedin=krlAnyType
 " Communication
 syn keyword krlType SIGNAL CHANNEL containedin=krlAnyType
 highlight default link krlType Type
@@ -110,7 +120,7 @@ highlight default link krlTypedef Typedef
 " }}} Type, StorageClass and Typedef
 
 " Delimiter {{{
-syn match krlDelimiter /[\\|\[\](),]/
+syn match krlDelimiter /[\[\](),\\]/
 highlight default link krlDelimiter Delimiter
 " }}} Delimiter
 
@@ -133,6 +143,8 @@ highlight default link krlFloat Float
 " String
 syn region krlString start=/"/ end=/"/ oneline containedin=krlStructVal
 highlight default link krlString String
+syn match krlSpecialChar /[|]/ containedin=krlString
+highlight default link krlSpecialChar SpecialChar
 " String within a fold line " NOT USED may be used in krlComment for none move folds
 " syn region krlSingleQuoteString start=/'/ end=/'/ oneline contained
 " highlight default link krlSingleQuoteString String
@@ -228,7 +240,9 @@ endif
 " interrupt 
 syn match krlStatement /\v\c%(<global>\s+)?<INTERRUPT>%(\s+<decl>)?/ contains=krlStorageClass
 " keywords
-syn keyword krlStatement WAIT SEC ON OFF ENABLE DISABLE STOP TRIGGER WITH WHEN DISTANCE PATH ONSTART DELAY DO PRIO IMPORT IS MINIMUM MAXIMUM CONFIRM ON_ERROR_PROCEED
+syn keyword krlStatement WAIT ON OFF ENABLE DISABLE STOP TRIGGER WITH WHEN DISTANCE ONSTART DELAY DO PRIO IMPORT IS MINIMUM MAXIMUM CONFIRM ON_ERROR_PROCEED
+syn match krlStatement /\v\c%(<wait\s+)@7<=<sec>/
+syn match krlStatement /\v\c%(<when\s+)@7<=<path>/
 highlight default link krlStatement Statement
 " Conditional
 syn keyword krlConditional IF THEN ELSE ENDIF SWITCH CASE DEFAULT ENDSWITCH
@@ -277,16 +291,17 @@ highlight default link krlStructVal Delimiter
 
 " BuildInFunction {{{
 syn keyword krlBuildInFunction contained abs sin cos acos tan atan atan2 sqrt
-syn keyword krlBuildInFunction contained b_not 
 syn keyword krlBuildInFunction contained cClose cOpen cRead cWrite sRead sWrite cast_from cast_to
 syn keyword krlBuildInFunction contained DELETE_BACKWARD_BUFFER DIAG_START DIAG_STOP GET_DIAGSTATE IS_KEY_PRESSED GETCYCDEF GET_DECL_PLACE CHECKPIDONRDC PIDTORDC DELETE_PID_ON_RDC CAL_TO_RDC SET_MAM_ON_HD COPY_MAM_HD_TO_RDC CREATE_RDC_ARCHIVE RESTORE_RDC_ARCHIVE DELETE_RDC_CONTENT RDC_FILE_TO_HD CHECK_MAM_ON_RDC GET_RDC_FS_STATE TOOL_ADJ IOCTL CIOCTL WSPACEGIVE WSPACETAKE SYNCCMD CANCELPROGSYNC REMOTECMD REMOTEREAD ISMESSAGESET TIMER_LIMIT SET_KRLDLGANSWER GET_MSGBUFFER STRTOFRAME STRTOPOS STRTOE3POS STRTOE6POS STRTOAXIS STRTOE3AXIS STRTOE6AXIS VARTYPE FRAND GETVARSIZE MAXIMIZE_USEDXROBVERS SET_USEDXROBVERS SET_OPT_FILTER MD_GETSTATE MD_ASGN EB_TEST EO EMI_ENDPOS EMI_STARTPOS EMI_ACTPOS EMI_RECSTATE M_COMMENT
 syn keyword krlBuildInFunction contained forward inverse inv_pos
-syn keyword krlBuildInFunction contained get_sig_inf GetSysState pulse GET_SYSTEM_DATA
+syn keyword krlBuildInFunction contained get_sig_inf GetSysState GET_SYSTEM_DATA
 syn keyword krlBuildInFunction contained StrAdd StrClear StrCopy StrComp StrFind StrLen StrDeclLen StrToBool StrToInt StrToReal StrToString
 syn keyword krlBuildInFunction contained Clear_KrlMsg SET_SYSTEM_DATA SET_SYSTEM_DATA_DELAYED Set_KrlDlg Exists_KrlDlg Set_KrlMsg Exists_KrlMsg
 syn keyword krlBuildInFunction contained Err_Clear Err_Raise
-syn keyword krlBuildInFunction contained varstate EK EB LK sync MD_CMD MD_SETSTATE MBX_REC
-syn keyword krlBuildInFunction contained SVEL_JOINT STOOL2 SBASE SIPO_MODE SLOAD SACC_JOINT SGEAR_JERK SAPO_PTP SVEL_CP SACC_CP SAPO SORI_TYP SJERK 
+syn keyword krlBuildInFunction contained varstate EK EB LK sync MD_CMD MD_SETSTATE MBX_REC pulse 
+syn keyword krlBuildInFunction contained ROB_STOP ROB_STOP_RELEASE SET_BRAKE_DELAY
+" KRC1
+syn keyword krlBuildInFunction contained CLCOPY CCURPOS CNEW CCLEAR CRELEASE CKEY
 if g:krlNoHighLink
   highlight default link krlBuildInFunction BuildInFunction
 else
