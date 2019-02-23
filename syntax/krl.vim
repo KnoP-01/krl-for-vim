@@ -129,7 +129,7 @@ highlight default link krlDelimiter Delimiter
 syn keyword krlBoolean TRUE FALSE containedin=krlStructVal
 highlight default link krlBoolean Boolean
 " Integer
-syn match krlInteger /\W[+-]\?\d\+/lc=1 containedin=krlStructVal
+syn match krlInteger /\W\@1<=[+-]\?\d\+/ containedin=krlStructVal
 highlight default link krlInteger Number
 " Binary integer
 syn match krlBinaryInt /'b[01]\+'/ containedin=krlStructVal
@@ -138,7 +138,7 @@ highlight default link krlBinaryInt Number
 syn match krlHexInt /'h[0-9a-fA-F]\+'/ containedin=krlStructVal
 highlight default link krlHexInt Number
 " Float
-syn match krlFloat /\W[+-]\?\d\+\.\?\d*\%([eE][+-]\?\d\+\)\?/lc=1 containedin=krlStructVal
+syn match krlFloat /\v\W@1<=[+-]?\d+\.?\d*\s*%([eE][+-]?\d+)?/ containedin=krlStructVal
 highlight default link krlFloat Float
 " String
 syn region krlString start=/"/ end=/"/ oneline containedin=krlStructVal
