@@ -1241,19 +1241,59 @@ if (!exists("g:krlNoPath") || g:krlNoPath!=1)
         \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/System',''))
         \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/Mada',''))
         \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/Program',''))
+        \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v(\/MaDa)%(\/r1)\/%(%(<r1>)@!.)*$','\1',''))
+        \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v(\/PowerOn)%(\/r1)\/%(%(<r1>)@!.)*$','\1',''))
         \    )
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/r1)\/%(%(<r1>)@!.)*$', '\1' ,'g')
-    let s:krlpath=s:pathcurrfile. '/**,'
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\cr1$', 'STEU' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
+    if s:pathcurrfile =~ '\c\v\/MaDa\/R1$'
+      " krc1 MaDa/R1/
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/MaDa)\/R1$', '\1' ,'g')
+      let s:krlpath=s:pathcurrfile. '/**,'
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\cMaDa$', 'PowerOn' ,'')
+      if s:KnopDirExists(s:pathcurrfile)
+        let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
+      endif
+    elseif s:pathcurrfile =~ '\c\v\/PowerOn\/R1$'
+      " krc1 PowerOn/R1/
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/PowerOn)\/R1$', '\1' ,'g')
+      let s:krlpath=s:pathcurrfile. '/**,'
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\cPowerOn$', 'MaDa' ,'')
+      if s:KnopDirExists(s:pathcurrfile)
+        let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
+      endif
+    else
+      " > krc1
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/r1)\/%(%(<r1>)@!.)*$', '\1' ,'g')
+      let s:krlpath=s:pathcurrfile. '/**,'
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\cr1$', 'STEU' ,'')
+      if s:KnopDirExists(s:pathcurrfile)
+        let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
+      endif
     endif
   elseif s:pathcurrfile =~ '\v\c\/steu%(\/[^/]+){,1}$'
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/steu)\/%(%(<steu>)@!.)*$', '\1' ,'g')
-    let s:krlpath=s:pathcurrfile. '/**,'
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\csteu$', 'R1' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
+    if s:pathcurrfile =~ '\c\v\/MaDa\/Steu$'
+      " krc1 MaDa/Steu/
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/MaDa)\/Steu$', '\1' ,'g')
+      let s:krlpath=s:pathcurrfile. '/**,'
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\cMaDa$', 'PowerOn' ,'')
+      if s:KnopDirExists(s:pathcurrfile)
+        let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
+      endif
+    elseif s:pathcurrfile =~ '\c\v\/PowerOn\/Steu$'
+      " krc1 PowerOn/Steu/
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/PowerOn)\/Steu$', '\1' ,'g')
+      let s:krlpath=s:pathcurrfile. '/**,'
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\cPowerOn$', 'MaDa' ,'')
+      if s:KnopDirExists(s:pathcurrfile)
+        let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
+      endif
+    else
+      " > krc1
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/steu)\/%(%(<steu>)@!.)*$', '\1' ,'g')
+      let s:krlpath=s:pathcurrfile. '/**,'
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\csteu$', 'R1' ,'')
+      if s:KnopDirExists(s:pathcurrfile)
+        let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
+      endif
     endif
   elseif s:pathcurrfile =~ '\v\c\/program%(\/[^/]+){,2}$'
     let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/program)\/%(%(<program>)@!.)*$', '\1' ,'g')
