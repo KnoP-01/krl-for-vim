@@ -1,7 +1,7 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 1.1.2
+" Version: 2.0.0
 " Last Change: 18. Feb 2019
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "
@@ -1111,7 +1111,7 @@ if !exists("*s:KnopVerboseEcho()")
 
   " Function Text Object {{{
 
-  if get(g:,'krlMoveAroundKeyMap',0) " depends on move around key mappings
+  if get(g:,'krlMoveAroundKeyMap',1) " depends on move around key mappings
     function s:KrlFunctionTextObject(inner,withcomment)
       if a:inner==1
         let l:n = 1
@@ -1467,44 +1467,63 @@ if exists("loaded_matchit")
         \.'^\s*;\s*\<fold\>:^\s*;\s*\<endfold\>'
   let b:match_ignorecase = 1 " KRL does ignore case
   " matchit makes fold text objects easy
-  vnoremap <silent><buffer> ao :<C-U>call <SID>KrlFoldTextObject(0)<CR>
-  vnoremap <silent><buffer> io :<C-U>call <SID>KrlFoldTextObject(1)<CR>
-  onoremap <silent><buffer> ao :<C-U>call <SID>KrlFoldTextObject(0)<CR>
-  onoremap <silent><buffer> io :<C-U>call <SID>KrlFoldTextObject(1)<CR>
+  if mapcheck("ao","x")=="" 
+    xnoremap <silent><buffer> ao :<C-U>call <SID>KrlFoldTextObject(0)<CR>
+  endif
+  if mapcheck("io","x")=="" 
+    xnoremap <silent><buffer> io :<C-U>call <SID>KrlFoldTextObject(1)<CR>
+  endif
+  if mapcheck("ao","o")=="" 
+    onoremap <silent><buffer> ao :<C-U>call <SID>KrlFoldTextObject(0)<CR>
+  endif
+  if mapcheck("io","o")==""
+    onoremap <silent><buffer> io :<C-U>call <SID>KrlFoldTextObject(1)<CR>
+  endif
 endif
 
 " }}} Match It and Fold Text Object mapping
 
 " Move Around and Function Text Object key mappings {{{
 
-if exists("g:krlMoveAroundKeyMap") && g:krlMoveAroundKeyMap>=1
+if get(g:,'krlMoveAroundKeyMap',1)
   " Move around functions TODO teste das alles nochmal genau!
   nnoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 'bs')<Bar>:unlet b:knopCount<CR>
   onoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>.*\n\zs', 'bsW')<Bar>:unlet b:knopCount<CR>
-  vnoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 'bsW')<Bar>:unlet b:knopCount<CR>
+  xnoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 'bsW')<Bar>:unlet b:knopCount<CR>
   nnoremap <silent><buffer> ]] :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 's')<Bar>:unlet b:knopCount<CR>
   onoremap <silent><buffer> ]] :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 'sW')<Bar>:unlet b:knopCount<CR>
-  vnoremap <silent><buffer> ]] :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 'sW')<Bar>:unlet b:knopCount<CR>
+  xnoremap <silent><buffer> ]] :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 'sW')<Bar>:unlet b:knopCount<CR>
   nnoremap <silent><buffer> [] :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>', 'bs')<Bar>:unlet b:knopCount<CR>
   onoremap <silent><buffer> [] :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>\n^(.\|\n)', 'bseW')<Bar>:unlet b:knopCount<CR>
-  vnoremap <silent><buffer> [] :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>', 'bseW')<Bar>:unlet b:knopCount<CR>
+  xnoremap <silent><buffer> [] :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>', 'bsW')<Bar>:unlet b:knopCount<CR>
   nnoremap <silent><buffer> ][ :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>', 's')<Bar>:unlet b:knopCount<CR>
   onoremap <silent><buffer> ][ :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\c\v\ze^\s*end(fct\|dat)?>', 'sW')<Bar>:unlet b:knopCount<CR>
-  vnoremap <silent><buffer> ][ :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>(\n)?', 'seW')<Bar>:unlet b:knopCount<CR>
+  xnoremap <silent><buffer> ][ :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>(\n)?', 'seW')<Bar>:unlet b:knopCount<CR>
   " Move around comments
-  nnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '^\(\s*;.*\n\)\@<!\(\s*;\)', 'bs')<Bar>:unlet b:knopCount<cr>
-  onoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '^\(\s*;.*\n\)\@<!\(\s*;\)', 'bs')<Bar>:unlet b:knopCount<cr>
-  vnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '^\(\s*;.*\n\)\@<!\(\s*;\)', 'bsW')<Bar>:unlet b:knopCount<cr>
-  nnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\ze\n\s*([^;\t ]\|$)', 'se')<Bar>:unlet b:knopCount<cr>
-  onoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\ze\n\s*([^;\t ]\|$)', 'se')<Bar>:unlet b:knopCount<cr>
-  vnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\ze\n\s*([^;\t ]\|$)', 'seW')<Bar>:unlet b:knopCount<cr>
-  if g:krlMoveAroundKeyMap==2
-    " inner and around function text objects
-    vnoremap <silent><buffer> aF :<C-U>call <SID>KrlFunctionTextObject(0,1)<CR>
-    vnoremap <silent><buffer> af :<C-U>call <SID>KrlFunctionTextObject(0,0)<CR>
-    vnoremap <silent><buffer> if :<C-U>call <SID>KrlFunctionTextObject(1,0)<CR>
+  " testen oder abandonen
+  nnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '^\v(\s*;.*\n)@<!(\s*;)', 'bs')<Bar>:unlet b:knopCount<cr>
+  onoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '^\v(\s*;.*\n)@<!(\s*;)', 'bsW')<Bar>:unlet b:knopCount<cr>
+  xnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '^\v(\s*;.*\n)@<!(\s*;)', 'bsW')<Bar>:unlet b:knopCount<cr>
+  nnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\ze\n\s*([^;\t ]\|$)', 's')<Bar>:unlet b:knopCount<cr>
+  onoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\ze\n\s*([^;\t ]\|$)', 'seW')<Bar>:unlet b:knopCount<cr>
+  xnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\ze\n\s*([^;\t ]\|$)', 'seW')<Bar>:unlet b:knopCount<cr>
+  " inner and around function text objects
+  if mapcheck("aF","x")==""
+    xnoremap <silent><buffer> aF :<C-U>call <SID>KrlFunctionTextObject(0,1)<CR>
+  endif
+  if mapcheck("af","x")==""
+    xnoremap <silent><buffer> af :<C-U>call <SID>KrlFunctionTextObject(0,0)<CR>
+  endif
+  if mapcheck("if","x")==""
+    xnoremap <silent><buffer> if :<C-U>call <SID>KrlFunctionTextObject(1,0)<CR>
+  endif
+  if mapcheck("aF","o")==""
     onoremap <silent><buffer> aF :<C-U>call <SID>KrlFunctionTextObject(0,1)<CR>
+  endif
+  if mapcheck("af","o")==""
     onoremap <silent><buffer> af :<C-U>call <SID>KrlFunctionTextObject(0,0)<CR>
+  endif
+  if mapcheck("if","o")==""
     onoremap <silent><buffer> if :<C-U>call <SID>KrlFunctionTextObject(1,0)<CR>
   endif
 endif
@@ -1513,7 +1532,7 @@ endif
 
 " Other configurable key mappings {{{
 
-if get(g:,'krlGoDefinitionKeyMap',0)
+if get(g:,'krlGoDefinitionKeyMap',1)
   " gd mimic
   nnoremap <silent><buffer> gd :call <SID>KrlGoDefinition()<CR>
 endif
@@ -1583,7 +1602,7 @@ if get(g:,'krlAutoFormKeyMap',0)
 endif " g:krlAutoFormKeyMap
 
 if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
-  if get(g:,'krlFoldKeyMaps',0) 
+  if get(g:,'krlFoldingKeyMap',0) 
     " close all folds
     nnoremap <silent><buffer> <F4> :call <SID>KrlFoldLevel(1)<CR>
     " close move folds
@@ -1610,9 +1629,6 @@ nnoremap <silent><buffer> <plug>KrlListDef :call <SID>KrlListDef()<CR>
 
 " list usage
 nnoremap <silent><buffer> <plug>KrlListUse :call <SID>KrlListUsage()<cr>
-
-" format comments
-nnoremap <silent><buffer> <plug>KrlFormatComments :call KrlFormatComments()<CR>
 
 " auto form
 nnoremap <silent><buffer> <plug>KrlAutoForm                 :call <SID>KrlAutoForm("   ")<cr>
@@ -1641,6 +1657,16 @@ nnoremap <silent><buffer> <plug>KrlAutoFormGlobalFctE6Pos   :call <SID>KrlAutoFo
 nnoremap <silent><buffer> <plug>KrlAutoFormGlobalFctAxis    :call <SID>KrlAutoForm("gfa")<cr>
 nnoremap <silent><buffer> <plug>KrlAutoFormGlobalFctE6Axis  :call <SID>KrlAutoForm("gfx")<cr>
 " auto form end
+
+" Function Text Object
+if get(g:,'krlMoveAroundKeyMap',1) " depends on move around key mappings
+  xnoremap <silent><buffer> <plug>KrlTxtObjAroundFuncInclCo :<C-U>call <SID>KrlFunctionTextObject(0,1)<CR>
+  xnoremap <silent><buffer> <plug>KrlTxtObjAroundFunc       :<C-U>call <SID>KrlFunctionTextObject(0,0)<CR>
+  xnoremap <silent><buffer> <plug>KrlTxtObjInnerFunc        :<C-U>call <SID>KrlFunctionTextObject(1,0)<CR>
+  onoremap <silent><buffer> <plug>KrlTxtObjAroundFuncInclCo :<C-U>call <SID>KrlFunctionTextObject(0,1)<CR>
+  onoremap <silent><buffer> <plug>KrlTxtObjAroundFunc       :<C-U>call <SID>KrlFunctionTextObject(0,0)<CR>
+  onoremap <silent><buffer> <plug>KrlTxtObjInnerFunc        :<C-U>call <SID>KrlFunctionTextObject(1,0)<CR>
+endif
 
 " folding
 if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
