@@ -1510,7 +1510,7 @@ endif
 " Move Around and Function Text Object key mappings {{{
 
 if get(g:,'krlMoveAroundKeyMap',1)
-  " Move around functions TODO teste das alles nochmal genau!
+  " Move around functions
   nnoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 'bs')<Bar>:unlet b:knopCount<CR>
   onoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>.*\n\zs', 'bsW')<Bar>:unlet b:knopCount<CR>
   xnoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 'bsW')<Bar>:unlet b:knopCount<CR>
@@ -1531,22 +1531,28 @@ if get(g:,'krlMoveAroundKeyMap',1)
   onoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\n(\s*[^;\t ]\|$)', 'seW')<Bar>normal! ==<Bar>:unlet b:knopCount<cr>
   xnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\n\ze\s*([^;\t ]\|$)', 'seW')<Bar>:unlet b:knopCount<cr>
   " inner and around function text objects
-  if mapcheck("aF","x")=="" && !hasmapto('<plug>KrlTxtObjAroundFuncInclCo','x')
+  if get(g:,'krlMoveAroundKeyMap',0)
+        \|| mapcheck("aF","x")=="" && !hasmapto('<plug>KrlTxtObjAroundFuncInclCo','x')
     xmap <silent><buffer> aF <plug>KrlTxtObjAroundFuncInclCo
   endif
-  if mapcheck("af","x")=="" && !hasmapto('<plug>KrlTxtObjAroundFuncExclCo','x')
+  if get(g:,'krlMoveAroundKeyMap',0)
+        \|| mapcheck("af","x")=="" && !hasmapto('<plug>KrlTxtObjAroundFuncExclCo','x')
     xmap <silent><buffer> af <plug>KrlTxtObjAroundFuncExclCo
   endif
-  if mapcheck("if","x")=="" && !hasmapto('<plug>KrlTxtObjInnerFunc','x')
+  if get(g:,'krlMoveAroundKeyMap',0)
+        \|| mapcheck("if","x")=="" && !hasmapto('<plug>KrlTxtObjInnerFunc','x')
     xmap <silent><buffer> if <plug>KrlTxtObjInnerFunc
   endif
-  if mapcheck("aF","o")=="" && !hasmapto('<plug>KrlTxtObjAroundFuncInclCo','o')
+  if get(g:,'krlMoveAroundKeyMap',0)
+        \|| mapcheck("aF","o")=="" && !hasmapto('<plug>KrlTxtObjAroundFuncInclCo','o')
     omap <silent><buffer> aF <plug>KrlTxtObjAroundFuncInclCo
   endif
-  if mapcheck("af","o")=="" && !hasmapto('<plug>KrlTxtObjAroundFuncExclCo','o')
+  if get(g:,'krlMoveAroundKeyMap',0)
+        \|| mapcheck("af","o")=="" && !hasmapto('<plug>KrlTxtObjAroundFuncExclCo','o')
     omap <silent><buffer> af <plug>KrlTxtObjAroundFuncExclCo
   endif
-  if mapcheck("if","o")=="" && !hasmapto('<plug>KrlTxtObjInnerFunc','o')
+  if get(g:,'krlMoveAroundKeyMap',0)
+        \|| mapcheck("if","o")=="" && !hasmapto('<plug>KrlTxtObjInnerFunc','o')
     omap <silent><buffer> if <plug>KrlTxtObjInnerFunc
   endif
 endif
