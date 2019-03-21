@@ -227,6 +227,11 @@ if !exists("*s:KnopVerboseEcho()")
 
   " Krl Helper {{{
 
+  function <SID>KrlCleanBufferList()
+    execute 'silent! bd! ' . substitute(g:knopTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
+    execute 'silent! bd! ' . substitute(g:krlTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
+  endfunction " <SID>KrlCleanBufferList()
+
   function <SID>KrlIsVkrc()
     if bufname("%") =~ '\c\v(folge|up|makro(saw|sps|step|trigger)?)\d*.src'
       for l:s in range(1,8)
@@ -1031,7 +1036,7 @@ if !exists("*s:KnopVerboseEcho()")
 
   " List Def/Usage {{{
 
-  function <SID>KrlListDef()
+  function <SID>KrlListDefinition()
     " list defs in qf
     if s:KnopSearchPathForPatternNTimes('\v\c^\s*(global\s+)?def(fct)?>','%','','krl')==0
       if getqflist()==[] | return | endif
@@ -1059,7 +1064,7 @@ if !exists("*s:KnopVerboseEcho()")
         wincmd p
       endif
     endif
-  endfunction " <SID>KrlListDef()
+  endfunction " <SID>KrlListDefinition()
 
   function <SID>KrlListUsage()
     " dont start from within qf or loc window
@@ -1689,13 +1694,13 @@ endif
 " <PLUG> mappings {{{
 
 " gd mimic
-nnoremap <silent><buffer> <plug>KrlGoDef :call <SID>KrlGoDefinition()<CR>
+nnoremap <silent><buffer> <plug>KrlGoDef :call <SID>KrlGoDefinition()<CR>:call <SID>KrlCleanBufferList()<CR>
 
 " list all DEFs of current file
-nnoremap <silent><buffer> <plug>KrlListDef :call <SID>KrlListDef()<CR>
+nnoremap <silent><buffer> <plug>KrlListDef :call <SID>KrlListDefinition()<CR>:call <SID>KrlCleanBufferList()<CR>
 
 " list usage
-nnoremap <silent><buffer> <plug>KrlListUse :call <SID>KrlListUsage()<cr>
+nnoremap <silent><buffer> <plug>KrlListUse :call <SID>KrlListUsage()<CR>:call <SID>KrlCleanBufferList()<CR>
 
 " auto form
 nnoremap <silent><buffer> <plug>KrlAutoForm                 :call <SID>KrlAutoForm("   ")<cr>
