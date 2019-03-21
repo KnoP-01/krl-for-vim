@@ -1508,7 +1508,7 @@ if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
 
   let b:undo_ftplugin = b:undo_ftplugin." fdm< fdt< fmr< fdl<"
 
-endif " has("folding") || g:krlCloseFolds!=2
+endif " has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
 
 " }}} Vim Settings
 
