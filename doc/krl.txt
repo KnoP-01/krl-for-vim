@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 2018 Feb 22
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 2019 Mar 11
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
@@ -14,7 +14,7 @@ Extract the most recent release and copy the folders
 into your `~/.vim/` or `%USERPROFILE%\vimfiles\` directory. 
 Overwrite krl.* files from older installation. 
 
-To fully use these plugins put >
+To use these plugins put >
 
     filetype plugin indent on
     syntax on
@@ -46,43 +46,45 @@ Index: |krl-index|
 Have a look at |krl-tl:dr| to get a very quick overview over the most
 important options provided by KRL for Vim.
 
-KRL for Vim (7.4 or later) is a collection of Vim plugins to help programing
+KRL for Vim (7.4 or later) is a collection of Vim scripts to help programing
 KUKA industrial robots. 
 
 It provides
 
 * syntax highlighting, (see |krl-highlighting|)
 * auto indention, (see |krl-indent|)
-* folding (case sensitive), (see |krl-folding|)
+* folding, (see |krl-folding|)
 * mappings and settings to navigate through code in a backup folder structure
-  (see |krl-jump-quickly|) and
+  (see |krl-jump-quickly|)
+* Text objects for functions and folds (see |krl-text-object|) and
 * mappings to insert a body of a new DEF, DEFFCT or DEFDAT based on user 
   defined templates or hopefully sane defaults. (see |krl-auto-form|)
 
-Most of this is optional, though some things are default on. Have a look in
-the |krl-options| section for more details.
-Maybe the most confusing thing which is default on is the inclusion of $, #
-and & into 'iskeyword'. This makes e.g. $ov_pro, #initmov and &comment a
-|word| for commands like |w|, |e| and the like. This was probably a bad design
-decision, but it is as it is now. It's optional anyway. Maybe in the next
-major release the default will change. See |krl-keyword-chars|.
+Since version 2.0.0 most features are enabled by default, so you don't need
+that many options in your .vimrc. Existing mappings don't get overridden,
+unless the corrosponding option is explicitly set. There are <plug>-mappings
+available too, if you prefere different key bindings. Have a look at
+|krl-options| for more details.
+Maybe the most confusing thing is the inclusion of $, # and & into
+'iskeyword'. This makes e.g. $ov_pro, #initmov and &comment a |word| for
+commands like |w|, |e| and the like. See |krl-keyword-chars|.
 
-KRL for Vim supports VKRC files. Folding will get optimized for VKRC. Also try
-the gd mapping on a fold line with SPSMAKRO, UP or Marker. Editing is still 
-almost impossible, this is moslty useful for viewing.
+KRL for Vim supports viewing and analysing VKRC files. Folding will get
+optimized for VKRC and you can use |krl-gd| on a SPSMAKRO, UP, binX, bininX or
+Marker in a fold line. However, this is not a VKRC-Editor.
 
 **Note:** Keep your files to be edited in one folder or in a regular robot
-backup folder structure. KRL for Vim modifies 'path' by default accordingly.
+backup folder structure. KRL for Vim modifies 'path' accordingly. Since
+version 2.0.0 KRC1 backups are supported.
 **Note to linux users:** Keep your files to be edited on a FAT file system. 
 Some features need the case insensitive file system to work properly.
 
 
                         *krl-tl:dr*
-Quick options description:
+Short options description:
 --------------------------
-Q: Why so many options?  
-A: I try not to interfere with user settings to much. So I made most of the
-   settings that get changed optional.
+Q: Since version 2.0.0 everything's weird. How so?
+A: Most optional features are enabled by default now.
 
 Q: I'm here to feed my kids, not to read. Do you have a quick suggestion on
    krl settings for my |.vimrc|?  

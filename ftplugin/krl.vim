@@ -12,6 +12,8 @@
 "       - make search for enum value declaration possible. Problem: there may be
 "         more then one enum that uses this value
 "       - find bug foldmethod=Manual. 2. mal die selbe datei oeffnen o.ae.
+"       - remove or hide *.tmp files from buffer list
+"       - 
 " }}} ToDo's
 
 " Init {{{
@@ -147,7 +149,7 @@ if !exists("*s:KnopVerboseEcho()")
     endif
     if get(g:,'knopShortenQFPath',1)
       setlocal modifiable
-      silent! %substitute/\v\c^([^|]{32,})/\=pathshorten(submatch(1))/
+      silent! %substitute/\v\c^([^|]{50,})/\=pathshorten(submatch(1))/
       0
       if !exists("g:knopTmpFile")
         let g:knopTmpFile=tempname()
@@ -381,6 +383,23 @@ if !exists("*s:KnopVerboseEcho()")
     return -1
   endfunction
 
+  function s:KrlSearchVkrcBin(currentWord)
+    call s:KnopVerboseEcho("Search binary signal definitions...")
+    let l:binNumber = substitute(a:currentWord,'\cbin\(in\)\?','','')
+    if a:currentWord=~'binin'
+      if (s:KnopSearchPathForPatternNTimes('\v\c^\s*\$bin_in\[\s*'.l:binNumber.'\s*\]\s*\=',s:KrlPathWithGlobalDataLists(),'1','krl') == 0)
+        call s:KnopOpenQf('krl')
+        return 0
+      endif
+    else
+      if (s:KnopSearchPathForPatternNTimes('\v\c^\s*\$bin_out\[\s*'.l:binNumber.'\s*\]\s*\=',s:KrlPathWithGlobalDataLists(),'1','krl') == 0)
+        call s:KnopOpenQf('krl')
+        return 0
+      endif
+    endif
+    return -1
+  endfunction
+
   function s:KrlSearchSysvar(declPrefix,currentWord)
     " a:currentWord starts with '$' so we need '\' at the end of declPrefix pattern
     call s:KnopVerboseEcho("Search global data lists...")
@@ -537,6 +556,9 @@ if !exists("*s:KnopVerboseEcho()")
           elseif l:currentWord =~ '\c\<m\d\+\>'
             call s:KnopVerboseEcho([l:currentWord,"appear to be a VKRC MARKER."])
             return s:KrlSearchVkrcMarker(l:currentWord)
+          elseif l:currentWord =~ '\c\<bin\(in\)\?\d\+\>'
+            call s:KnopVerboseEcho([l:currentWord,"appear to be a VKRC binary signal."])
+            return s:KrlSearchVkrcBin(l:currentWord)
           endif
         endif
         call s:KnopVerboseEcho([l:currentWord,"appear to be a COMMENT. No search performed."])
@@ -1222,11 +1244,17 @@ endif " !exists("*s:KnopVerboseEcho()")
 setlocal commentstring=;%s
 setlocal comments=:;
 setlocal suffixes+=.dat
-setlocal suffixesadd+=.src,.sub,.dat
+setlocal suffixes+=.tmp
+if has("win32")
+  setlocal suffixesadd+=.src,.sub,.dat
+else
+  setlocal suffixesadd+=.src,.Src,.SRC,.sub,.Sub,.SUB,.dat,.Dat,.DAT
+endif
 let b:undo_ftplugin = "setlocal com< cms< su< sua<"
 
 " make enums and sysvars a word including # and $
-if !exists("g:krlNoKeyWord") || g:krlNoKeyWord!=1
+if !get(g:,'krlNoKeyWord',0)
+" if !exists("g:krlNoKeyWord") || g:krlNoKeyWord!=1
   setlocal iskeyword+=#,$,&
   let b:undo_ftplugin = b:undo_ftplugin." isk<"
 endif
@@ -1254,7 +1282,8 @@ if get(g:,'krlFormatComments',1)
 endif " format comments
 
 " path for gf, :find etc
-if (!exists("g:krlNoPath") || g:krlNoPath!=1) 
+if !get(g:,'krlNoPath',0)
+" if (!exists("g:krlNoPath") || g:krlNoPath!=1) 
 
   let s:pathcurrfile = s:KnopFnameescape4Path(substitute(expand("%:p:h"), '\\', '/', 'g'))
   if s:pathcurrfile =~ '\v\c\/krc%(\/[^/]+){,4}$'
@@ -1491,16 +1520,16 @@ if exists("loaded_matchit")
         \.'^\s*;\s*\<fold\>:^\s*;\s*\<endfold\>'
   let b:match_ignorecase = 1 " KRL does ignore case
   " matchit makes fold text objects easy
-  if mapcheck("ao","x")=="" && !hasmapto('<plug>KrlTxtObjAroundFold')
+  if mapcheck("ao","x")=="" && !hasmapto('<plug>KrlTxtObjAroundFold','x')
     xmap <silent><buffer> ao <plug>KrlTxtObjAroundFold
   endif
-  if mapcheck("io","x")=="" && !hasmapto('<plug>KrlTxtObjInnerFold')
+  if mapcheck("io","x")=="" && !hasmapto('<plug>KrlTxtObjInnerFold','x')
     xmap <silent><buffer> io <plug>KrlTxtObjInnerFold
   endif
-  if mapcheck("ao","o")=="" && !hasmapto('<plug>KrlTxtObjAroundFold')
+  if mapcheck("ao","o")=="" && !hasmapto('<plug>KrlTxtObjAroundFold','o')
     omap <silent><buffer> ao <plug>KrlTxtObjAroundFold
   endif
-  if mapcheck("io","o")=="" && !hasmapto('<plug>KrlTxtObjInnerFold')
+  if mapcheck("io","o")=="" && !hasmapto('<plug>KrlTxtObjInnerFold','o')
     omap <silent><buffer> io <plug>KrlTxtObjInnerFold
   endif
 endif
@@ -1565,23 +1594,23 @@ endif
 " otherwise look for the config variable
 
 if get(g:,'krlGoDefinitionKeyMap',0) 
-      \|| mapcheck("gd","n")=="" && !hasmapto('<plug>KrlGoDef')
+      \|| mapcheck("gd","n")=="" && !hasmapto('<plug>KrlGoDef','n')
   " Go Definition
   nmap <silent><buffer> gd <plug>KrlGoDef
 endif
 if get(g:,'krlListDefKeyMap',0)
-      \|| mapcheck("<leader>f","n")=="" && !hasmapto('<plug>KrlListDef')
+      \|| mapcheck("<leader>f","n")=="" && !hasmapto('<plug>KrlListDef','n')
   " list all DEFs of current file
   nmap <silent><buffer> <leader>f <plug>KrlListDef
 endif
 if get(g:,'krlListUsageKeyMap',0)
-      \|| mapcheck("<leader>u","n")=="" && !hasmapto('<plug>KrlListUse')
+      \|| mapcheck("<leader>u","n")=="" && !hasmapto('<plug>KrlListUse','n')
   " list all uses of word under cursor
   nmap <silent><buffer> <leader>u <plug>KrlListUse
 endif
 
 if get(g:,'krlAutoFormKeyMap',0)
-      \|| mapcheck("<leader>n","n")=="" && !hasmapto('<plug>KrlAutoForm')
+      \|| mapcheck("<leader>n","n")=="" && !hasmapto('<plug>KrlAutoForm','n')
   nnoremap <silent><buffer> <leader>n     :call <SID>KrlAutoForm("   ")<cr>
   nnoremap <silent><buffer> <leader>nn    :call <SID>KrlAutoForm("   ")<cr>
   "
@@ -1640,7 +1669,7 @@ endif " g:krlAutoFormKeyMap
 if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
   if get(g:,'krlFoldingKeyMap',0) 
         \|| mapcheck("<F2>","n")=="" && mapcheck("<F3>","n")=="" && mapcheck("<F4>","n")==""
-        \&& !hasmapto('<plug>KrlCloseAllFolds') && !hasmapto('<plug>KrlCloseLessFolds') && !hasmapto('<plug>KrlCloseNoFolds')
+        \&& !hasmapto('<plug>KrlCloseAllFolds','n') && !hasmapto('<plug>KrlCloseLessFolds','n') && !hasmapto('<plug>KrlCloseNoFolds','n')
     " close all folds
     nmap <silent><buffer> <F4> <plug>KrlCloseAllFolds
     " close move folds
