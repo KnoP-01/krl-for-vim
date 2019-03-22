@@ -228,8 +228,12 @@ if !exists("*s:KnopVerboseEcho()")
   " Krl Helper {{{
 
   function <SID>KrlCleanBufferList()
-    execute 'silent! bd! ' . substitute(g:knopTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
-    execute 'silent! bd! ' . substitute(g:krlTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
+    if exists("g:knopTmpFile")
+      execute 'silent! bd! ' . substitute(g:knopTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
+    endif
+    if exists("g:krlTmpFile")
+      execute 'silent! bd! ' . substitute(g:krlTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
+    endif
   endfunction " <SID>KrlCleanBufferList()
 
   function <SID>KrlIsVkrc()
