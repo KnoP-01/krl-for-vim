@@ -1,21 +1,24 @@
 " Kuka Robot Language indent file for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 0.1.6
-" Last Change: 24. Sept 2016
+" Version: 2.0.0
+" Last Change: 28. March 2019
 " Credits: Based on indent/vim.vim
 "
 " Suggestions of improvement are very welcome. Please email me!
 "
 " Known bugs: See ../doc/krl.txt
 "
-" TODO
-" * avoid false indention of calls like Endbedingungen(), CaseHandling1() or
-"   DefaultValues() ect in insert mode
-"
+
+if exists("g:krlNoSpaceIndent")
+  if !exists("g:krlSpaceIndent")
+    let g:krlSpaceIndent = !g:krlNoSpaceIndent
+  endif
+  unlet g:krlNoSpaceIndent
+endif
 
 " Only load this indent file when no other was loaded.
-if exists("b:did_indent") || exists("g:krlNoIndent") && g:krlNoIndent==1
+if exists("b:did_indent") || get(g:,'krlNoIndent',0)
   finish
 endif
 let b:did_indent = 1
@@ -27,7 +30,7 @@ setlocal indentexpr=GetKrlIndent()
 setlocal indentkeys=!^F,o,O,0=~end,0=~else,0=~case,0=~default,0=~until,0=~continue
 let b:undo_indent="setlocal lisp< si< ai< inde< indk<"
 
-if !exists("g:krlNoSpaceIndent") || g:krlNoSpaceIndent!=1
+if get(g:,'krlSpaceIndent',1)
   " use spaces for indention, 2 is enough, more or even tabs are looking awful
   " on the teach pendant
   setlocal softtabstop=2
@@ -57,7 +60,7 @@ endfunction
 
 function s:GetKrlIndentIntern()
   let l:currentLine = getline(v:lnum)
-  if  l:currentLine =~ '\c\v^;(\s*(end)?fold>)@!' && g:krlNoCommentIndent
+  if  l:currentLine =~ '\c\v^;(\s*(end)?fold>)@!' && get(g:,'krlCommentIndent',1)
     " if first char is ; line comment, do not change indent
     " this may be usefull if code did get commented out at the first column
     return 0
