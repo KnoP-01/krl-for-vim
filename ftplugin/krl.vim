@@ -29,7 +29,9 @@ set cpo&vim
 
 " if krlNoVerbose exists it's pushed to knopNoVerbose
 if exists("g:krlNoVerbose")
-  let g:knopNoVerbose=g:krlNoVerbose
+  if !exists("g:knopNoVerbose")
+    let g:knopNoVerbose=g:krlNoVerbose
+  endif
   unlet g:krlNoVerbose
 endif
 " if knopVerbose exists it overrides knopNoVerbose
@@ -42,12 +44,34 @@ if exists("g:knopNoVerbose")
   unlet g:knopNoVerbose
 endif
 if exists("g:krlRhsQuickfix")
-  let g:knopRhsQuickfix = g:krlRhsQuickfix
+  if !exists("g:knopRhsQuickfix")
+    let g:knopRhsQuickfix = g:krlRhsQuickfix
+  endif
   unlet g:krlRhsQuickfix
 endif
 if exists("g:krlLhsQuickfix")
-  let g:knopLhsQuickfix = g:krlLhsQuickfix
+  if !exists("g:knopLhsQuickfix")
+    let g:knopLhsQuickfix = g:krlLhsQuickfix
+  endif
   unlet g:krlLhsQuickfix
+endif
+if exists("g:krlNoKeyWord") 
+  if !exists("g:krlKeyWord")
+    let g:krlKeyWord = !g:krlNoKeyWord
+  endif
+  unlet g:krlNoKeyWord
+endif
+if exists("g:krlNoPath") 
+  if !exists("g:krlPath")
+    let g:krlPath = !g:krlNoPath
+  endif
+  unlet g:krlNoPath
+endif
+if exists("g:krlCloseFolds")
+  if !exists("g:krlFoldLevel")
+    g:krlFoldLevel=(g:krlCloseFolds + 1) % 3
+  endif
+  unlet g:krlCloseFolds
 endif
 
 " }}} init
@@ -133,7 +157,7 @@ if !exists("*s:KnopVerboseEcho()")
     if exists('g:loaded_qf') && (!exists('g:qf_window_bottom') || g:qf_window_bottom!=0)
           \&& (get(g:,'knopRhsQuickfix',0)
           \||  get(g:,'knopLhsQuickfix',0))
-      call s:KnopVerboseEcho("NOTE: \nIf you use qf.vim then g:krlRhsQuickfix, g:krlLhsQuickfix, g:rapidRhsQuickfix and g:rapidLhsQuickfix will not work unless g:qf_window_bottom is 0 (Zero). \nTo use g:<foo>[RL]hsQuickfix put this in your .vimrc: \n  let g:qf_window_bottom = 0\n\n")
+      call s:KnopVerboseEcho("NOTE: \nIf you use qf.vim then g:knopRhsQuickfix and g:knopLhsQuickfix will not work unless g:qf_window_bottom is 0 (Zero). \nTo use g:knop[RL]hsQuickfix put this in your .vimrc: \n  let g:qf_window_bottom = 0\n\n")
       return 0
     endif
     return 1
@@ -149,7 +173,7 @@ if !exists("*s:KnopVerboseEcho()")
     endif
     if get(g:,'knopShortenQFPath',1)
       setlocal modifiable
-      silent! %substitute/\v\c^([^|]{50,})/\=pathshorten(submatch(1))/
+      silent! %substitute/\v\c^([^|]{40,})/\=pathshorten(submatch(1))/
       0
       if !exists("g:knopTmpFile")
         let g:knopTmpFile=tempname()
@@ -1016,7 +1040,7 @@ if !exists("*s:KnopVerboseEcho()")
       if l:sName == '' | return | endif
       if exists("g:krlPathToBodyFiles") && filereadable(glob(fnameescape(g:krlPathToBodyFiles)).'deffct.src')
         call s:KnopVerboseEcho("\nbody files will be used")
-        call s:KnopVerboseEcho( glob(fnameescape(g:krlPathToBodyFiles)).'deffct.src' )
+        call s:KnopVerboseEcho(glob(fnameescape(g:krlPathToBodyFiles)).'deffct.src' )
         call s:KrlReadBody('deffct.src',l:sType,l:sName,l:sGlobal,l:sDataType,l:sReturnVar)
       else
         if exists("g:krlPathToBodyFiles")
@@ -1262,8 +1286,7 @@ endif
 let b:undo_ftplugin = "setlocal com< cms< su< sua<"
 
 " make enums and sysvars a word including # and $
-if !get(g:,'krlNoKeyWord',0)
-" if !exists("g:krlNoKeyWord") || g:krlNoKeyWord!=1
+if get(g:,'krlKeyWord',1)
   setlocal iskeyword+=#,$,&
   let b:undo_ftplugin = b:undo_ftplugin." isk<"
 endif
@@ -1291,8 +1314,7 @@ if get(g:,'krlFormatComments',1)
 endif " format comments
 
 " path for gf, :find etc
-if !get(g:,'krlNoPath',0)
-" if (!exists("g:krlNoPath") || g:krlNoPath!=1) 
+if get(g:,'krlPath',1)
 
   let s:pathcurrfile = s:KnopFnameescape4Path(substitute(expand("%:p:h"), '\\', '/', 'g'))
   if s:pathcurrfile =~ '\v\c\/krc%(\/[^/]+){,4}$'
@@ -1429,7 +1451,7 @@ if !get(g:,'krlNoPath',0)
 endif
 
 " folding
-if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
+if has("folding") && get(g:,'krlFoldLevel',1)
 
   if !exists("*KrlFoldText")
 
@@ -1438,7 +1460,7 @@ if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
     endfunction
 
     function <SID>KrlFoldLevel(lvl)
-      " g:krlCloseFolds may be used as input for a:lvl
+      " g:krlFoldLevel may be used as input for a:lvl
 
       setlocal foldtext=KrlFoldText()
 
@@ -1449,7 +1471,7 @@ if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
         setlocal foldmethod=marker
       endif
 
-      if a:lvl == 1
+      if a:lvl == 2
         " close all folds
 
         if &foldmethod=~'marker'
@@ -1462,7 +1484,7 @@ if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
         endif " &foldmethod
         return
 
-      elseif a:lvl == 0
+      elseif a:lvl == 1
         " close move folds
 
         if &foldmethod=~'marker'
@@ -1508,11 +1530,11 @@ if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
 
   endif " !exists("*KrlFoldText")
 
-  call <SID>KrlFoldLevel(get(g:,'krlCloseFolds',0))
+  call <SID>KrlFoldLevel(get(g:,'krlFoldLevel',1))
 
   let b:undo_ftplugin = b:undo_ftplugin." fdm< fdt< fmr< fdl<"
 
-endif " has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
+endif " has("folding") && get(g:,'krlFoldLevel',1)
 
 " }}} Vim Settings
 
@@ -1529,16 +1551,20 @@ if exists("loaded_matchit")
         \.'^\s*;\s*\<fold\>:^\s*;\s*\<endfold\>'
   let b:match_ignorecase = 1 " KRL does ignore case
   " matchit makes fold text objects easy
-  if mapcheck("ao","x")=="" && !hasmapto('<plug>KrlTxtObjAroundFold','x')
+  if get(g:,'krlFoldTextObject',0)
+        \|| mapcheck("ao","x")=="" && !hasmapto('<plug>KrlTxtObjAroundFold','x')
     xmap <silent><buffer> ao <plug>KrlTxtObjAroundFold
   endif
-  if mapcheck("io","x")=="" && !hasmapto('<plug>KrlTxtObjInnerFold','x')
+  if get(g:,'krlFoldTextObject',0)
+        \|| mapcheck("io","x")=="" && !hasmapto('<plug>KrlTxtObjInnerFold','x')
     xmap <silent><buffer> io <plug>KrlTxtObjInnerFold
   endif
-  if mapcheck("ao","o")=="" && !hasmapto('<plug>KrlTxtObjAroundFold','o')
+  if get(g:,'krlFoldTextObject',0)
+        \|| mapcheck("ao","o")=="" && !hasmapto('<plug>KrlTxtObjAroundFold','o')
     omap <silent><buffer> ao <plug>KrlTxtObjAroundFold
   endif
-  if mapcheck("io","o")=="" && !hasmapto('<plug>KrlTxtObjInnerFold','o')
+  if get(g:,'krlFoldTextObject',0)
+        \|| mapcheck("io","o")=="" && !hasmapto('<plug>KrlTxtObjInnerFold','o')
     omap <silent><buffer> io <plug>KrlTxtObjInnerFold
   endif
 endif
@@ -1569,27 +1595,27 @@ if get(g:,'krlMoveAroundKeyMap',1)
   onoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\n(\s*[^;\t ]\|$)', 'seW')<Bar>normal! ==<Bar>:unlet b:knopCount<cr>
   xnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\n\ze\s*([^;\t ]\|$)', 'seW')<Bar>:unlet b:knopCount<cr>
   " inner and around function text objects
-  if get(g:,'krlMoveAroundKeyMap',0)
+  if get(g:,'krlFunctionTextObject',0)
         \|| mapcheck("aF","x")=="" && !hasmapto('<plug>KrlTxtObjAroundFuncInclCo','x')
     xmap <silent><buffer> aF <plug>KrlTxtObjAroundFuncInclCo
   endif
-  if get(g:,'krlMoveAroundKeyMap',0)
+  if get(g:,'krlFunctionTextObject',0)
         \|| mapcheck("af","x")=="" && !hasmapto('<plug>KrlTxtObjAroundFuncExclCo','x')
     xmap <silent><buffer> af <plug>KrlTxtObjAroundFuncExclCo
   endif
-  if get(g:,'krlMoveAroundKeyMap',0)
+  if get(g:,'krlFunctionTextObject',0)
         \|| mapcheck("if","x")=="" && !hasmapto('<plug>KrlTxtObjInnerFunc','x')
     xmap <silent><buffer> if <plug>KrlTxtObjInnerFunc
   endif
-  if get(g:,'krlMoveAroundKeyMap',0)
+  if get(g:,'krlFunctionTextObject',0)
         \|| mapcheck("aF","o")=="" && !hasmapto('<plug>KrlTxtObjAroundFuncInclCo','o')
     omap <silent><buffer> aF <plug>KrlTxtObjAroundFuncInclCo
   endif
-  if get(g:,'krlMoveAroundKeyMap',0)
+  if get(g:,'krlFunctionTextObject',0)
         \|| mapcheck("af","o")=="" && !hasmapto('<plug>KrlTxtObjAroundFuncExclCo','o')
     omap <silent><buffer> af <plug>KrlTxtObjAroundFuncExclCo
   endif
-  if get(g:,'krlMoveAroundKeyMap',0)
+  if get(g:,'krlFunctionTextObject',0)
         \|| mapcheck("if","o")=="" && !hasmapto('<plug>KrlTxtObjInnerFunc','o')
     omap <silent><buffer> if <plug>KrlTxtObjInnerFunc
   endif
@@ -1675,10 +1701,11 @@ if get(g:,'krlAutoFormKeyMap',0)
   nnoremap <silent><buffer> <leader>ngf6  :call <SID>KrlAutoForm("gf6")<cr>
 endif " g:krlAutoFormKeyMap
 
-if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
+if has("folding") && get(g:,'krlFoldLevel',1)
   if get(g:,'krlFoldingKeyMap',0) 
-        \|| mapcheck("<F2>","n")=="" && mapcheck("<F3>","n")=="" && mapcheck("<F4>","n")==""
-        \&& !hasmapto('<plug>KrlCloseAllFolds','n') && !hasmapto('<plug>KrlCloseLessFolds','n') && !hasmapto('<plug>KrlCloseNoFolds','n')
+        \|| (mapcheck("<F2>","n")=="" && mapcheck("<F3>","n")=="" && mapcheck("<F4>","n")==""
+        \&& !hasmapto('<plug>KrlCloseAllFolds','n') && !hasmapto('<plug>KrlCloseLessFolds','n') && !hasmapto('<plug>KrlCloseNoFolds','n'))
+        \&& !exists("g:krlFoldKeyMap")
     " close all folds
     nmap <silent><buffer> <F4> <plug>KrlCloseAllFolds
     " close move folds
@@ -1697,7 +1724,7 @@ endif
 
 " <PLUG> mappings {{{
 
-" gd mimic
+" Go Definition
 nnoremap <silent><buffer> <plug>KrlGoDef :call <SID>KrlGoDefinition()<CR>:call <SID>KrlCleanBufferList()<CR>
 
 " list all DEFs of current file
@@ -1745,11 +1772,13 @@ if get(g:,'krlMoveAroundKeyMap',1) " depends on move around key mappings
 endif
 
 " folding
-if has("folding") && (!exists("g:krlCloseFolds") || g:krlCloseFolds!=2)
-  nnoremap <silent><buffer> <plug>KrlCloseAllFolds  :call <SID>KrlFoldLevel(1)<CR>
-  nnoremap <silent><buffer> <plug>KrlCloseLessFolds :call <SID>KrlFoldLevel(0)<CR>
-  nnoremap <silent><buffer> <plug>KrlCloseNoFolds   :call <SID>KrlFoldLevel(2)<CR>
+if has("folding") && get(g:,'krlFoldLevel',1)
+  nnoremap <silent><buffer> <plug>KrlCloseAllFolds  :call <SID>KrlFoldLevel(2)<CR>
+  nnoremap <silent><buffer> <plug>KrlCloseLessFolds :call <SID>KrlFoldLevel(1)<CR>
+  nnoremap <silent><buffer> <plug>KrlCloseNoFolds   :call <SID>KrlFoldLevel(0)<CR>
 endif
+
+" fold text objects
 if exists("loaded_matchit") " depends on matchit
   xnoremap <silent><buffer> <plug>KrlTxtObjAroundFold     :<C-U>call <SID>KrlFoldTextObject(0)<CR>
   xnoremap <silent><buffer> <plug>KrlTxtObjInnerFold      :<C-U>call <SID>KrlFoldTextObject(1)<CR>
