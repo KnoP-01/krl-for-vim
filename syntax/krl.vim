@@ -31,7 +31,8 @@ if exists("g:krlNoHighlight")
   unlet g:krlNoHighlight
 endif
 " if colorscheme is tortus krlNoHighLink defaults to 1
-if get(g:,'colors_name'," ")=="tortus" && !exists("g:krlNoHighLink")
+if (get(g:,'colors_name'," ")=="tortus" || get(g:,'colors_name'," ")=="tortusless") 
+      \&& !exists("g:krlNoHighLink")
   let g:krlNoHighLink=1 
 endif
 " krlNoHighLink defaults to 0 if it's not initialized yet or 0
