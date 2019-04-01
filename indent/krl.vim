@@ -60,7 +60,7 @@ endfunction
 
 function s:GetKrlIndentIntern()
   let l:currentLine = getline(v:lnum)
-  if  l:currentLine =~ '\c\v^;(\s*(end)?fold>)@!' && get(g:,'krlCommentIndent',1)
+  if  l:currentLine =~ '\c\v^;(\s*(end)?fold>)@!' && !get(g:,'krlCommentIndent',1)
     " if first char is ; line comment, do not change indent
     " this may be usefull if code did get commented out at the first column
     return 0
