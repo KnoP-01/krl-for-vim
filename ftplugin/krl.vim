@@ -1644,8 +1644,8 @@ endif
 " if the mapping does not exist and there is no plug-mapping just map it,
 " otherwise look for the config variable
 
-if get(g:,'krlGoDefinitionKeyMap',0) 
-      \|| mapcheck("gd","n")=="" && !hasmapto('<plug>KrlGoDef','n')
+if get(g:,'krlGoDefinitionKeyMap',1) 
+      \&& !hasmapto('<plug>KrlGoDef','n')
   " Go Definition
   nmap <silent><buffer> gd <plug>KrlGoDef
 endif
