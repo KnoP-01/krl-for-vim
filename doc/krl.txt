@@ -34,19 +34,22 @@ to use the help within Vim after installation. >
 krl help index:
 ---------------
 |krl-Introducion|
-|krl-options| and <plug> mappings
-|krl-folding|
+    |krl-tl:dr|     Short option overview
+    |krl-content|   What are those files for and how to activate them
+|krl-options|       Detailed option description and <plug> mappings
 |krl-highlighting|
 |krl-indent|
+|krl-folding|
+|krl-formatting-comments|
 |krl-auto-form|
 |krl-keyword-chars|
 |krl-jump-quickly|
+|krl-text-objects|
 |krl-matchit-support|
-|krl-formatting-comments|
 |krl-known-bugs|
-  |krl-indent-bugs|
-  |krl-highlight-bugs|
-  |krl-go-definition-bugs|
+    |krl-indent-bugs|
+    |krl-highlight-bugs|
+    |krl-go-definition-bugs|
 
 
 
@@ -87,6 +90,7 @@ Note to linux users: Keep your files to be edited on a FAT file system.
 Some features need the case insensitive file system to work properly.
 
 
+Index: |krl-index|
                         *krl-tl:dr*
 Short options description:
 --------------------------
@@ -94,13 +98,13 @@ Q: Since version 2.0.0 everything's weird. How so?
 A: Most optional features are enabled by default now.
 
 Q: I'm here to feed my kids, not to read. How do I get rid of stuff?  
-A: Disable stuff in your |.vimrc| (see |krl-options| for details): >
+A: Disable stuff in your |.vimrc|, see |krl-options| for details: >
 
-    let g:krlKeyWord = 0 " don't treat $, # and & as word
     let g:krlAutoComment = 0 " don't continue comments with o, O or Enter
-    let g:krlFormatComments = 0 " don't break comment lines
-    let g:krlPath = 0 " don't change 'path'
+    let g:krlFormatComments = 0 " don't break comment lines automatically
     let g:krlSpaceIndent = 0 " don't change 'sts', 'sw', 'et' and 'sr'
+    let g:krlKeyWord = 0 " don't treat $, # and & as word char
+    let g:krlPath = 0 " don't change 'path'
     let g:knopShortenQFPath = 0 " don't shorten paths in quickfix
 
 Q: Which keys get mapped to what?
@@ -108,7 +112,7 @@ A: If there is no existing mapping which would be overridden and no plug
     mapping is configured for that function then the following keys get
     mapped: >
 
-    <F2> Open all folds.
+    <F2> Switch folding off
     <F3> Close movement folds.
     <F4> Close all folds.
             Depend on g:krlFoldLevel not existing or >=1.
@@ -166,9 +170,10 @@ Q: Still sluggish!
 A: Switch syntax off or jump instead of scroll! >
 
 Q: Where are the nice and informative messages?
-A: :let g:knopVerbose=1 any time.
+A: `:let g:knopVerbose=1` any time.
 
 
+Index: |krl-index|
                         *krl-content*
 Content description:
 --------------------
@@ -214,6 +219,7 @@ Requires >
 
 
 
+Index: |krl-index|
 ==============================================================================
                         *krl-options*
 krl options:
@@ -221,72 +227,55 @@ krl options:
 
 Optional key mappings:
 Also see these options for alternative <PLUG> mappings.
-|g:krlFoldingKeyMap|        <F2> to <F4> changes folding
-|g:krlGoDefinitionKeyMap|   gd to see declaration of word under cursor
-|g:krlListUsageKeyMap|      <leader>u lists all appearances of current word
-|g:krlListDefKeyMap|        <leader>f lists def/deffct of current file
-|g:krlMoveAroundKeyMap|     [[, ]] ... jumps around def/deffct
-|g:krlFunctionTextObject|   if, af and aF def/deffct text objects
-|g:krlFoldTextObject|       io and ao fold text objects
-|g:krlAutoFormKeyMap|       <leader>n inserts body for def, deffct or defdat
+|g:krlFoldingKeyMap|      `<F2>` - `<F4>` changes folding
+|g:krlGoDefinitionKeyMap| `gd` to see declaration of word under cursor
+|g:krlListUsageKeyMap|    `<leader>u` lists all appearances of current word
+|g:krlListDefKeyMap|      `<leader>f` lists def/deffct of current file
+|g:krlMoveAroundKeyMap|   `[[`, `]]` ... jumps around def/deffct
+|g:krlFunctionTextObject| `if`, `af` and `aF` def/deffct text objects
+|g:krlFoldTextObject|     `io` and `ao` fold text objects
+|g:krlAutoFormKeyMap|     `<leader>n` inserts body for def, deffct or defdat
 Options to enable/disable features:
 Highlight
-|g:krlNoHighLink|           Adds krl secific |group-name|s
-|g:krlShowError|            Highlighting of syntax errors
+|g:krlGroupName|          Enable/Disable krl specific |group-name|s
+|g:krlShowError|          Disable error highlight, increase performance
 Indent
-|g:krlCommentIndent|        ... indention of first column comments
-|g:krlSpaceIndent|          Leave 'sts', 'sw', 'et' and 'sr' untouched
+|g:krlSpaceIndent|        Disable 'sts', 'sw', 'et' and 'sr' settings
+|g:krlCommentIndent|      Disable indent of first column comments
 Fold
-|g:krlFoldLevel|            Folding behavior
-|g:krlFoldMethodSyntax|     Fold method syntax or marker
+|g:krlFoldMethodSyntax|   Fold method syntax or marker
+|g:krlFoldLevel|          Change folding behavior
 Comments
-|g:krlAutoComment|          Auto insert ; when hitting i_<CR> , |o| or |O|
-|g:krlFormatComments|       Line break for comment lines
+|g:krlAutoComment|        Disable auto insert of comment char `;`
+|g:krlFormatComments|     Disable auto break comment lines
 Auto form
-|g:krlPathToBodyFiles|      Enables custom body files for auto form
-|g:krlAutoFormUpperCase|    Convert auto form to upper case
+|g:krlPathToBodyFiles|    Enable custom body files for auto form
+|g:krlAutoFormUpperCase|  Enable conversion of auto form to upper case
 quickfix
-|g:knopShortenQFPath|       Shorten paths in quickfix
-|g:knopRhsQuickfix|         Open quickfix right hand side
-|g:knopLhsQuickfix|         Open quickfix left hand side
+|g:knopShortenQFPath|     Disable shortening of paths in quickfix
+|g:knopRhsQuickfix|       Open quickfix right hand side
+|g:knopLhsQuickfix|       Open quickfix left hand side
 Other
-|g:krlKeyWord|              Don't include $, # and & in 'iskeyword'
-|g:krlPath|                 Leave 'path' untouched
-|g:knopVerbose|             Switch on verbose messages
+|g:krlKeyWord|            Disable inclusion of `$`, `#` and `&` in 'iskeyword'
+|g:krlPath|               Disable 'path' setting
+|g:knopVerbose|           Enable verbose messages
 
 
 Index: |krl-index|
-                        *g:krlCloseFolds*
-g:krlCloseFolds:
-----------------
-Used in ~/.vim/ftplugin/krl.vim
-
-Set this option to 1 makes closing all folds the starting behavior of this
-plugin.  >
-    let g:krlCloseFolds = 1
-
-Set this option to 2 to switch folding off completely.  >
-   let g:krlCloseFolds = 2
-
-NOTE limitation: See |krl-folding|.
-
-Default is closing only movement folds in regular KRC files and closing all
-folds in VKRC files. See also |krl-folding|.
-
-
-Index: |krl-index|
-                        *g:krlFoldKeyMap*          *<Plug>KrlCloseAllFolds*
+                        *g:krlFoldingKeyMap*       *<Plug>KrlCloseAllFolds*
                         *<Plug>KrlCloseLessFolds*  *<Plug>KrlCloseNoFolds*
-g:krlFoldKeyMap:
-----------------
+g:krlFoldingKeyMap:
+-------------------
 Used in ~/.vim/ftplugin/krl.vim
 
-Note: This only works if |g:krlCloseFolds| is unequal 2. 
+Note: These mappings depend on |g:krlFoldLevel| >= 1 or omitted.
 
-This option adds both key mappings for 
-    <F2>: Close only krl standard movement folds and
-    <F3>: Close all folds. >
-    let g:krlFoldKeyMap = 1
+    `<F2>`: Switch folding off
+    `<F3>`: Close only krl movement folds
+    `<F4>`: Close all folds
+
+To force those mappings if your F-Keys are already mapped >
+    let g:krlFoldingKeyMap = 1
 
 Alternativ <plug> mappings: >
     augroup KrlFoldMapping
@@ -296,59 +285,7 @@ Alternativ <plug> mappings: >
     au FileType krl nmap <silent><buffer> OTHERKEY <Plug>KrlCloseNoFolds
     augroup END
 
-Default is no mapping. See also |krl-folding|.
-
-
-Index: |krl-index|
-                        *g:krlMoveAroundKeyMap*
-g:krlMoveAroundKeyMap:
-----------------------
-Used in ~/.vim/ftplugin/krl.vim
-
-Note: This option changes the default vim commands |[[|, |]]|, |[]| and |][|!
-
-This option adds the following key mappings for [[, ]], [], ][, [; and ]; >
-    let g:krlMoveAroundKeyMap = 1
-
-[count][[    Jumps backward to the next DEF, DEFDAT or DEFFCT. If [count]
-             is given jumps [count] times. Works in |normal-mode| and in
-             |Visual|-mode. This does respect 'wrapscan' unless started in
-             Visual-mode. 
-
-[count]]]    Like [[ but jumps forward to the next DEF, DEFDAT or DEFFCT.
-
-[count][]    Like [[ but jumps backward to the next END, ENDDAT or ENDFCT.
-
-[count]][    Like [[ but jumps forward to the next END, ENDDAT or ENDFCT.
-
-[count][;    Like [[ but jumps backward to the start of current or previous
-             comment.
-
-[count]];    Like [[ but jumps forward to the end of the current or the
-             next comment.
-
-Default is no mapping. See also |krl-jump-quickly|.
-
-
-Index: |krl-index|
-                        *g:krlListDefKeyMap*    *<Plug>KrlListDef*
-g:krlListDefKeyMap:
--------------------
-Used in ~/.vim/ftplugin/krl.vim
-
-This option adds a mapping to <leader>f to list all DEFs and DEFFCTs of the
-current file in the |qickfix|-list. >
-    let g:krlListDefKeyMap = 1
-
-Mnemonic: List Functions
-
-Alternativ <plug> mapping: >
-    augroup KrlListDefMapping
-    au!
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlListDef
-    augroup END
-
-Default is no mapping. See also |krl-jump-quickly|.
+See also |krl-folding|.
 
 
 Index: |krl-index|
@@ -357,22 +294,12 @@ g:krlGoDefinitionKeyMap:
 ------------------------
 Used in ~/.vim/ftplugin/krl.vim
 
-Note: This option changes the default vim command |gd|.
+Note: This mapping overshadows the default vim command |gd|.
 
-This option adds a key mapping to the sequence |gd| to jump quickly to
-variable- or DEF/DEFFCT-declarations. >
-    let g:krlGoDefinitionKeyMap = 1
+    `gd`: Jump to or shows variable or def/deffct declarations.
 
-Mnemonic: Go Definition
-
-If the declaration is outside the current file the |qickfix|-list will open. 
-
-To find global declarations, your current file must lives in a regular backup
-folder structure (below the `/KRC` folder) and 'path' must be set properly.
-ftplugin/krl.vim does set 'path' for you, unless you set |g:krlNoPath|.
-
-Works best with :syntax on and both |g:krlNoPath| and |g:krlNoKeyWord| omitted
-or 0.
+To force this mapping off and make Vims default available >
+    let g:krlGoDefinitionKeyMap = 0
 
 Alternativ <plug> mapping: >
     augroup KrlGoDefMapping
@@ -380,10 +307,9 @@ Alternativ <plug> mapping: >
     au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlGoDef
     augroup END
 
-Limitations: You may get a false positive if you use gd on a data type which
-is not defined as STRUC. See |krl-go-definition-bugs|.
+Limitations: See |krl-go-definition-bugs|.
 
-Default is no mapping. See also |krl-jump-quickly|.
+See also |krl-jump-quickly|.
 
 
 Index: |krl-index|
@@ -392,11 +318,12 @@ g:krlListUsageKeyMap:
 ---------------------
 Used in ~/.vim/ftplugin/krl.vim
 
-This option adds a mapping to <leader>u to list all appearances (outside of
-strings and comments) of the word under the cursor in the |qickfix|-list. >
-    let g:krlListUsageKeyMap = 1
+    `<leader>u`: List all appearances, outside of strings, comments and enum
+                declarations, of the word under the cursor in the
+                |qickfix|-list.
 
-Mnemonic: List Usage
+To force this mapping if `<leader>u` is already mapped >
+    let g:krlListUsageKeyMap = 1
 
 Alternativ <plug> mapping: >
     augroup KrlListUseMapping
@@ -404,111 +331,370 @@ Alternativ <plug> mapping: >
     au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlListUse
     augroup END
 
-Default is no mapping. See also |krl-jump-quickly|.
+See also |krl-jump-quickly|.
 
 
 Index: |krl-index|
-                        *g:krlAutoFormKeyMap*   *<Plug>KrlAutoForm*
+                        *g:krlListDefKeyMap*    *<Plug>KrlListDef*
+g:krlListDefKeyMap:
+-------------------
+Used in ~/.vim/ftplugin/krl.vim
+
+    `<leader>f`: List def/deffct of the current file in the |qickfix|-list. >
+
+To force this mapping if `<leader>f` is already mapped >
+    let g:krlListDefKeyMap = 1
+
+Alternativ <plug> mapping: >
+    augroup KrlListDefMapping
+    au!
+    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlListDef
+    augroup END
+
+See also |krl-jump-quickly|.
+
+
+Index: |krl-index|
+                        *g:krlMoveAroundKeyMap*
+g:krlMoveAroundKeyMap:
+----------------------
+Used in ~/.vim/ftplugin/krl.vim
+
+Note: These mappings overshadow the default vim commands 
+|[[|, |]]|, |[]| and |][|!
+
+[count]`[[`   Jumps backward to the next def/deffct [count] times. Works in
+            |Normal|-, |Visual|- and |Operator-pending|-mode. 
+            In Normal-mode it respects 'wrapscan'.
+       
+[count]`]]`   Like [[ but jumps forward to the next def/deffct.
+       
+[count]`[]`   Like [[ but jumps backward to the next end/endfct.
+       
+[count]`][`   Like [[ but jumps forward to the next end/endfct.
+       
+[count]`[;`   Like [[ but jumps backward to the start of current or, if in
+            between, previous comment.
+       
+[count]`];`   Like [[ but jumps forward to the end of the current or, if in
+            between, next comment.
+
+To force these mappings off and make Vims default available >
+    let g:krlMoveAroundKeyMap = 0
+
+Note that |g:krlFunctionTextObject| depend on these mappings.
+
+See also |krl-jump-quickly|.
+
+
+Index: |krl-index|
+                    *g:krlFunctionTextObject*   *<plug>KrlTxtObjInnerFunc*
+                                              *<plug>KrlTxtObjAroundFuncExclCo*
+                                              *<plug>KrlTxtObjAroundFuncInclCo*
+g:krlFunctionTextObject:
+------------------------
+Used in ~/.vim/ftplugin/krl.vim
+
+Note that these text objects depend on |g:krlMoveAroundKeyMap| = 1 or omitted.
+
+    `if`: "inner function" select inner part of def/deffct.
+    `af`: "around function" select outer part of def/deffct.
+    `aF`: "around FUNCTION" select outer part of def/deffct including, if
+        present, one empty following line and directly preceding comments.
+
+These work similar as |text-objects|.
+
+To force these text objects if `if`, `af` and/or `aF` is already mapped >
+    let g:krlFunctionTextObject = 1
+
+Alternativ <plug> mappings: >
+    augroup KrlFuncTextObj
+    au!
+    au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFuncInclCo
+    au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFuncInclCo
+    au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjAroundFuncExclCo
+    au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjAroundFuncExclCo
+    au FileType krl xmap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
+    au FileType krl omap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
+    augroup END
+
+See also |krl-text-objects|.
+
+
+Index: |krl-index|
+                        *g:krlFoldTextObject*   *<plug>KrlTxtObjInnerFold*
+                                              *<plug>KrlTxtObjAroundFold*
+g:krlFoldTextObject:
+--------------------
+Used in ~/.vim/ftplugin/krl.vim
+
+Note that these text objects depend on |matchit|, see |matchit-install|.
+
+    `io`: "inner fold" select inner part of a fold.
+    `ao`: "around fold" select outer part of a fold.
+
+These work similar as |text-objects|.
+
+To force these text objects if `io` and/or `ao` is already mapped >
+    let g:krlFoldTextObject = 1
+
+Alternativ <plug> mappings: >
+    augroup KrlFoldTextObj
+    au!
+    au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFold
+    au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFold
+    au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerFold
+    au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerFold
+    augroup END
+
+See also |krl-text-objects|.
+
+
+Index: |krl-index|
+                        *g:krlAutoFormKeyMap*
 g:krlAutoFormKeyMap:
 --------------------
 Used in ~/.vim/ftplugin/krl.vim
 
-This option adds several mappings starting with <leader>n to insert a body for
-a new DEF, DEFFCT or DEFDAT into the current file (or even a new file). >
+Note: Mappings marked with * will have a little delay until they trigger.
+
+  `<leader>n`:     New prompted body *
+  `<leader>nn`:    New prompted body
+  
+  `<leader>nl`:    New Local prompted body *
+  `<leader>nll`:   New Local prompted body
+  
+  `<leader>nla`:   New Local defdAt body
+  `<leader>nld`:   New Local Def body
+  `<leader>nlf`:   New Local defFct with prompted type *
+  `<leader>nlfu`:  New Local defFct with prompted type
+  
+  `<leader>nlfb`:  New Local defFct of type Bool
+  `<leader>nlfi`:  New Local defFct of type Integer
+  `<leader>nlfr`:  New Local defFct of type Real
+  `<leader>nlfc`:  New Local defFct of type Char
+  `<leader>nlff`:  New Local defFct of type Frame
+  `<leader>nlfp`:  New Local defFct of type Pos
+  `<leader>nlf6`:  New Local defFct of type e6pos
+  `<leader>nlfa`:  New Local defFct of type Axis
+  `<leader>nlfx`:  New Local defFct of type e6aXis
+  
+  `<leader>na`:    New local defdAt body
+  `<leader>nd`:    New local Def body
+  `<leader>nf`:    New local defFct with prompted type *
+  `<leader>nfu`:   New local defFct with prompted type
+  
+  `<leader>nfb`:   New local defFct of type Bool
+  `<leader>nfi`:   New local defFct of type Integer
+  `<leader>nfr`:   New local defFct of type Real
+  `<leader>nfc`:   New local defFct of type Char
+  `<leader>nff`:   New local defFct of type Frame
+  `<leader>nfp`:   New local defFct of type Pos
+  `<leader>nf6`:   New local defFct of type e6pos
+  `<leader>nfa`:   New local defFct of type Axis
+  `<leader>nfx`:   New local defFct of type e6aXis
+  
+  `<leader>ng`:    New Global prompted body *
+  `<leader>ngg`:   New Global prompted body
+  
+  `<leader>nga`:   New Global defdAt body
+  `<leader>ngd`:   New Global Def body
+  `<leader>ngf`:   New Global defFct with prompted type *
+  `<leader>ngfu`:  New Global defFct with prompted type
+  
+  `<leader>ngfb`:  New Global defFct of type Bool
+  `<leader>ngfi`:  New Global defFct of type Integer
+  `<leader>ngfr`:  New Global defFct of type Real
+  `<leader>ngfc`:  New Global defFct of type Char
+  `<leader>ngff`:  New Global defFct of type Frame
+  `<leader>ngfp`:  New Global defFct of type Pos
+  `<leader>ngf6`:  New Global defFct of type e6pos
+  `<leader>ngfa`:  New Global defFct of type Axis
+  `<leader>ngfx`:  New Global defFct of type e6aXis
+
+This list may seem overwhelming, but those mappings are quite logical and can
+be used to skip the first few promps. After <leader>n just continue like you
+would answer the promps for "[g]lobal or [l]ocal?", "[d]ef, def[f]ct or
+defd[a]t?" and "Datatype? [b]ool, [i]nt, [r]eal..."
+
+To force these mappings if `<leader>n` is already mapped >
     let g:krlAutoFormKeyMap = 1
-
-Mappings marked with * will have a little delay until they trigger.
-
-  <leader>n     New prompted body *
-  <leader>nn    New prompted body
-
-The following list may seem overwhelming, but those mappings are quite logical
-and can be used to skip the first few promps. After <leader>n just continue
-like you would answer the promps for "[g]lobal or [l]ocal?", "[d]ef, def[f]ct
-or defd[a]t?" and "Datatype? [b]ool, [i]nt, [r]eal..."
-
-  <leader>nl    New Local prompted body *
-  <leader>nll   New Local prompted body
-  
-  <leader>nla   New Local defdAt body
-  <leader>nld   New Local Def body
-  <leader>nlf   New Local defFct with prompted type *
-  <leader>nlfu  New Local defFct with prompted type
-  
-  <leader>nlfb  New Local defFct of type Bool
-  <leader>nlfi  New Local defFct of type Integer
-  <leader>nlfr  New Local defFct of type Real
-  <leader>nlfc  New Local defFct of type Char
-  <leader>nlff  New Local defFct of type Frame
-  <leader>nlfp  New Local defFct of type Pos
-  <leader>nlf6  New Local defFct of type e6pos
-  <leader>nlfa  New Local defFct of type Axis
-  <leader>nlfx  New Local defFct of type e6aXis
-  
-  <leader>na    New local defdAt body
-  <leader>nd    New local Def body
-  <leader>nf    New local defFct with prompted type *
-  <leader>nfu   New local defFct with prompted type
-  
-  <leader>nfb   New local defFct of type Bool
-  <leader>nfi   New local defFct of type Integer
-  <leader>nfr   New local defFct of type Real
-  <leader>nfc   New local defFct of type Char
-  <leader>nff   New local defFct of type Frame
-  <leader>nfp   New local defFct of type Pos
-  <leader>nf6   New local defFct of type e6pos
-  <leader>nfa   New local defFct of type Axis
-  <leader>nfx   New local defFct of type e6aXis
-  
-  <leader>ng    New Global prompted body *
-  <leader>ngg   New Global prompted body
-  
-  <leader>nga   New Global defdAt body
-  <leader>ngd   New Global Def body
-  <leader>ngf   New Global defFct with prompted type *
-  <leader>ngfu  New Global defFct with prompted type
-  
-  <leader>ngfb  New Global defFct of type Bool
-  <leader>ngfi  New Global defFct of type Integer
-  <leader>ngfr  New Global defFct of type Real
-  <leader>ngfc  New Global defFct of type Char
-  <leader>ngff  New Global defFct of type Frame
-  <leader>ngfp  New Global defFct of type Pos
-  <leader>ngf6  New Global defFct of type e6pos
-  <leader>ngfa  New Global defFct of type Axis
-  <leader>ngfx  New Global defFct of type e6aXis
-
+<
+                        *<Plug>KrlAutoForm*
 Alternativ <plug> mappings: >
     augroup KrlAutoFormMapping
     au!
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoForm
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormLocalDat       
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormLocalDef       
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormLocalFct       
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormLocalFctBool   
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormLocalFctInt    
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormLocalFctReal   
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormLocalFctChar   
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormLocalFctFrame  
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormLocalFctPos    
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormLocalFctE6Pos  
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormLocalFctAxis   
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormLocalFctE6Axis 
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormGlobalDat      
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormGlobalDef      
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormGlobalFct      
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormGlobalFctBool  
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormGlobalFctInt   
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormGlobalFctReal  
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormGlobalFctChar  
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormGlobalFctFrame 
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormGlobalFctPos   
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormGlobalFctE6Pos 
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormGlobalFctAxis  
-    au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlAutoFormGlobalFctE6Axis
+    au FileType krl nmap <silent><buffer> ANYKEY01 <Plug>KrlAutoForm
+    au FileType krl nmap <silent><buffer> ANYKEY02 <Plug>KrlAutoFormLocalDat       
+    au FileType krl nmap <silent><buffer> ANYKEY03 <Plug>KrlAutoFormLocalDef       
+    au FileType krl nmap <silent><buffer> ANYKEY04 <Plug>KrlAutoFormLocalFct       
+    au FileType krl nmap <silent><buffer> ANYKEY05 <Plug>KrlAutoFormLocalFctBool   
+    au FileType krl nmap <silent><buffer> ANYKEY06 <Plug>KrlAutoFormLocalFctInt    
+    au FileType krl nmap <silent><buffer> ANYKEY07 <Plug>KrlAutoFormLocalFctReal   
+    au FileType krl nmap <silent><buffer> ANYKEY08 <Plug>KrlAutoFormLocalFctChar   
+    au FileType krl nmap <silent><buffer> ANYKEY09 <Plug>KrlAutoFormLocalFctFrame  
+    au FileType krl nmap <silent><buffer> ANYKEY10 <Plug>KrlAutoFormLocalFctPos    
+    au FileType krl nmap <silent><buffer> ANYKEY11 <Plug>KrlAutoFormLocalFctE6Pos  
+    au FileType krl nmap <silent><buffer> ANYKEY12 <Plug>KrlAutoFormLocalFctAxis   
+    au FileType krl nmap <silent><buffer> ANYKEY13 <Plug>KrlAutoFormLocalFctE6Axis 
+    au FileType krl nmap <silent><buffer> ANYKEY14 <Plug>KrlAutoFormGlobalDat      
+    au FileType krl nmap <silent><buffer> ANYKEY15 <Plug>KrlAutoFormGlobalDef      
+    au FileType krl nmap <silent><buffer> ANYKEY16 <Plug>KrlAutoFormGlobalFct      
+    au FileType krl nmap <silent><buffer> ANYKEY17 <Plug>KrlAutoFormGlobalFctBool  
+    au FileType krl nmap <silent><buffer> ANYKEY18 <Plug>KrlAutoFormGlobalFctInt   
+    au FileType krl nmap <silent><buffer> ANYKEY19 <Plug>KrlAutoFormGlobalFctReal  
+    au FileType krl nmap <silent><buffer> ANYKEY20 <Plug>KrlAutoFormGlobalFctChar  
+    au FileType krl nmap <silent><buffer> ANYKEY21 <Plug>KrlAutoFormGlobalFctFrame 
+    au FileType krl nmap <silent><buffer> ANYKEY22 <Plug>KrlAutoFormGlobalFctPos   
+    au FileType krl nmap <silent><buffer> ANYKEY23 <Plug>KrlAutoFormGlobalFctE6Pos 
+    au FileType krl nmap <silent><buffer> ANYKEY24 <Plug>KrlAutoFormGlobalFctAxis  
+    au FileType krl nmap <silent><buffer> ANYKEY25 <Plug>KrlAutoFormGlobalFctE6Axis
     augroup END
 
-Default is no mapping. See also |krl-auto-form|.
+See also |krl-auto-form|.
+
+
+Index: |krl-index|
+                        *g:krlGroupName* 
+g:krlGroupName:
+---------------
+Used in ~/.vim/syntax/krl.vim
+
+With this option set krl.vim does |hi-link| 
+krlBuildInFunction to |group-name| BuildInFunction, 
+krlContinue to Continue, 
+krlMovement to Movement and 
+krlSysvars to Sysvars. >
+    let g:krlGroupName = 1
+
+With this option reset krl.vim does |hi-link| 
+krlBuildInFunction to |group-name| Function, 
+krlContinue to Statement,
+krlMovement to Special and
+krlSysvars to Sysvars. >
+    let g:krlGroupName = 0
+
+Note: If omitted this option is automatically set if you use colorscheme
+tortus or tortusless and reset for any other colorscheme. 
+
+See also |krl-highlighting|.
+
+
+Index: |krl-index|
+                        *g:krlShowError*
+g:krlShowError:
+---------------
+Used in ~/.vim/syntax/krl.vim
+
+Disable error highlighting:  >
+    let g:krlShowError = 0
+
+|g:krlShowError| has no effect if |syntax| is off.
+
+Note: If omitted or set to 1 error highlighting is enabled. 
+
+See also |krl-highlighting|.
+
+
+Index: |krl-index|
+                        *g:krlSpaceIndent*
+g:krlSpaceIndent:
+-----------------
+Used in ~/.vim/indent/krl.vim
+
+This krl-option disables the modification of 'softtabstop', 'expandtab',
+'shiftwidth' and 'shiftround'.  >
+    let g:krlSpaceIndent = 0
+
+Note: If omitted or set to 1 the following Vim options are set:
+    'softtabstop'   = 2
+    'shiftwidth'    = 2
+    'expandtab'
+    'shiftround'
+
+Keep in mind that space is rare and tabs look really awful on the teach
+pendant.
+
+See also |krl-indent|.
+
+
+Index: |krl-index|
+                        *g:krlCommentIndent*
+g:krlCommentIndent:
+-------------------
+Used in ~/.vim/indent/krl.vim
+
+Disable indent of first column comments:  >
+    let g:krlCommentIndent = 0
+
+Note: If omitted or set to 1 comments which start in the first column get
+indented.
+
+See also |krl-indent|.
+
+
+Index: |krl-index|
+                        *g:krlFoldMethodSyntax*
+g:krlFoldMethodSyntax:
+----------------------
+Used in ~/.vim/ftplugin/krl.vim
+
+Use 'foldmethod' |fold-marker| instead of |fold-syntax|.  >
+   let g:krlFoldMethodSyntax = 0
+
+Note: If omitted or set to 1 'foldmethod' syntax is used. 'foldmethod' marker
+uses less performance, but is case sensitive and will catch less movement
+folds.
+
+See also |krl-folding|.
+
+
+Index: |krl-index|
+                        *g:krlFoldLevel*
+g:krlFoldLevel:
+---------------
+Used in ~/.vim/ftplugin/krl.vim
+
+Set this option to 2 makes closing all folds the starting behavior.  >
+    let g:krlFoldLevel = 2
+
+Set this option to 0 to switch folding off completely.  >
+   let g:krlFoldLevel = 0
+
+Note: If omitted or set to 1 only movement folds are closed. If set to 0
+changeing folding via |g:krlFoldingKeyMap| is not possible!
+
+See also |krl-folding| and |g:krlFoldMethodSyntax|.
+
+
+Index: |krl-index|
+                        *g:krlAutoComment*
+g:krlAutoComment:
+-----------------
+Used in ~/.vim/ftplugin/krl.vim
+
+Disable 'formatoptions' += ro. See |fo-table|. >
+    let g:krlAutoComment = 0
+
+Note: If omitted or set to 1 the comment char `;` is automatically added after
+hitting i_<CR>, |o| or |O| on a comment line.  
+
+See also |krl-formatting-comments|.
+
+
+Index: |krl-index|
+                        *g:krlFormatComments*
+g:krlFormatComments:
+--------------------
+Used in ~/.vim/ftplugin/krl.vim
+
+Disable 'formatoptions' -= t and += lj. See |fo-table|. >
+    let g:krlFormatComments = 0
+
+Note: If omitted or set to 1 comment lines get wrapped at 'textwidth'. If
+'textwidth' is 0 it's set to 52.
+
+See also |krl-formatting-comments|.
 
 
 Index: |krl-index|
@@ -517,7 +703,7 @@ g:krlPathToBodyFiles:
 ---------------------
 Used in ~/.vim/ftplugin/krl.vim
 
-Set this option to a valid path to a folder with copys of your body files. >
+Enable use of custom body files. Set to a valid path, e.g.: >
     let g:krlPathToBodyFiles='~/.vim/mykrlresource/'
     let g:krlPathToBodyFiles='c:\user\me\krlresource\'
     let g:krlPathToBodyFiles='$USERPROFILE\krl_skel\'
@@ -527,7 +713,7 @@ You may put one or more of the following files into this folder:
   deffct.src
   defdat.dat
 
-Default is no use of custom body files. See also |krl-auto-form|.
+See also |krl-auto-form|.
 
 
 Index: |krl-index|
@@ -536,10 +722,10 @@ g:krlAutoFormUpperCase:
 -----------------------
 Used in ~/.vim/ftplugin/krl.vim
 
-This option enables conversion of the auto form insertions to upper case.  >
+Enable conversion of auto form to upper case.  >
     let g:krlAutoFormUpperCase = 1
 
-Default is no conversion to upper case. See also |krl-auto-form|.
+See also |krl-auto-form|.
 
 
 Index: |krl-index|
@@ -570,94 +756,6 @@ Default is vim default position of quickfix window. See also
 
 
 Index: |krl-index|
-                        *g:krlNoHighlight*    *g:krlNoHighLink*
-g:krlNoHighLink:
-----------------
-Used in ~/.vim/syntax/krl.vim
-
-With this option set krl.vim does not |hi-link| krlBuildInFunction to
-|group-name| Function, krlContinue to Statement and krlMovement to Special. >
-    let g:krlNoHighLink = 1
-
-This is usefull if you want to set your own colors for the colorscheme groups
-Sysvars, Movement, Continue and/or BuildInFunction. With this option set you
-may use your own colors for KSS variables beginning with $, movement
-instructions, CONTINUE instructions and/or KSS functions like this:  >
-    highlight Sysvars           guibg=Black     guifg=white
-    highlight BuildInFunction   guibg=Black     guifg=#00d5d5
-    highlight Continue          guibg=black     guifg=#646423
-    highlight Movement          guibg=black     guifg=green
-
-Set this option to 1 if you use colorscheme tortus.vim.  
-
-Default is: >
-    highlight link krlBuildInFunction Function
-    highlight link krlContinue Statement
-    highlight link krlMovement Special
-    highlight link krlSysvars Sysvars
-
-See also |krl-highlighting|.
-
-
-Index: |krl-index|
-                        *g:krlShowError*
-g:krlShowError:
----------------
-Used in ~/.vim/syntax/krl.vim
-
-This option enables the highlighting for some more or less common typos.  >
-    let g:krlShowError = 1
-
-If enabled a few false usages of =, ==, <= and >= are highlighted as
-|group-name| Error. Note that this is not a syntax check. I have found no 
-occurrence of false positives, but it's disabled by default just in case.
-
-|g:krlShowError| has no effect if |syntax| is off.
-
-Default is no highlighting of syntax errors. See also |krl-highlighting|.
-
-
-Index: |krl-index|
-                        *g:krlFormatComments*
-g:krlFormatComments:
---------------------
-Used in ~/.vim/ftplugin/krl.vim
-
-This option changes 'formatoptions' and 'textwidth' so that lines starting
-with ";" get wrapped to match on a teach pendant screen when entered. >
-    let g:krlFormatComments = 1
-
-Note: If 'textwidth' already has a value unequal 0, only 'formatoptions' is
-changed and textwidth is left untouched. 
-
-Default settings are no change of textwidth and formatoptions. Changed values
-are: >
-    setlocal textwidth=52
-    setlocal formatoptions-=t
-    setlocal formatoptions+=l
-    setlocal formatoptions+=j
-
-See also |fo-table| and |krl-formatting-comments|.
-
-
-Index: |krl-index|
-                        *g:krlAutoComment*
-g:krlAutoComment:
------------------
-Used in ~/.vim/ftplugin/krl.vim
-
-This option changes 'formatoptions'. It enables automatic insertion of line 
-comment char ";" after hitting i_<CR> , |o| or |O| on a comment line.  >
-    let g:krlAutoComment = 1
-
-Default settings are no change of 'formatoptions'. Changed values are: >
-    setlocal formatoptions+=r
-    setlocal formatoptions+=o
-
-See also |fo-table| and |krl-formatting-comments|.
-
-
-Index: |krl-index|
                         *g:krlNoIndent*
 g:krlNoIndent:
 --------------
@@ -670,28 +768,6 @@ krl indent. >
 This does work the same as |b:did_indent| |30.3|.
 
 Default is indention enabled. See also |krl-indent|.
-
-
-Index: |krl-index|
-                        *g:krlNoSpaceIndent*
-g:krlNoSpaceIndent:
--------------------
-Used in ~/.vim/indent/krl.vim
-
-This option disables the modification of 'softtabstop', 'expandtab', 
-'shiftwidth' and 'shiftround'.  >
-    let g:krlNoSpaceIndent = 1
-
-Keep in mind that space is rare and tabs look really awful on the teach
-pendant.
-
-Default settings are: >
-    setlocal softtabstop = 2
-    setlocal shiftwidth = 2
-    setlocal expandtab
-    setlocal shiftround
-
-See also |krl-indent|.
 
 
 Index: |krl-index|
@@ -781,7 +857,7 @@ all folds in VKRC files. See Limitations below.
 You may set |g:krlCloseFolds| to change the default behavior to closing every
 fold. You can switch krl folding off there as well.
 
-There is also a key mapping available if |g:krlFoldKeyMap| is set.
+There is also a key mapping available if |g:krlFoldingKeyMap| is set.
 
 NOTE Limitations: 
 1. Folds only work if upper case: >
@@ -818,6 +894,13 @@ industrial robots:
     `Movement`: Krl movement instructions like "ptp" and movement modifiers like
               "c_ptp"
 
+This is usefull if you want to set your own colors for Sysvars, Movement,
+Continue and/or BuildInFunction:  >
+    highlight Sysvars           guibg=Black     guifg=white
+    highlight BuildInFunction   guibg=Black     guifg=#00d5d5
+    highlight Continue          guibg=black     guifg=#646423
+    highlight Movement          guibg=black     guifg=green
+
 By default 
     `Sysvars` do look like any other variable, 
     `BuildInFunction` is |hi-link| to |group-name| Function 
@@ -835,6 +918,10 @@ I suggest setting |g:krlNoHighLink| to 1 if using tortus.vim.
 
 You may enable highlighting of some misuses of =, ==, <=, >= and some
 more or less common typos by setting |g:krlShowError|.
+
+If enabled a few false usages of =, ==, <= and >= are highlighted as
+|group-name| Error. Note that this is not a syntax check. I have found no 
+occurrence of false positives, but it's disabled by default just in case.
 
 
 If you wish to switch off highlighting completely put >
@@ -1039,12 +1126,22 @@ See |g:krlNoPath| for details on how krl.vim does generate 'path'.
 Note to unix/linux users: Keep your files on a filesystem which ingores case
 (e.g. FAT) or most of the following features may not work correctly.
 
+
 Set |g:krlGoDefinitionKeyMap| to use a modified |gd| with the cursor on a
 variable or proc/func-call in command mode. A succesful search for a file
 local declaration jumps there right away. Get back where you were with |''|. A
 succesful search for a more global declaration opens the |quickfix| window.
 This also shows Marker definitions in VKRC files, as well as UPs and MAKROs.
 Use |gd| on Markers, UPs and MAKROs in the fold lines: ;FOLD 4: SPSMAKRO23 = M15
+
+If the declaration is outside the current file the |qickfix|-list will open. 
+
+To find global declarations, your current file must lives in a regular backup
+folder structure (below the `/KRC` folder) and 'path' must be set properly.
+ftplugin/krl.vim does set 'path' for you, unless |g:krlPath| = 0
+
+Works best with `:syntax on` and both |g:krlPath| and |g:krlKeyWord| omitted.
+
 
 Set |g:krlListUsageKeyMap| to see quickly where a variable or function or even
 an instruction or data type is used. <leader>u shows all appearances of the word
