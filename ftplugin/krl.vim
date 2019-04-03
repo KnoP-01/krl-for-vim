@@ -1317,8 +1317,8 @@ endif
 " format comments
 if get(g:,'krlFormatComments',1)
   if &textwidth ==# 0
-    " 52 Chars do match on the teach pendant
-    setlocal textwidth=52
+    " 54 Chars do match on the teach pendant
+    setlocal textwidth=54
     let b:undo_ftplugin = b:undo_ftplugin." tw<"
   endif
   setlocal formatoptions-=t

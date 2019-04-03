@@ -238,7 +238,11 @@ highlight default link krlEnum Structure
 
 " System variable {{{
 syn match krlSysvars /\<\$\a[a-zA-Z0-9_.]*/
-highlight default link krlSysvars Sysvars
+if g:krlGroupName
+  highlight default link krlSysvars Sysvars
+else
+  " default color for Sysvars
+endif
 " }}} System variable
 
 " Statements, keywords et al {{{
