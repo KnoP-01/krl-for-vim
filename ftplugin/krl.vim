@@ -1518,7 +1518,7 @@ if has("folding") && get(g:,'krlFoldLevel',1)
         elseif &foldmethod=~'syntax'
 
           if <SID>KrlIsVkrc()
-            call <SID>KrlFoldLevel(1)
+            call <SID>KrlFoldLevel(2)
             if bufname("%")=~'\c\v(folge|up)\d*.src'
               setlocal foldlevel=1
             endif
