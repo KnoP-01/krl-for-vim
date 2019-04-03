@@ -93,6 +93,8 @@ if !exists("*s:KnopVerboseEcho()")
       endif
       echo a:msg
       if exists('a:1')
+        " for some reason I don't understand this has to be present twice
+        call input("Hit enter> ") 
         call input("Hit enter> ")
       endif
     endif
