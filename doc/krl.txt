@@ -29,9 +29,6 @@ to use the help within Vim after installation. >
 
 ==============================================================================
                         *krl-Introducion*
-==============================================================================
-Introducion:
-------------
 
 KRL for Vim (7.4 or later) is a collection of Vim scripts to help programing
 KUKA industrial robots. 
@@ -66,6 +63,7 @@ Some features need the case insensitive file system to work properly.
 
 
 Index: |krl-index|
+==============================================================================
                         *krl-tl:dr*
 Short description:
 ------------------
@@ -73,17 +71,16 @@ Q: Since version 2.0.0 everything's weird. How so?
 A: Most optional features are enabled by default now.
 
 Q: I'm here to feed my kids, not to read. How do I get rid of stuff?  
-A: Disable stuff in your |.vimrc|, see |krl-options| for details: >
+A: Disable stuff in your |vimrc|, see |krl-options| for details: >
 
     let g:krlAutoComment = 0 " don't continue comments with o, O or Enter
     let g:krlFormatComments = 0 " don't break comment lines automatically
     let g:krlSpaceIndent = 0 " don't change 'sts', 'sw', 'et' and 'sr'
     let g:krlKeyWord = 0 " don't treat $, # and & as word char
-    let g:krlPath = 0 " don't change 'path'
     let g:krlShortenQFPath = 0 " don't shorten paths in quickfix
 
 Q: Which keys get mapped to what?
-A: If there is no existing mapping which would be overridden and no plug
+A: If there is no existing mapping which would be overridden and no <plug>
     mapping is configured for that function then the following keys get
     mapped: >
 
@@ -208,11 +205,10 @@ Requires >
 |krl-highlighting|
 |krl-indent|
 |krl-folding|
+|krl-jump-quickly|
+    |krl-matchit-support|
 |krl-formatting-comments|
 |krl-auto-form|
-|krl-keyword-chars|
-|krl-jump-quickly|
-|krl-matchit-support|
 |krl-known-bugs|
     |krl-indent-bugs|
     |krl-highlight-bugs|
@@ -223,8 +219,8 @@ Requires >
                         *krl-options*
 ==============================================================================
 
-Set options in your .vimrc. Only |g:krlVerbose| will have an effect if
-changed later.
+Set or reset options in your .vimrc. Only |g:krlVerbose| will have an effect
+if changed later.
 
 *krl-key-mappings*
 Also see these options for alternative <PLUG> mappings.
@@ -264,6 +260,104 @@ Also see these options for alternative <PLUG> mappings.
 |g:krlLhsQuickfix|        Open quickfix left hand side
 |g:krlPath|               Disable 'path' setting
 |g:krlVerbose|            Enable verbose messages
+
+
+Index: |krl-index|
+==============================================================================
+                        *krl-highlighting*
+==============================================================================
+                        *g:krlShowError*
+g:krlShowError:
+---------------
+
+Disable error highlighting:  >
+    let g:krlShowError = 0
+
+If omitted or set to 1 a few syntax errors get highlighted.
+Mainly false usages of =, ==, <= and >= get highlighted. 
+Note that this is not a syntax check.
+
+
+Index: |krl-index|
+                        *g:krlGroupName* 
+g:krlGroupName:
+---------------
+
+With this option reset krl-for-vim does |hi-link| 
+krlBuildInFunction to |group-name| `Function`, 
+krlContinue to `Statement`,
+krlMovement to `Special` and
+krlSysvars to nothing: >
+    let g:krlGroupName = 0
+
+With this option set krl-for-vim does |hi-link| 
+krlBuildInFunction to |group-name| `BuildInFunction`, 
+krlContinue to `Continue`, 
+krlMovement to `Movement` and 
+krlSysvars to `Sysvars`: >
+    let g:krlGroupName = 1
+
+If omitted this option is automatically set if you use colorscheme
+tortus or tortusless and reset for any other colorscheme. 
+
+This is usefull if you want to set your own colors for Sysvars, Movement,
+Continue and/or BuildInFunction:  >
+    highlight Sysvars           guibg=Black     guifg=white
+    highlight BuildInFunction   guibg=Black     guifg=#00d5d5
+    highlight Continue          guibg=black     guifg=#646423
+    highlight Movement          guibg=black     guifg=green
+
+`krlBuildInFunction`    contains KSS functions.
+`krlSysvars`            contains all variables starting with $.
+`krlContinue`           contains the continue instruction.
+`krlMovement`           contains movement instructions like ptp, lin and
+                      movement modifiers like c_ptp and c_dis.
+
+If you like it colorful and dark background you may try the 
+colorscheme tortus or tortusless which makes use of these groups:
+    https://github.com/KnoP-01/tortus
+
+
+Index: |krl-index|
+==============================================================================
+                        *krl-indent*
+==============================================================================
+                        *g:krlSpaceIndent*
+g:krlSpaceIndent:
+-----------------
+
+Disables the modification of 'softtabstop', 'expandtab', 'shiftwidth' 
+and 'shiftround':  >
+    let g:krlSpaceIndent = 0
+
+If omitted or set to 1 the following Vim options get set:
+    'softtabstop'   = 2
+    'shiftwidth'    = 2
+    'expandtab'
+    'shiftround'
+
+Keep in mind that space is rare and tabs look really awful on the teach
+pendant.
+
+
+Index: |krl-index|
+                        *g:krlCommentIndent*
+g:krlCommentIndent:
+-------------------
+
+Disable indent of line comments which start in the first column:  >
+    let g:krlCommentIndent = 0
+
+This is usefull if you commented out code like this: 
+    wait for di_blubb
+;    wait for di_bla or di_blubb
+;    if di_bla then
+;      do_bla()
+;    endif
+    do_blubb()
+
+If omitted or set to 1 comments which start in the first column are indented
+like everything else.
 
 
 Index: |krl-index|
@@ -330,32 +424,6 @@ Alternativ <plug> mappings: >
 
 
 Index: |krl-index|
-                        *g:krlFoldTextObject*   *<plug>KrlTxtObjInnerFold*
-                                              *<plug>KrlTxtObjAroundFold*
-g:krlFoldTextObject:
---------------------
-
-Note: These text objects depend on |matchit|. See |matchit-install|.
-
-    [count]`io`: "inner fold" select inner part of a fold.
-    [count]`ao`: "around fold" select outer part of a fold.
-
-These work similar as |text-objects|.
-
-To force these text objects if `io` and/or `ao` is already mapped: >
-    let g:krlFoldTextObject = 1
-
-Alternativ <plug> mappings: >
-    augroup KrlFoldTextObj
-    au!
-    au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFold
-    au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFold
-    au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerFold
-    au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerFold
-    augroup END
-
-
-Index: |krl-index|
 ==============================================================================
                         *krl-jump-quickly*
 
@@ -376,6 +444,7 @@ You may instruct krl-for-vim not to change 'path' if you reset |g:krlPath|.
 
 For the best experience keep your files below the `KRC/` or `R1/` folder.
 
+Index: |krl-index|
 ==============================================================================
                         *g:krlGoDefinitionKeyMap*   *<Plug>KrlGoDef*
 g:krlGoDefinitionKeyMap:
@@ -502,6 +571,32 @@ Alternativ <plug> mappings: >
 
 
 Index: |krl-index|
+                        *g:krlFoldTextObject*   *<plug>KrlTxtObjInnerFold*
+                                              *<plug>KrlTxtObjAroundFold*
+g:krlFoldTextObject:
+--------------------
+
+Note: These text objects depend on |matchit|. See |matchit-install|.
+
+    [count]`io`: "inner fold" select inner part of a fold.
+    [count]`ao`: "around fold" select outer part of a fold.
+
+These work similar as |text-objects|.
+
+To force these text objects if `io` and/or `ao` is already mapped: >
+    let g:krlFoldTextObject = 1
+
+Alternativ <plug> mappings: >
+    augroup KrlFoldTextObj
+    au!
+    au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFold
+    au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFold
+    au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerFold
+    au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerFold
+    augroup END
+
+
+Index: |krl-index|
                         *g:krlKeyWord*
 g:krlKeyWord:
 -------------
@@ -511,27 +606,6 @@ Disables the inclusion of `#`, `&` and `$` into 'iskeyword':  >
 
 If omitted or set to 1 `$sysvars`, `#enumvalues` and `&header` are treated as
 |word| for |word-motions|, |text-objects| and the like.
-
-
-Index: |krl-index|
-                        *krl-matchit-support*  
-Match it support:
------------------
-You may have to install the matchit plugin to use this. See |matchit-install|
-for help on this. See also http://www.vim.org/scripts/script.php?script_id=39
-
-If |matchit| is loaded you can use |%| to not only jump between (), [] and {}
-but also between >
-    DEF -> RESUME -> RETURN -> END,
-    DEFFCT -> RESUME -> RETURN -> ENDFCT,
-    DEFDAT -> ENDDAT,
-    IF -> ELSE -> ENDIF, 
-    FOR -> EXIT -> ENDFOR, 
-    REPEAT -> EXIT -> UNTIL, 
-    WHILE -> EXIT -> ENDWHILE,
-    LOOP -> EXIT -> ENDLOOP,
-    SWITCH -> CASE -> DEFAULT -> ENDSWITCH and
-    FOLD -> ENDFOLD
 
 
 Index: |krl-index|
@@ -613,9 +687,59 @@ If omitted or set to 0 no messages are generate by krl-for-vim.
 
 
 Index: |krl-index|
+                        *krl-matchit-support*  
+Match it support:
+-----------------
+You may have to install the matchit plugin to use this. See |matchit-install|
+for help on this. See also http://www.vim.org/scripts/script.php?script_id=39
+
+If |matchit| is loaded you can use |%| to not only jump between (), [] and {}
+but also between >
+    DEF -> RESUME -> RETURN -> END,
+    DEFFCT -> RESUME -> RETURN -> ENDFCT,
+    DEFDAT -> ENDDAT,
+    IF -> ELSE -> ENDIF, 
+    FOR -> EXIT -> ENDFOR, 
+    REPEAT -> EXIT -> UNTIL, 
+    WHILE -> EXIT -> ENDWHILE,
+    LOOP -> EXIT -> ENDLOOP,
+    SWITCH -> CASE -> DEFAULT -> ENDSWITCH and
+    FOLD -> ENDFOLD
+
+
+Index: |krl-index|
+==============================================================================
+                        *krl-formatting-comments*
+==============================================================================
+                        *g:krlAutoComment*
+g:krlAutoComment:
+-----------------
+
+Disable 'formatoptions' += ro: >
+    let g:krlAutoComment = 0
+
+If omitted or set to 1 the comment char ; is automatically added after
+hitting |i_<CR>|, |o| or |O| on a comment line.  
+
+See also |krl-formatting-comments| and |fo-table|.
+
+
+Index: |krl-index|
+                        *g:krlFormatComments*
+g:krlFormatComments:
+--------------------
+
+Disable 'formatoptions' -= t and += lj. See |fo-table|. >
+    let g:krlFormatComments = 0
+
+If omitted or set to 1 comments get wrapped at 'textwidth'. If 'textwidth' is
+0 it's set to 54 which matches a KCP screen. You may also use |gq| to format
+comments.
+
+
+Index: |krl-index|
 ==============================================================================
                         *krl-auto-form*
-==============================================================================
 
 With krl-for-vim you can quickly create a new DEF, DEFFCT or DEFDAT after your
 liking. 
@@ -641,6 +765,7 @@ insertion is finished and may be used for further customization: >
     augroup END
 
 Index: |krl-index|
+==============================================================================
                         *g:krlAutoFormKeyMap*
 g:krlAutoFormKeyMap:
 --------------------
@@ -820,140 +945,8 @@ If omitted or set to 0 character case of inserted bodies is left as is.
 
 Index: |krl-index|
 ==============================================================================
-                        *krl-highlighting*
-==============================================================================
-                        *g:krlShowError*
-g:krlShowError:
----------------
-
-Disable error highlighting:  >
-    let g:krlShowError = 0
-
-If omitted or set to 1 a few syntax errors get highlighted.
-Mainly false usages of =, ==, <= and >= get highlighted. 
-Note that this is not a syntax check.
-
-
-Index: |krl-index|
-                        *g:krlGroupName* 
-g:krlGroupName:
----------------
-
-With this option reset krl-for-vim does |hi-link| 
-krlBuildInFunction to |group-name| `Function`, 
-krlContinue to `Statement`,
-krlMovement to `Special` and
-krlSysvars to nothing: >
-    let g:krlGroupName = 0
-
-With this option set krl-for-vim does |hi-link| 
-krlBuildInFunction to |group-name| `BuildInFunction`, 
-krlContinue to `Continue`, 
-krlMovement to `Movement` and 
-krlSysvars to `Sysvars`: >
-    let g:krlGroupName = 1
-
-If omitted this option is automatically set if you use colorscheme
-tortus or tortusless and reset for any other colorscheme. 
-
-This is usefull if you want to set your own colors for Sysvars, Movement,
-Continue and/or BuildInFunction:  >
-    highlight Sysvars           guibg=Black     guifg=white
-    highlight BuildInFunction   guibg=Black     guifg=#00d5d5
-    highlight Continue          guibg=black     guifg=#646423
-    highlight Movement          guibg=black     guifg=green
-
-`krlBuildInFunction`    contains KSS functions.
-`krlSysvars`            contains all variables starting with $.
-`krlContinue`           contains the continue instruction.
-`krlMovement`           contains movement instructions like ptp, lin and
-                      movement modifiers like c_ptp and c_dis.
-
-If you like it colorful and dark background you may try the 
-colorscheme tortus or tortusless which makes use of these groups:
-    https://github.com/KnoP-01/tortus
-
-
-Index: |krl-index|
-==============================================================================
-                        *krl-indent*
-==============================================================================
-                        *g:krlSpaceIndent*
-g:krlSpaceIndent:
------------------
-
-Disables the modification of 'softtabstop', 'expandtab', 'shiftwidth' 
-and 'shiftround':  >
-    let g:krlSpaceIndent = 0
-
-If omitted or set to 1 the following Vim options get set:
-    'softtabstop'   = 2
-    'shiftwidth'    = 2
-    'expandtab'
-    'shiftround'
-
-Keep in mind that space is rare and tabs look really awful on the teach
-pendant.
-
-
-Index: |krl-index|
-                        *g:krlCommentIndent*
-g:krlCommentIndent:
--------------------
-
-Disable indent of line comments which start in the first column:  >
-    let g:krlCommentIndent = 0
-
-This is usefull if you commented out code like this: 
-    wait for di_blubb
-;    wait for di_bla or di_blubb
-;    if di_bla then
-;      do_bla()
-;    endif
-    do_blubb()
-
-If omitted or set to 1 comments which start in the first column are indented
-like everything else.
-
-
-Index: |krl-index|
-==============================================================================
-                        *krl-formatting-comments*
-==============================================================================
-                        *g:krlAutoComment*
-g:krlAutoComment:
------------------
-
-Disable 'formatoptions' += ro: >
-    let g:krlAutoComment = 0
-
-If omitted or set to 1 the comment char ; is automatically added after
-hitting |i_<CR>|, |o| or |O| on a comment line.  
-
-See also |krl-formatting-comments| and |fo-table|.
-
-
-Index: |krl-index|
-                        *g:krlFormatComments*
-g:krlFormatComments:
---------------------
-
-Disable 'formatoptions' -= t and += lj. See |fo-table|. >
-    let g:krlFormatComments = 0
-
-If omitted or set to 1 comments get wrapped at 'textwidth'. If 'textwidth' is
-0 it's set to 54 which matches a KCP screen. You may also use |gq| to format
-comments.
-
-
-Index: |krl-index|
-==============================================================================
                         *krl-known-bugs*  
-Are these really bugs? If your programs and/or frame variables do get proper
-names, everything works fine. See below.
-
-
-Index: |krl-index|
+==============================================================================
                         *krl-indent-bugs*
 Known bugs in |krl-indent|:
 -------------------------
