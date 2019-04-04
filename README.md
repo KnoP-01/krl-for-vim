@@ -29,7 +29,7 @@ VKRC-Editor.
 
 **Note:** Keep your files to be edited in one folder or in a regular robot
 backup folder structure. KRL for Vim modifies 'path' accordingly. Since
-version 2.0.0 KRC1 backups are supported too.
+version 2.0.0 KRC1 backups are supported too.  
 **Note to linux users:** Keep your files to be edited on a FAT file system. 
 Some features need the case insensitive file system to work properly.
 
