@@ -676,10 +676,10 @@ g:krlFunctionTextObject:
 
 Note: These text objects depend on |g:krlMoveAroundKeyMap| = 1 or omitted.
 
-    `if`: "inner function" select inner part of def/deffct.
-    `af`: "around function" select outer part of def/deffct.
-    `aF`: "around FUNCTION" select outer part of def/deffct including, if
-        present, one empty following line and directly preceding comments.
+    `if`: inner part of def/deffct.
+    `af`: outer part of def/deffct.
+    `aF`: outer part of def/deffct including, if present, one empty following
+        line and directly preceding comments.
 
 To force these text objects if `if`, `af` and/or `aF` is already mapped: >
     let g:krlFunctionTextObject = 1
@@ -704,8 +704,8 @@ g:krlFoldTextObject:
 
 Note: These text objects depend on |matchit|. See |matchit-install|.
 
-    [count]`io`: "inner fold" select inner part of a fold.
-    [count]`ao`: "around fold" select outer part of a fold.
+    [count]`io`: inner part of a fold. Takes a count for nested folds.
+    [count]`ao`: outer part of a fold. Takes a count for nested folds.
 
 To force these text objects if `io` and/or `ao` is already mapped: >
     let g:krlFoldTextObject = 1
