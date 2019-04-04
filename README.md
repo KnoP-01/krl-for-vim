@@ -69,6 +69,7 @@ of different releases. Some features may work better when all files are loaded.
 Help file. This should help you to use these plugins to your best advantage.
 You may want to look into the [help][3] prior to installation.  
 Requires >  
+
     :helptags ~/.vim/doc
   
   
@@ -76,6 +77,7 @@ Requires >
 Detects KRL files based on their file name and content. KRL files are checked
 for the presence of a DEF line or any &HEADER.
 Requires >  
+
     :filetype on
   
   
@@ -83,6 +85,7 @@ Requires >
 Sets various vim options and provides key mappings and folding. It supports
 commentary [vimscript #3695][7] and matchit [vimscript #39][8].
 Requires >  
+
     :filetype plugin on
   
   
@@ -90,6 +93,7 @@ Requires >
 Sets indent related vim options. Sets indention to 2 spaces by default,
 optional.  
 Requires >  
+
     :filetype indent on
   
   
@@ -98,6 +102,7 @@ Does make life more colorful. Unfortunately some features of the other files
 may work better with syntax on. This should not stop you from trying syntax
 off if you like.  
 Requires >  
+
     :syntax on
   
   
