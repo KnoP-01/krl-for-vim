@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.0.0
-" Last Change: 02. Apr 2019
+" Last Change: 04. Apr 2019
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "
 " Suggestions of improvement are very welcome. Please email me!
@@ -154,6 +154,7 @@ if !exists("*s:KnopVerboseEcho()")
     let l:path = substitute(l:path, '\*\* ', '**/'.a:file.' ', "g") " append a / to **, . and ..
     let l:path = substitute(l:path, '\.\. ', '../'.a:file.' ', "g")
     let l:path = substitute(l:path, '\. ', './'.a:file.' ', "g")
+    call s:KnopVerboseEcho(l:path)
     return l:path
   endfunction " s:KnopPreparePath()
 
