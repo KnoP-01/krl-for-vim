@@ -69,7 +69,9 @@ syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ containedin=krlFold " contains
 " move fold comment until second ;
 syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*<s?%(ptp|lin|circ|spl)(_rel)?>[^;]*/ containedin=krlFold contains=krlInteger,krlFloat,krlMovement,krlDelimiter
 " Comment without Fold, also includes endfold lines and fold line part after second ;
-syn match krlComment /\c\v;%(%(<fold>)@!.)*$/ containedin=krlFold contains=krlTodo,krlDebug
+syn match krlComment /\c\v;\s*%(<fold>)@!.*$/ containedin=krlFold contains=krlTodo,krlDebug
+" Commented out Fold line: "; ;FOLD PTP..."
+syn match krlComment /\c\v^\s*;\s*;.*$/ contains=krlTodo,krlDebug
 highlight default link krlFoldComment Comment
 highlight default link krlComment Comment
 " }}} Comment and Folding 
