@@ -207,6 +207,7 @@ Requires >
 |krl-folding|
 |krl-jump-quickly|
     |krl-matchit-support|
+    |krl-text-objects|
 |krl-formatting-comments|
 |krl-auto-form|
 |krl-known-bugs|
@@ -540,63 +541,6 @@ Note that |g:krlFunctionTextObject| depend on these mappings.
 
 
 Index: |krl-index|
-                    *g:krlFunctionTextObject*   *<plug>KrlTxtObjInnerFunc*
-                                              *<plug>KrlTxtObjAroundFuncExclCo*
-                                              *<plug>KrlTxtObjAroundFuncInclCo*
-g:krlFunctionTextObject:
-------------------------
-
-Note: These text objects depend on |g:krlMoveAroundKeyMap| = 1 or omitted.
-
-    `if`: "inner function" select inner part of def/deffct.
-    `af`: "around function" select outer part of def/deffct.
-    `aF`: "around FUNCTION" select outer part of def/deffct including, if
-        present, one empty following line and directly preceding comments.
-
-These work similar as |text-objects|.
-
-To force these text objects if `if`, `af` and/or `aF` is already mapped: >
-    let g:krlFunctionTextObject = 1
-
-Alternativ <plug> mappings: >
-    augroup KrlFuncTextObj
-    au!
-    au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFuncInclCo
-    au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFuncInclCo
-    au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjAroundFuncExclCo
-    au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjAroundFuncExclCo
-    au FileType krl xmap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
-    au FileType krl omap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
-    augroup END
-
-
-Index: |krl-index|
-                        *g:krlFoldTextObject*   *<plug>KrlTxtObjInnerFold*
-                                              *<plug>KrlTxtObjAroundFold*
-g:krlFoldTextObject:
---------------------
-
-Note: These text objects depend on |matchit|. See |matchit-install|.
-
-    [count]`io`: "inner fold" select inner part of a fold.
-    [count]`ao`: "around fold" select outer part of a fold.
-
-These work similar as |text-objects|.
-
-To force these text objects if `io` and/or `ao` is already mapped: >
-    let g:krlFoldTextObject = 1
-
-Alternativ <plug> mappings: >
-    augroup KrlFoldTextObj
-    au!
-    au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFold
-    au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFold
-    au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerFold
-    au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerFold
-    augroup END
-
-
-Index: |krl-index|
                         *g:krlKeyWord*
 g:krlKeyWord:
 -------------
@@ -714,6 +658,66 @@ but also between >
     LOOP -> EXIT -> ENDLOOP,
     SWITCH -> CASE -> DEFAULT -> ENDSWITCH and
     FOLD -> ENDFOLD
+
+
+Index: |krl-index|
+==============================================================================
+                        *krl-text-objects*  
+
+Krl text objects work similar as |text-objects|.
+They can be used in |Visual|- and |Operator-pending|-mode. 
+
+==============================================================================
+                    *g:krlFunctionTextObject*   *<plug>KrlTxtObjInnerFunc*
+                                              *<plug>KrlTxtObjAroundFuncExclCo*
+                                              *<plug>KrlTxtObjAroundFuncInclCo*
+g:krlFunctionTextObject:
+------------------------
+
+Note: These text objects depend on |g:krlMoveAroundKeyMap| = 1 or omitted.
+
+    `if`: "inner function" select inner part of def/deffct.
+    `af`: "around function" select outer part of def/deffct.
+    `aF`: "around FUNCTION" select outer part of def/deffct including, if
+        present, one empty following line and directly preceding comments.
+
+To force these text objects if `if`, `af` and/or `aF` is already mapped: >
+    let g:krlFunctionTextObject = 1
+
+Alternativ <plug> mappings: >
+    augroup KrlFuncTextObj
+    au!
+    au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFuncInclCo
+    au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFuncInclCo
+    au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjAroundFuncExclCo
+    au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjAroundFuncExclCo
+    au FileType krl xmap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
+    au FileType krl omap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
+    augroup END
+
+
+Index: |krl-index|
+                        *g:krlFoldTextObject*   *<plug>KrlTxtObjInnerFold*
+                                              *<plug>KrlTxtObjAroundFold*
+g:krlFoldTextObject:
+--------------------
+
+Note: These text objects depend on |matchit|. See |matchit-install|.
+
+    [count]`io`: "inner fold" select inner part of a fold.
+    [count]`ao`: "around fold" select outer part of a fold.
+
+To force these text objects if `io` and/or `ao` is already mapped: >
+    let g:krlFoldTextObject = 1
+
+Alternativ <plug> mappings: >
+    augroup KrlFoldTextObj
+    au!
+    au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFold
+    au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFold
+    au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerFold
+    au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerFold
+    augroup END
 
 
 Index: |krl-index|
@@ -961,8 +965,8 @@ Known bugs in |krl-indent|:
 -------------------------
 1. If a subroutine is named so that it starts with a keyword that will
     decrease the level of indention, then the call is indeted accordingly.
-    You can fix this quickly by hitting i_CTRL-F while still in |insert| mode 
-    after you finished the complete call, or use i_CTRL-P or i_CTRL-N before 
+    You can fix this quickly by hitting |i_CTRL-F| while still in |insert| mode 
+    after you finished the complete call, or use |i_CTRL-P| or |i_CTRL-N| before 
     the keyword is complete which causes the indention.
 
     Keywords that decrease the level of indention are: 
