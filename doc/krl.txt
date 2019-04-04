@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 2019 Mar 11
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 04. Apr 2019
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
@@ -220,8 +220,8 @@ Requires >
                         *krl-options*
 ==============================================================================
 
-Set or reset options in your .vimrc. Only |g:krlVerbose| will have an effect
-if changed later.
+Set or reset options in your .vimrc. Except |g:krlCommentIndent| and
+|g:krlVerbose| changeing a krl option during editing will have no effect.
 
 *krl-key-mappings*
 Also see these options for alternative <PLUG> mappings.
@@ -360,6 +360,8 @@ This is usefull if you commented out code like this:
 If omitted or set to 1 comments which start in the first column are indented
 like everything else.
 
+This option may be changed any time and will take effect immediately.
+
 
 Index: |krl-index|
 ==============================================================================
@@ -481,7 +483,7 @@ g:krlListUsageKeyMap:
 
     `<leader>u`: List all appearances, outside of strings, enum declarations
                 and comments (unless used in a vkrc file), of the word under
-                the cursor in the |qickfix-window|.
+                the cursor in the |quickfix-window|.
 
 To force this mapping if `<leader>u` is already mapped: >
     let g:krlListUsageKeyMap = 1
@@ -498,7 +500,7 @@ Index: |krl-index|
 g:krlListDefKeyMap:
 -------------------
 
-    `<leader>f`: List def/deffct of the current file in the |qickfix|-list. >
+    `<leader>f`: List def/deffct of the current file in the |quickfix-window|. >
 
 To force this mapping if `<leader>f` is already mapped: >
     let g:krlListDefKeyMap = 1
@@ -519,7 +521,7 @@ Note: These mappings overshadow the default vim commands
 |[[|, |]]|, |[]| and |][|!
 
 [count]`[[`   Jumps backward to the next def/deffct [count] times. Works in
-            |Normal|-, |Visual|- and |Operator-pending|-mode. 
+            |Normal|-, |Visual|- and |Operator-pending|-mode, see |operator|. 
             In Normal-mode it respects 'wrapscan'.
        
 [count]`]]`   Like [[ but jumps forward to the next def/deffct.
@@ -638,6 +640,8 @@ Enable verbose messages: >
 
 If omitted or set to 0 no messages are generate by krl-for-vim.
 
+This option may be changed any time and will take effect immediately.
+
 
 Index: |krl-index|
                         *krl-matchit-support*  
@@ -665,7 +669,7 @@ Index: |krl-index|
                         *krl-text-objects*  
 
 Krl text objects work similar as |text-objects|.
-They can be used in |Visual|- and |Operator-pending|-mode. 
+They can be used in |Visual|- and |Operator-pending|-mode, see |operator|. 
 
 ==============================================================================
                     *g:krlFunctionTextObject*   *<plug>KrlTxtObjInnerFunc*
@@ -728,13 +732,11 @@ Index: |krl-index|
 g:krlAutoComment:
 -----------------
 
-Disable 'formatoptions' += ro: >
+Disable 'formatoptions' += ro. See |fo-table|: >
     let g:krlAutoComment = 0
 
 If omitted or set to 1 the comment char ; is automatically added after
 hitting |i_<CR>|, |o| or |O| on a comment line.  
-
-See also |krl-formatting-comments| and |fo-table|.
 
 
 Index: |krl-index|
@@ -934,11 +936,11 @@ Example defdat.dat:  >
 
 Note the <Markers> in the example body files. Markers have to be put in
 <>. Any marker but | may be present multiple times or omitted.
-Markers:  global    substituted by "global " (or " public" if defdat) or ""
-          name      substituted by entered name
-          type      substituted by "def", "deffct" or "defdat"
-          datatype  substituted by the chosen data type
-          returnvar substituted by a varname in the form of [prefix]Result
+Markers:  global    substituted with "global " (or " public" if defdat) or ""
+          name      substituted with entered name
+          type      substituted with "def", "deffct" or "defdat"
+          datatype  substituted with the chosen data type
+          returnvar substituted with a varname in the form of [prefix]Result
           |         put cursor here when finished
 
 Note that comments or anything below the END line is not supported and may
@@ -965,7 +967,7 @@ Known bugs in |krl-indent|:
 -------------------------
 1. If a subroutine is named so that it starts with a keyword that will
     decrease the level of indention, then the call is indeted accordingly.
-    You can fix this quickly by hitting |i_CTRL-F| while still in |insert| mode 
+    You can fix this quickly by hitting |i_CTRL-F| while still in insert mode 
     after you finished the complete call, or use |i_CTRL-P| or |i_CTRL-N| before 
     the keyword is complete which causes the indention.
 
@@ -982,7 +984,7 @@ Known bugs in |krl-indent|:
     files you have in buffer.
 
     Once the call CaseHandling1() is fully present and you are back in
-    |Normal| mode you can use |=| to fix the indention.
+    Normal mode you can use |=| to fix the indention.
 
 2. A continue belongs to the following line, so I want it
     to have the same indention as the following line:
@@ -1005,15 +1007,17 @@ Known bugs in |krl-highlighting|:
 1. If a frame is called "in" or "out" (like DECL FRAME In = {X ...) and used
     in an operation with ":" (OutFrame = base_data[1]:In) it is
     highlighted like the ":IN" from "DEF FOO(nInPara:IN)".
+2. If a keyword is used as structure component name you may get false
+    highlighting.
 
 
 Index: |krl-index|
                         *krl-go-definition-bugs*
 Known bugs in |g:krlGoDefinitionKeyMap|:
 --------------------------------------
-1. You can use the modified gd also on user defined STRUC names. If the STRUC
-    definition does not exist, you may get a false positive on a variable
-    definition which uses this STRUC data type.
+1. You can use the modified `gd` also on user defined ENUM or STRUC names. 
+    You may get a false positives on a variable definition which uses this
+    data type. The correct result, if present in path, will still be shown.
 
 
 Index: |krl-index|
