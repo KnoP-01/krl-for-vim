@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.0.0
-" Last Change: 02. Apr 2019
+" Last Change: 04. Apr 2019
 " Credits: Thanks for contributions to this to Michael Jagusch
 "
 " Suggestions of improvement are very welcome. Please email me!
