@@ -143,10 +143,10 @@ A: Switch error highlighting off and/or folding to marker: >
     let g:krlShowError = 0        " better performance
 
 Q: Still sluggish!
-A: Switch syntax off or jump instead of scroll! >
+A: Switch syntax off or jump instead of scroll!
 
 Q: Where are the nice and informative messages?
-A: `:let g:krlVerbose=1` any time.
+A: `:let g:knopVerbose=1` any time.
 
 
 Index: |krl-index|
@@ -170,7 +170,7 @@ Requires >
 
 ~/.vim/ftdetect/krl.vim
 Detects KRL files based on their file name ending and content. KRL files are 
-checked for the presence of a DEF* line or any &HEADER.
+checked for the presence of a DEF line or any &HEADER.
 Requires >
     :filetype on
 
@@ -613,6 +613,9 @@ Index: |krl-index|
 g:knopShortenQFPath:
 --------------------
 
+Note: g:krlShortenQFPath is synonym for g:knopShortenQFPath.
+Use the g:knop* variable!
+
 Disable shortening of paths that are longer than 40 char in quickfix-window: >
     let g:knopShortenQFPath = 0
 
@@ -625,6 +628,9 @@ Index: |krl-index|
                         *g:krlRhsQuickfix*   *g:krlLhsQuickfix*
 g:knop[RL]hsQuickfix:
 ---------------------
+
+Note: g:krl[RL]hsQuickfix is synonym for g:knop[RL]hsQuickfix.
+Use the g:knop* variable!
 
 Where to open the |quickfix-window| the first time.
 
@@ -679,6 +685,9 @@ Index: |krl-index|
                         *g:krlVerbose*
 g:knopVerbose:
 --------------
+
+Note: g:krlVerbose is synonym for g:knopVerbose.
+Use the g:knop* variable!
 
 Enable verbose messages: >
     let g:knopVerbose = 1
