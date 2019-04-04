@@ -41,16 +41,23 @@ Extract the most recent [release][1] and copy the folders
 into your `~/.vim/` or `%USERPROFILE%\vimfiles\` directory. 
 Overwrite krl.\* files from older installation. 
 
-To use these plugins put >
+To use these plugins put >  
+
     filetype plugin indent on
     syntax on
+
 in your .vimrc.
 
-You may have to run >
+You may have to run >  
+
     :helptags ~/.vim/doc/
-or >
+
+or >  
+
     :helptags ~/vimfiles/doc/
-to use the help within Vim after installation. >
+
+to use the help within Vim after installation. >  
+
     :help krl
 
 
