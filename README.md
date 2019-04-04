@@ -68,28 +68,28 @@ of different releases. Some features may work better when all files are loaded.
 #### ~/.vim/doc/krl.txt
 Help file. This should help you to use these plugins to your best advantage.
 You may want to look into the [help][3] prior to installation.  
-Requires >
+Requires >  
     :helptags ~/.vim/doc
   
   
 #### ~/.vim/ftdetect/krl.vim
 Detects KRL files based on their file name and content. KRL files are checked
 for the presence of a DEF line or any &HEADER.
-Requires >
+Requires >  
     :filetype on
   
   
 #### ~/.vim/ftplugin/krl.vim
 Sets various vim options and provides key mappings and folding. It supports
 commentary [vimscript #3695][7] and matchit [vimscript #39][8].
-Requires >
+Requires >  
     :filetype plugin on
   
   
 #### ~/.vim/indent/krl.vim
 Sets indent related vim options. Sets indention to 2 spaces by default,
 optional.  
-Requires >
+Requires >  
     :filetype indent on
   
   
@@ -97,13 +97,13 @@ Requires >
 Does make life more colorful. Unfortunately some features of the other files
 may work better with syntax on. This should not stop you from trying syntax
 off if you like.  
-Requires >
+Requires >  
     :syntax on
   
   
 ## tl:dr
 
-Q: Since version 2.0.0 everything's weird. How so?
+Q: Since version 2.0.0 everything's weird. How so?  
 A: Most optional features are enabled by default now.
 
 Q: I'm here to feed my kids, not to read. How do I get rid of stuff?  
@@ -115,7 +115,7 @@ A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
     let g:krlKeyWord = 0 " don't treat $, # and & as word char
     let g:krlShortenQFPath = 0 " don't shorten paths in quickfix
 
-Q: Which keys get mapped to what?
+Q: Which keys get mapped to what?  
 A: If there is no existing mapping which would be overridden and no <plug>
     mapping is configured for that function then the following keys get
     mapped: >
@@ -168,20 +168,20 @@ A: If there is no existing mapping which would be overridden and no <plug>
             Can be forced with
         let g:krlAutoFormKeyMap = 1
 
-Q: Does krl-for-vim provide a mapping for indenting a complete file?
+Q: Does krl-for-vim provide a mapping for indenting a complete file?  
 A: No, but you may put the following in your .vimrc: >
     nnoremap ANYKEY gg=G``zz
 
-Q: Scrolling feels sluggish. What can I do?
+Q: Scrolling feels sluggish. What can I do?  
 A: Switch error highlighting off and/or folding to marker: >
 
     let g:krlFoldMethodSyntax = 0 " better performance, but case sensitive
     let g:krlShowError = 0        " better performance
 
-Q: Still sluggish!
+Q: Still sluggish!  
 A: Switch syntax off or jump instead of scroll!
 
-Q: Where are the nice and informative messages?
+Q: Where are the nice and informative messages?  
 A: `:let g:knopVerbose=1` any time.
 
 ## Self promotion
