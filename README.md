@@ -195,10 +195,10 @@ If you need assistance with your robot project [visit us][9].
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases/latest
 [2]: https://github.com/KnoP-01/krl-for-vim#tldr
-[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L165
-[4]: https://vim.sourceforge.io/scripts/script.php?script_id=5344
+[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L167
+[4]: https://www.vim.org/scripts/script.php?script_id=5344
 [5]: https://github.com/KnoP-01/krl-for-vim/issues
-[6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L186
-[7]: https://vim.sourceforge.io/scripts/script.php?script_id=3695
-[8]: https://vim.sourceforge.io/scripts/script.php?script_id=39
+[6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L188
+[7]: https://www.vim.org/scripts/script.php?script_id=3695
+[8]: https://www.vim.org/scripts/script.php?script_id=39
 [9]: http://www.graeff.de
