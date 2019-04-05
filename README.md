@@ -128,7 +128,7 @@ A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
     let g:krlShortenQFPath = 0 " don't shorten paths in quickfix
 
 Q: Which keys get mapped to what?  
-A: If there is no existing mapping which would be overridden and no <plug>
+A: If there is no existing mapping which would be overridden and no \<plug\>
     mapping is configured for that function then the following keys get
     mapped: >
 
