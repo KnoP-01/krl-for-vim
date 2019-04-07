@@ -69,7 +69,7 @@ if exists("g:krlNoPath")
 endif
 if exists("g:krlCloseFolds")
   if !exists("g:krlFoldLevel")
-    g:krlFoldLevel=(g:krlCloseFolds + 1) % 3
+    let g:krlFoldLevel=(g:krlCloseFolds + 1) % 3
   endif
   unlet g:krlCloseFolds
 endif
@@ -414,8 +414,8 @@ if !exists("*s:KnopVerboseEcho()")
 
   function s:KrlSearchVkrcMarker(currentWord)
     call s:KnopVerboseEcho("Search marker definitions...")
-    let l:markerNumber = substitute(a:currentWord,'m','','')
-    if (s:KnopSearchPathForPatternNTimes('\v\c^\s*\$cycflag\[\s*'.l:markerNumber.'\s*\]\s*\=',s:KnopPreparePath(&path,'*.src').' '.s:KnopPreparePath(&path,'*.sub'),'','krl') == 0)
+    let l:markerNumber = substitute(a:currentWord,'\cm','','')
+    if (s:KnopSearchPathForPatternNTimes('\c^\s*\$cycflag\s*\[\s*'.l:markerNumber.'\s*\]\s*=',s:KnopPreparePath(&path,'*.src').' '.s:KnopPreparePath(&path,'*.sub'),'','krl') == 0)
       call setqflist(s:KnopUniqueListItems(getqflist()))
       call s:KnopOpenQf('krl')
       call s:KnopVerboseEcho("Marker definition found.",1)
@@ -1210,7 +1210,7 @@ if !exists("*s:KnopVerboseEcho()")
   " Function Text Object {{{
 
   if get(g:,'krlMoveAroundKeyMap',1) " depends on move around key mappings
-    function s:KrlFunctionTextObject(inner,withcomment)
+    function <SID>KrlFunctionTextObject(inner,withcomment)
       if a:inner==1
         let l:n = 1
       else
@@ -1241,7 +1241,7 @@ if !exists("*s:KnopVerboseEcho()")
   " Fold Text Object {{{
 
   if exists("loaded_matchit") " depends on matchit
-    function s:KrlFoldTextObject(inner)
+    function <SID>KrlFoldTextObject(inner)
       let l:col = col('.')
       let l:line = line('.')
       let l:foundFold = 0
@@ -1607,9 +1607,9 @@ if get(g:,'krlMoveAroundKeyMap',1)
   onoremap <silent><buffer> ][ :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\c\v\ze^\s*end(fct\|dat)?>', 'sW')<Bar>:unlet b:knopCount<CR>
   xnoremap <silent><buffer> ][ :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>(\n)?', 'seWz')<Bar>:unlet b:knopCount<CR>
   " Move around comments
-  nnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v^(\s*;.*\n)@<!(\s*;)', 'bs')<Bar>:unlet b:knopCount<cr>
-  onoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v^(\s*;.*\n)@<!(\s*;)', 'bsW')<Bar>:unlet b:knopCount<cr>
-  xnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^(\s*;.*\n)@<!(\s*;)', 'bsW')<Bar>:unlet b:knopCount<cr>
+  nnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v(^\s*;.*\n)@<!(^\s*;)', 'bs')<Bar>:unlet b:knopCount<cr>
+  onoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v(^\s*;.*\n)@<!(^\s*;)', 'bsW')<Bar>:unlet b:knopCount<cr>
+  xnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v(^\s*;.*\n)@<!(^\s*;)', 'bsW')<Bar>:unlet b:knopCount<cr>
   nnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\n\s*([^;\t ]\|$)', 's')<Bar>:unlet b:knopCount<cr>
   onoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:                     call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\n(\s*[^;\t ]\|$)', 'seW')<Bar>normal! ==<Bar>:unlet b:knopCount<cr>
   xnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>:exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\n\ze\s*([^;\t ]\|$)', 'seW')<Bar>:unlet b:knopCount<cr>
