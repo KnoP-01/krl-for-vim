@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 04. Apr 2019
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 07. Apr 2019
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
@@ -218,10 +218,12 @@ Requires >
 
 ==============================================================================
                         *krl-options*
-==============================================================================
 
 Set or reset options in your .vimrc. Except |g:krlCommentIndent| and
-|g:krlVerbose| changeing a krl option during editing will have no effect.
+|g:knopVerbose| changeing a krl option during an editing session will 
+have no effect.
+
+==============================================================================
 
 *krl-key-mappings*
 Also see these options for alternative <PLUG> mappings.
@@ -232,6 +234,7 @@ Also see these options for alternative <PLUG> mappings.
 |g:krlMoveAroundKeyMap|   `[[`, `]]` ... jumps around def/deffct
 |g:krlFunctionTextObject| `if`, `af` and `aF` def/deffct text objects
 |g:krlFoldTextObject|     `io` and `ao` fold text objects
+|g:krlCommentTextObject|  `ic` and `ac` comment text objects
 |g:krlAutoFormKeyMap|     `<leader>n` inserts body for def, deffct or defdat
 
 *krl-highlight-options*
@@ -240,11 +243,12 @@ Also see these options for alternative <PLUG> mappings.
 
 *krl-indent-options*
 |g:krlSpaceIndent|        Disable 'sts', 'sw', 'et' and 'sr' settings
-|g:krlCommentIndent|      Disable indent of first column comments
+|g:krlCommentIndent|      Enable indent of first column comments
 
 *krl-folding-options*
 |g:krlFoldLevel|          Change which folds get closed at start
 |g:krlFoldMethodSyntax|   Fold method syntax or marker
+|g:krlConcealFoldTail|    Disable conceal of fold tail in VKRC
 
 *krl-comment-options*
 |g:krlAutoComment|        Disable auto insert of comment char `;`
@@ -274,8 +278,8 @@ g:krlShowError:
 Disable error highlighting:  >
     let g:krlShowError = 0
 
-If omitted or set to 1 a few syntax errors get highlighted.
-Mainly false usages of =, ==, <= and >= get highlighted. 
+If omitted or set to 1 a few syntax errors, mainly false usages of =, ==, <=
+and >=, get highlighted. 
 Note that this is not a syntax check.
 
 
@@ -346,10 +350,10 @@ Index: |krl-index|
 g:krlCommentIndent:
 -------------------
 
-Disable indent of line comments which start in the first column:  >
-    let g:krlCommentIndent = 0
+Enable indent of line comments which start in the first column: >
+    let g:krlCommentIndent = 1
 
-This is usefull if you commented out code like this: 
+This is default off for commented code like this: 
     wait for di_blubb
 ;    wait for di_bla or di_blubb
 ;    if di_bla then
@@ -357,8 +361,8 @@ This is usefull if you commented out code like this:
 ;    endif
     do_blubb()
 
-If omitted or set to 1 comments which start in the first column are indented
-like everything else.
+If omitted or set to 0 comments which start in the first column are not
+indented.
 
 This option may be changed any time and will take effect immediately.
 
@@ -371,14 +375,16 @@ Index: |krl-index|
 g:krlFoldLevel:
 ---------------
 
-Set this option to 2 makes closing all folds the starting behavior:  >
+Set this option to 2 to have all folds closed on opening a file:  >
     let g:krlFoldLevel = 2
 
 Set this option to 0 to switch folding off completely: >
    let g:krlFoldLevel = 0
 
-If omitted or set to 1 only movement folds are closed. If set to 0
-changeing folding via |g:krlFoldingKeyMap| is not possible.
+If omitted or set to 1 the following folds get closed on opening a file: 
+    Movement folds for regular KRC files and 
+    second level folds for VKRC files except vw_usr_*. 
+If set to 0 changeing folding via |g:krlFoldingKeyMap| is not possible.
 
 See also |fold-commands| and |g:krlFoldMethodSyntax|.
 
@@ -394,6 +400,23 @@ Use 'foldmethod' |fold-marker| instead of |fold-syntax|.  >
 If omitted or set to 1 'foldmethod' syntax is used. 'foldmethod' marker
 uses less performance, but is case sensitive and will catch less movement
 folds.
+
+
+Index: |krl-index|
+                        *g:krlConcealFoldTail*
+g:krlConcealFoldTail:
+---------------------
+
+Disable concealing of fold tail in VKRC files.  >
+   let g:krlConcealFoldTail = 0
+
+If omitted or set to 1 the part after the second ; in a fold line gets
+concealed. This makes the logic in a PSPS better readable. E.g.: >
+     ;FOLD 1: A9 = EIN 
+instead of: >
+     ;FOLD 1: A9 = EIN ;%{SE}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A9 = EIN,3:BOASG
+
+See also 'conceallevel'.
 
 
 Index: |krl-index|
@@ -414,7 +437,7 @@ VKRC FOLGE, UP and MAKRO:
     `<F3>`: Close second level folds
     `<F4>`: Close all folds
 
-To force those mappings if your F-Keys are already mapped: >
+To force these mappings if your F-Keys are already mapped: >
     let g:krlFoldingKeyMap = 1
 
 Alternativ <plug> mappings: >
@@ -434,6 +457,8 @@ Vim by itself provides a lot of nice features to get around quickly. Some of
 those features depend on proper 'path' setting. Fortunatly krl-for-vim takes
 care abput that and more for you.
 
+For the best experience keep your files below the `KRC/` or `R1/` folder.
+
 Note to unix/linux users: Keep your files on a filesystem which ingores case
 (e.g. FAT) or some of the following features may not work correctly.
 
@@ -444,8 +469,6 @@ the following features.
 
 You may instruct krl-for-vim not to change 'path' if you reset |g:krlPath|.
 'suffixes' and 'suffixesadd' get their values unconditional. 
-
-For the best experience keep your files below the `KRC/` or `R1/` folder.
 
 Index: |krl-index|
 ==============================================================================
@@ -469,7 +492,13 @@ Alternativ <plug> mapping: >
 A succesful search for a file local declaration jumps there right away. Get
 back where you were with |''|. A succesful search for a more global
 declaration opens the |quickfix-window|. This also works for Markers, Bin,
-BinIn, UPs and MAKROs in the fold lines: `;FOLD 4: SPSMAKRO23 = M15`
+BinIn, UPs and MAKROs in fold lines, e.g.: >
+    ;FOLD 4: SPSMAKRO23 = M15
+    ;ENDFOLD
+    ;FOLD 5: bin1 ( EIN ) = binin1
+    ;ENDFOLD
+    ;FOLD UP1 = M33
+    ;ENDFOLD
 
 Works best with `:syntax on` and both |g:krlPath| and |g:krlKeyWord| omitted.
 
@@ -668,7 +697,7 @@ Index: |krl-index|
 ==============================================================================
                         *krl-text-objects*  
 
-Krl text objects work similar as |text-objects|.
+krl-for-vim text objects work similar as |text-objects|.
 They can be used in |Visual|- and |Operator-pending|-mode, see |operator|. 
 
 ==============================================================================
@@ -680,10 +709,10 @@ g:krlFunctionTextObject:
 
 Note: These text objects depend on |g:krlMoveAroundKeyMap| = 1 or omitted.
 
-    `if`: inner part of def/deffct.
-    `af`: outer part of def/deffct.
-    `aF`: outer part of def/deffct including, if present, one empty following
-        line and directly preceding comments.
+    [count]`if`: inner part of def/deffct.
+    [count]`af`: outer part of def/deffct.
+    [count]`aF`: outer part of def/deffct including, if present, one empty
+            following line and directly preceding comments.
 
 To force these text objects if `if`, `af` and/or `aF` is already mapped: >
     let g:krlFunctionTextObject = 1
@@ -697,6 +726,30 @@ Alternativ <plug> mappings: >
     au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjAroundFuncExclCo
     au FileType krl xmap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
     au FileType krl omap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
+    augroup END
+
+
+Index: |krl-index|
+                    *g:krlCommentTextObject*    *<plug>KrlTxtObjInnerComment*
+                                              *<plug>KrlTxtObjAroundComment*
+g:krlCommentTextObject:
+--------------------
+
+Note: These text objects depend on |g:krlMoveAroundKeyMap| = 1 or omitted.
+
+    `ic`: comment block.
+    `ac`: comment block including one followng empty line.
+
+To force these text objects if `ic` and/or `ac` is already mapped: >
+    let g:krlCommentTextObject = 1
+
+Alternativ <plug> mappings: >
+    augroup KrlCommentTextObj
+    au!
+    au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundComment
+    au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundComment
+    au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerComment
+    au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerComment
     augroup END
 
 
