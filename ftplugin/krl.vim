@@ -177,6 +177,7 @@ if !exists("*s:KnopVerboseEcho()")
       let l:getback=1
       copen
     endif
+    set nobuflisted
     if get(g:,'knopShortenQFPath',1)
       setlocal modifiable
       silent! %substitute/\v\c^([^|]{40,})/\=pathshorten(submatch(1))/
