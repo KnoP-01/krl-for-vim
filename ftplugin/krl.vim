@@ -177,7 +177,7 @@ if !exists("*s:KnopVerboseEcho()")
       let l:getback=1
       copen
     endif
-    set nobuflisted
+    set nobuflisted " to be able to remove from buffer list after writing the temp file
     if get(g:,'knopShortenQFPath',1)
       setlocal modifiable
       silent! %substitute/\v\c^([^|]{40,})/\=pathshorten(submatch(1))/
