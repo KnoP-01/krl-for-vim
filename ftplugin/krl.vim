@@ -1321,7 +1321,6 @@ endif " !exists("*s:KnopVerboseEcho()")
 setlocal commentstring=;%s
 setlocal comments=:;
 setlocal suffixes+=.dat
-setlocal suffixes+=.tmp
 if has("win32")
   setlocal suffixesadd+=.src,.sub,.dat
 else
