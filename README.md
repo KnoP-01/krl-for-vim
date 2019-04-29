@@ -197,14 +197,14 @@ A: If there is no existing mapping which would be overridden and no \<plug\>
 
 Q: Does krl-for-vim provide a mapping for indenting a complete file?  
 A: No, but you may put the following in your .vimrc or
-    \~/.vim/after/ftplugin/krl.vim: >
+    ~/.vim/after/ftplugin/krl.vim: >
     nnoremap ANYKEY gg=G``zz
 
 Q: Does krl-for-vim provide a mapping to quickly switch between the
     corrosponding dat- and src-file?
 A: No, but you may put the following in your .vimrc or
     \~/.vim/after/ftplugin/krl.vim: >
-    nnoremap ANYKEY :if expand('%')=~'\.dat' <bar> e %:s?\.dat$?.src? <bar> else <bar> e %:s?\.src$?.dat?<bar> endif<CR>
+    nnoremap ANYKEY :if expand('%')=\~'\.dat' <bar> e %:s?\.dat$?.src? <bar> else <bar> e %:s?\.src$?.dat?<bar> endif<CR>
 
 Q: Scrolling feels sluggish. What can I do?  
 A: Switch error highlighting off and/or folding to marker: >
