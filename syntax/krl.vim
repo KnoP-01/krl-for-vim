@@ -216,7 +216,7 @@ syn keyword krlEnum ON_OFF_TYP APO_TYP
 "
 " SpotTech
 syn keyword krlStructure SPOT_TYPE SPOT_SUGG_T
-syn keyword krlEnum S_COMMAND S_PAIR_SLCT
+syn keyword krlEnum S_COMMAND S_PAIR_SLCT COMMAND_RETR
 "
 " VW
 syn keyword krlStructure VW_MPARA_TYP ZANGENTYP ZANGENBEDINGUNG IBSZANGENTYP LAST_IBS_TYP VERR_TYP VERRCHECK_T T_FB_STATE Kollisionsdaten State_T MODUS_T
