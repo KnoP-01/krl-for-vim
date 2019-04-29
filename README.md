@@ -43,10 +43,10 @@ Overwrite krl.\* files from older installation.
 
 To use these plugins put >
 
-    filetype plugin indent on
     syntax on
+    filetype plugin indent on
 
-in your .vimrc.
+in your .vimrc. Note that the order matters.
 
 You may have to run >
 
@@ -89,7 +89,7 @@ Requires >
   
   
 #### ~/.vim/ftplugin/krl.vim
-Sets various vim options and provides key mappings and folding. It supports
+Sets various Vim options and provides key mappings and folding. It supports
 commentary [vimscript #3695][7] and matchit [vimscript #39][8].
 Requires >  
 
@@ -97,7 +97,7 @@ Requires >
   
   
 #### ~/.vim/indent/krl.vim
-Sets indent related vim options. Sets indention to 2 spaces by default,
+Sets indent related Vim options. Sets indention to 2 spaces by default,
 optional.  
 Requires >  
 
@@ -116,19 +116,28 @@ Requires >
 ## tl:dr
 
 Q: Since version 2.0.0 everything's weird. How so?  
-A: Most optional features are enabled by default now.
+A: Most optional features are enabled by default now.  
 
 Q: I'm here to feed my kids, not to read. How do I get rid of stuff?  
 A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
 
     let g:krlAutoComment = 0 " don't continue comments with o, O or Enter
     let g:krlFormatComments = 0 " don't break comment lines automatically
+    let g:krlCommentIndent = 1 " indent comments starting in 1st column too
     let g:krlSpaceIndent = 0 " don't change 'sts', 'sw', 'et' and 'sr'
     let g:krlKeyWord = 0 " don't treat $, # and & as word char
     let g:krlShortenQFPath = 0 " don't shorten paths in quickfix
+    let g:krlFoldLevel = 0 " don't close any fold
+
+Q: I did set g:krlFoldLevel=1 or 2 but folds are open after loading a .src
+    file?!   
+A: The order matters: >
+
+    syntax on                   " before filetype plugin on
+    filetype plugin indent on   " after syntax on
 
 Q: Which keys get mapped to what?  
-A: If there is no existing mapping which would be overridden and no <plug>
+A: If there is no existing mapping which would be overridden and no \<plug\>
     mapping is configured for that function then the following keys get
     mapped: >
 
@@ -181,8 +190,15 @@ A: If there is no existing mapping which would be overridden and no <plug>
         let g:krlAutoFormKeyMap = 1
 
 Q: Does krl-for-vim provide a mapping for indenting a complete file?  
-A: No, but you may put the following in your .vimrc: >
+A: No, but you may put the following in your .vimrc or
+    .vim/after/ftplugin/krl.vim: >
     nnoremap ANYKEY gg=G``zz
+
+Q: Does krl-for-vim provide a mapping to quickly switch between the
+    corrosponding dat- and src-file?
+A: No, but you may put the following in your .vimrc or
+    .vim/after/ftplugin/krl.vim: >
+    nnoremap ANYKEY :if expand('%')=~'\.dat' <bar> e %:s?\.dat$?.src? <bar> else <bar> e %:s?\.src$?.dat?<bar> endif<CR>
 
 Q: Scrolling feels sluggish. What can I do?  
 A: Switch error highlighting off and/or folding to marker: >
@@ -191,10 +207,10 @@ A: Switch error highlighting off and/or folding to marker: >
     let g:krlShowError = 0        " better performance
 
 Q: Still sluggish!  
-A: Switch syntax off or jump instead of scroll!
+A: Switch syntax off or jump instead of scroll!  
 
 Q: Where are the nice and informative messages?  
-A: `:let g:knopVerbose=1` any time.
+A: `:let g:knopVerbose=1` any time.  
 
 ## Self promotion
 
