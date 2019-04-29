@@ -206,7 +206,7 @@ Q: Does krl-for-vim provide a mapping to quickly switch between the
 A: No, but you may put the following in your .vimrc or
     ~/.vim/after/ftplugin/krl.vim: >
 
-    nnoremap ANYKEY :if expand('%')=~'\.dat' <bar> e %:s?\.dat$?.src? <bar> else <bar> e %:s?\.src$?.dat?<bar> endif<CR>
+    nnoremap ANYKEY :if expand('%')=~'\.dat' <bar> e %:s?\.dat$?.src? <bar> else <bar> e %:s?\.src$?.dat? <bar> endif<CR>
 
 Q: Scrolling feels sluggish. What can I do?  
 A: Switch error highlighting off and/or folding to marker: >
