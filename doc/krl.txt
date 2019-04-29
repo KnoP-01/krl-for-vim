@@ -157,7 +157,7 @@ A: No, but you may put the following in your .vimrc or
     nnoremap ANYKEY gg=G``zz
 
 Q: Does krl-for-vim provide a mapping to quickly switch between the
-    corrosponding dat- and src-file?
+    corrosponding dat- and src-file?  
 A: No, but you may put the following in your .vimrc or
     ~/.vim/after/ftplugin/krl.vim: >
 
