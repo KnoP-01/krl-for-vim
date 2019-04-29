@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 07. Apr 2019
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 29. Apr 2019
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
@@ -136,6 +136,12 @@ A: If there is no existing mapping which would be overridden and no <plug>
             Depend on matchit.
             Can be forced with 
         let g:krlFoldTextObject = 1
+
+    ic Inner comment text object.
+    ac Around comment text object.
+            Depend on g:krlMoveAroundKeyMap not existing or =1.
+            Can be forced with 
+        let g:krlCommentTextObject = 1
 
     <leader>n Inserts a new def/deffct.
             Can be forced with
@@ -751,7 +757,7 @@ Index: |krl-index|
                     *g:krlCommentTextObject*    *<plug>KrlTxtObjInnerComment*
                                               *<plug>KrlTxtObjAroundComment*
 g:krlCommentTextObject:
---------------------
+-----------------------
 
 Note: These text objects depend on |g:krlMoveAroundKeyMap| = 1 or omitted.
 

@@ -19,7 +19,7 @@ It provides
 
 Since version 2.0.0 most features are enabled by default, so you don't need
 that many options in your .vimrc. Existing mappings don't get overridden,
-unless the corrosponding option is explicitly set. There are <plug>-mappings
+unless the corrosponding option is explicitly set. There are \<plug\>-mappings
 available too, if you prefere different key bindings.
 
 KRL for Vim supports viewing and analysing VKRC files. Folding will get
@@ -131,7 +131,7 @@ A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
 
 Q: I did set g:krlFoldLevel=1 or 2 but folds are open after loading a .src
     file?!   
-A: The order matters: >
+A: Unfortunately the order matters: >
 
     syntax on                   " before filetype plugin on
     filetype plugin indent on   " after syntax on
@@ -185,19 +185,25 @@ A: If there is no existing mapping which would be overridden and no \<plug\>
             Can be forced with 
         let g:krlFoldTextObject = 1
 
+    ic Inner comment text object.
+    ac Around comment text object.
+            Depend on g:krlMoveAroundKeyMap not existing or =1.
+            Can be forced with 
+        let g:krlCommentTextObject = 1
+
     <leader>n Inserts a new def/deffct.
             Can be forced with
         let g:krlAutoFormKeyMap = 1
 
 Q: Does krl-for-vim provide a mapping for indenting a complete file?  
 A: No, but you may put the following in your .vimrc or
-    .vim/after/ftplugin/krl.vim: >
+    ~/.vim/after/ftplugin/krl.vim: >
     nnoremap ANYKEY gg=G``zz
 
 Q: Does krl-for-vim provide a mapping to quickly switch between the
     corrosponding dat- and src-file?
 A: No, but you may put the following in your .vimrc or
-    .vim/after/ftplugin/krl.vim: >
+    ~/.vim/after/ftplugin/krl.vim: >
     nnoremap ANYKEY :if expand('%')=~'\.dat' <bar> e %:s?\.dat$?.src? <bar> else <bar> e %:s?\.src$?.dat?<bar> endif<CR>
 
 Q: Scrolling feels sluggish. What can I do?  
@@ -219,14 +225,14 @@ think it could be useful if this or that would be different, don't hesitate to
 email me or even better open an [issue][5]. With a little luck and good
 timing you may find me on irc://irc.freenode.net/#vim as KnoP in case you have
 any questions.  
-If you need assistance with your robot project [visit us][9].
+If you need (world wide) assistance with your robot project [visit us][9].
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases/latest
 [2]: https://github.com/KnoP-01/krl-for-vim#tldr
-[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L196
+[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L218
 [4]: https://www.vim.org/scripts/script.php?script_id=5344
 [5]: https://github.com/KnoP-01/krl-for-vim/issues
-[6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L218
+[6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L240
 [7]: https://www.vim.org/scripts/script.php?script_id=3695
 [8]: https://www.vim.org/scripts/script.php?script_id=39
 [9]: http://www.graeff.de
