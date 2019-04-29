@@ -10,6 +10,7 @@ KUKA industrial robots.
 
 It provides
 * syntax highlighting,
+* support for commentary [vimscript #3695][7] and matchit [vimscript #39][8],
 * auto indention,
 * folding,
 * mappings and settings to navigate through code in a backup folder structure,
@@ -20,7 +21,7 @@ It provides
 Since version 2.0.0 most features are enabled by default, so you don't need
 that many options in your .vimrc. Existing mappings don't get overridden,
 unless the corresponding option is explicitly set. There are \<plug\>-mappings
-available too, if you prefere different key bindings.
+available too, if you prefer different key bindings.
 
 KRL for Vim supports viewing and analysing VKRC files. Folding will get
 optimized for VKRC and you can use your Go Definition mapping (default gd) on
@@ -30,7 +31,7 @@ VKRC-Editor.
 **Note:** Keep your files to be edited in one folder or in a regular robot
 backup folder structure. KRL for Vim modifies 'path' accordingly. Since
 version 2.0.0 KRC1 backups are supported too.  
-**Note to linux users:** Keep your files to be edited on a FAT file system. 
+**Note to Linux users:** Keep your files to be edited on a FAT file system. 
 Some features need the case insensitive file system to work properly.
 
 
