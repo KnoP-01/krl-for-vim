@@ -19,7 +19,7 @@ It provides
 
 Since version 2.0.0 most features are enabled by default, so you don't need
 that many options in your .vimrc. Existing mappings don't get overridden,
-unless the corrosponding option is explicitly set. There are \<plug\>-mappings
+unless the corresponding option is explicitly set. There are \<plug\>-mappings
 available too, if you prefere different key bindings.
 
 KRL for Vim supports viewing and analysing VKRC files. Folding will get
