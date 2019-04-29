@@ -6,27 +6,6 @@
 
 
 
-Installation:
--------------
-
-Extract the most recent release and copy the folders 
-`/doc`, `/ftdetect`, `/ftplugin`, `/indent` and `/syntax` 
-into your `~/.vim/` or `%USERPROFILE%\vimfiles\` directory. 
-Overwrite krl.* files from older installation. 
-
-To use these plugins put >
-    syntax on
-    filetype plugin indent on
-in your .vimrc. Note that the order matters.
-
-You may have to run >
-    :helptags ~/.vim/doc/
-or >
-    :helptags ~/vimfiles/doc/
-to use the help within Vim after installation. >
-    :help krl
-
-
 ==============================================================================
                         *krl-Introducion*
 
@@ -60,6 +39,29 @@ backup folder structure. KRL for Vim modifies 'path' accordingly. Since
 version 2.0.0 KRC1 backups are supported too.  
 Note to linux users: Keep your files to be edited on a FAT file system. 
 Some features need the case insensitive file system to work properly.
+
+
+Index: |krl-index|
+==============================================================================
+Installation:
+-------------
+
+Extract the most recent release and copy the folders 
+`/doc`, `/ftdetect`, `/ftplugin`, `/indent` and `/syntax` 
+into your `~/.vim/` or `%USERPROFILE%\vimfiles\` directory. 
+Overwrite krl.* files from older installation. 
+
+To use these plugins put >
+    syntax on
+    filetype plugin indent on
+in your .vimrc. Note that the order matters.
+
+You may have to run >
+    :helptags ~/.vim/doc/
+or >
+    :helptags ~/vimfiles/doc/
+to use the help within Vim after installation. >
+    :help krl
 
 
 Index: |krl-index|
@@ -173,59 +175,13 @@ Q: Where are the nice and informative messages?
 A: `:let g:knopVerbose=1` any time.  
 
 
-Index: |krl-index|
-                        *krl-content*
-Content description:
---------------------
->
-    ~/.vim/doc/krl.txt
-    ~/.vim/ftdetect/krl.vim
-    ~/.vim/ftplugin/krl.vim
-    ~/.vim/indent/krl.vim
-    ~/.vim/syntax/krl.vim
-
-You may use all these independently from one another. Just don't mix versions
-of different releases. Some features may work better when all files are loaded.
-
-~/.vim/doc/krl.txt
-Help file. This should help you to use these plugins to your best advantage.
-Requires >
-    :helptags ~/.vim/doc
-
-~/.vim/ftdetect/krl.vim
-Detects KRL files based on their file name ending and content. KRL files are 
-checked for the presence of a DEF line or any &HEADER.
-Requires >
-    :filetype on
-
-~/.vim/ftplugin/krl.vim
-Sets various Vim options and provides key mappings and folding. It supports
-commentary (vimscript #3695) and matchit (vimscript #39).
-Requires >
-    :filetype plugin on
-
-~/.vim/indent/krl.vim
-Sets indent related Vim options. Sets indention to 2 spaces by default,
-optional.  
-Requires >
-    :filetype indent on
-
-~/.vim/syntax/krl.vim
-Does make life more colorful. Unfortunately some features of the other files
-may work better with syntax on. This should not stop you from trying syntax
-off if you like.  
-Requires >
-    :syntax on
-
-
 ==============================================================================
                         *krl*   *krl-index* 
 ==============================================================================
 
 |krl-Introducion|
     |krl-tl:dr|     Short overview
-    |krl-content|   What are those files for and how to activate them
-|krl-options|       List of options and <plug> mappings
+|krl-options|       List of all options and <plug> mappings
 |krl-highlighting|
 |krl-indent|
 |krl-folding|
