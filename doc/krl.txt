@@ -808,7 +808,7 @@ If the type does not match the current file type (*.src, *.sub or *.dat), a
 a new file with the given name is created. In case you want a new DEFDAT in a
 *.src or vice versa.
 
-The User group |autocmd-event| `KrlAutoFormPost` will be triggered after the
+The |User| group |autocmd-event| `KrlAutoFormPost` will be triggered after the
 insertion is finished and may be used for further customization: >
     augroup KrlAutoForm
     au!
