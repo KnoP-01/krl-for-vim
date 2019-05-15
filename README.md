@@ -85,6 +85,15 @@ A: Unfortunately the order matters: >
     syntax on                   " before filetype plugin on
     filetype plugin indent on   " after syntax on
 
+Q: Folds are still open although I have syntax on and filetype on in the right order?!
+A: Some plugin manager mess with those commands, so with vim-plug I had to redo this after plug#end(): >
+
+    call plug#end()
+    syntax off                 " undo what plug#begin() did to syntax
+    filetype plugin indent off " undo what plugin#begin() did to filetype
+    syntax on                   " before filetype plugin on
+    filetype plugin indent on   " after syntax on
+
 Q: Which keys get mapped to what?  
 A: If there is no existing mapping which would be overridden and no \<plug\>
     mapping is configured for that function then the following keys get
