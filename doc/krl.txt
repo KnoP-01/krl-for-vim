@@ -191,7 +191,7 @@ A: `:let g:knopVerbose=1` any time.
                         *krl*   *krl-index* 
 ==============================================================================
 
-|krl-Introducion|
+|krl-Introduction|
     |krl-tl:dr|     Short overview
 |krl-options|       List of all options and <plug> mappings
 |krl-highlighting|
