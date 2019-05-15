@@ -92,7 +92,7 @@ A: Unfortunately the order matters: >
     filetype plugin indent on   " after syntax on
 
 Q: Folds are still open although I have syntax on and filetype on in the right
-    order?!
+    order?!  
 A: Some plugin manager mess with those commands, so with vim-plug I had to
     redo this after plug#end(): >
 

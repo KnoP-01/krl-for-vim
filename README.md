@@ -85,7 +85,7 @@ A: Unfortunately the order matters: >
     syntax on                   " before filetype plugin on
     filetype plugin indent on   " after syntax on
 
-Q: Folds are still open although I have syntax on and filetype on in the right order?!
+Q: Folds are still open although I have syntax on and filetype on in the right order?!  
 A: Some plugin manager mess with those commands, so with vim-plug I had to redo this after plug#end(): >
 
     call plug#end()
