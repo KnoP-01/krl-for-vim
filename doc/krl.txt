@@ -7,7 +7,7 @@
 
 
 ==============================================================================
-                        *krl-Introducion*
+                        *krl-Introduction*
 
 Have a look at |krl-tl:dr| to get a quick overview over the most important
 options provided by KRL for Vim.
