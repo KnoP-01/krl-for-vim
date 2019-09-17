@@ -8,6 +8,15 @@
 " Suggestions of improvement are very welcome. Please email me!
 "
 "
+"
+" Note to self:
+" for testing perfomance
+"     open a 1000 lines file.
+"     :syntime on
+"     G
+"     hold down CTRL-U until reaching top
+"     :syntime report
+
 
 " Init {{{
 " Remove any old syntax stuff that was loaded (5.x) or quit when a syntax file
@@ -379,6 +388,9 @@ if get(g:,'krlShowError',1)
   "                         ||
   syn match krlError9 /\v(^[^;]*<(distance|delay|prio|minimum|maximum)\s*)@<=[:=]\=/
   "
+  " 'for', 'while' or 'repeat' followed by 'do'
+  syn match krlError10 /\c\v^\s*(until|while|for)>[^;]*<do>/
+  "
   highlight default link krlError0 Error
   highlight default link krlError1 Error
   highlight default link krlError2 Error
@@ -389,6 +401,7 @@ if get(g:,'krlShowError',1)
   highlight default link krlError7 Error
   highlight default link krlError8 Error
   highlight default link krlError9 Error
+  highlight default link krlError10 Error
 endif
 " }}} Error
 
