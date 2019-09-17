@@ -1294,7 +1294,7 @@ if !exists("*s:KnopVerboseEcho()")
   if get(g:,'krlMoveAroundKeyMap',1) " depends on move around key mappings
     function <SID>KrlCommentTextObject(around)
       if getline('.')!~'^\s*;' && !search('^\s*;',"sW")
-          return
+        return
       endif
       " starte innerhalb des oder nach dem kommentar
       silent normal! j
@@ -1595,13 +1595,13 @@ endif " has("folding") && get(g:,'krlFoldLevel',1)
 
 " matchit support
 if exists("loaded_matchit")
-  let b:match_words = '^\s*\<if\>:^\s*\<else\>:^\s*\<endif\>,'
-        \.'^\s*\<\(for\|while\|loop\|repeat\)\>:^\s*\<exit\>:^\s*\<\(end\(for\|while\|loop\)\|until\)\>,'
-        \.'^\s*\<switch\>:^\s*\<case\>:^\s*\<default\>:^\s*\<endswitch\>,'
-        \.'^\s*\(global\s\+\)\?\<def\(fct\)\?\>:^\s*\<resume\>:^\s*\<return\>:^\s*\<end\(fct\)\?\>,'
-        \.'^\s*\<defdat\>:^\s*\<enddat\>,'
-        \.'^\s*\<spline\>:^\s*\<endspline\>,'
-        \.'^\s*;\s*\<fold\>:^\s*;\s*\<endfold\>'
+  let b:match_words = '^\s*\<if\>\s[^;]\+\<then\>.*:^\s*\<else\>.*:^\s*\<endif\>.*,'
+        \.'^\s*\<\(for\|while\|loop\|repeat\)\>.*:^\s*\<exit\>.*:^\s*\<\(end\(for\|while\|loop\)\|until\)\>.*,'
+        \.'^\s*\<switch\>.*:^\s*\<case\>.*:^\s*\<default\>.*:^\s*\<endswitch\>.*,'
+        \.'^\s*\(global\s\+\)\?\<def\(fct\)\?\>.*:^\s*\<resume\>.*:^\s*\<return\>.*:^\s*\<end\(fct\)\?\>.*,'
+        \.'^\s*\<defdat\>.*:^\s*\<enddat\>.*,'
+        \.'^\s*\<spline\>.*:^\s*\<endspline\>.*,'
+        \.'^\s*;\s*\<fold\>.*:^\s*;\s*\<endfold\>.*'
   let b:match_ignorecase = 1 " KRL does ignore case
   " matchit makes fold text objects easy
   if get(g:,'krlFoldTextObject',0)
