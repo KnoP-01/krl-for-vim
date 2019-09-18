@@ -157,7 +157,7 @@ highlight default link krlBinaryInt Number
 syn match krlHexInt /'h[0-9a-fA-F]\+'/ containedin=krlStructVal
 highlight default link krlHexInt Number
 " Float
-syn match krlFloat /\v\W@1<=[+-]?\d+\.?\d*\s*%([eE][+-]?\d+)?/ containedin=krlStructVal
+syn match krlFloat /\v\W@1<=[+-]?\d+\.?\d*%(\s*[eE][+-]?\d+)?/ containedin=krlStructVal
 highlight default link krlFloat Float
 " String
 syn region krlString start=/"/ end=/"/ oneline containedin=krlStructVal
