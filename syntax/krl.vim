@@ -134,7 +134,8 @@ syn match krlParamdef /[:]\s*out\>/
 highlight default link krlParamdef StorageClass
 " Not a typedef but I like to have those highlighted
 " different then types, structures or strorage classes
-syn keyword krlTypedef DEF END DEFFCT ENDFCT DEFDAT ENDDAT
+syn match krlTypedef /\c\v<deffct>(\s+\w+\s+\w+\()@=/
+syn keyword krlTypedef DEF END ENDFCT DEFDAT ENDDAT
 highlight default link krlTypedef Typedef
 " }}} Type, StorageClass and Typedef
 
