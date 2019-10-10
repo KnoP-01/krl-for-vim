@@ -27,6 +27,13 @@ let b:did_ftplugin = 1
 let s:keepcpo = &cpo
 set cpo&vim
 
+" if krlShortenQFPath exists it's pushed to knopShortenQFPath
+if exists("g:krlShortenQFPath")
+  if !exists("g:knopShortenQFPath")
+    let g:knopShortenQFPath=g:krlShortenQFPath
+  endif
+  unlet g:krlShortenQFPath
+endif
 " if krlNoVerbose exists it's pushed to knopNoVerbose
 if exists("g:krlNoVerbose")
   if !exists("g:knopNoVerbose")
