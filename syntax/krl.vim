@@ -7,7 +7,7 @@
 "
 " Suggestions of improvement are very welcome. Please email me!
 "
-"
+" TODO: see and use :h :syn-iskeyword
 "
 " Note to self:
 " for testing perfomance

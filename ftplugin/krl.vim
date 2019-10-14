@@ -8,6 +8,7 @@
 " Suggestions of improvement are very welcome. Please email me!
 "
 " ToDo's {{{
+" TODO: see and use :h :syn-iskeyword
 " TODO  - Clean .dat or highlight unused data in .dat (if .src is present)
 "       - make search for enum value declaration possible. Problem: there may be
 "         more then one enum that uses this value
@@ -184,7 +185,6 @@ if !exists("*s:KnopVerboseEcho()")
       let l:getback=1
       copen
     endif
-    set nobuflisted " to be able to remove from buffer list after writing the temp file
     if get(g:,'knopShortenQFPath',1)
       setlocal modifiable
       silent! %substitute/\v\c^([^|]{40,})/\=pathshorten(submatch(1))/
@@ -200,6 +200,7 @@ if !exists("*s:KnopVerboseEcho()")
       execute 'silent save! ' . g:knopTmpFile
       setlocal nomodifiable
     endif
+    setlocal nobuflisted " to be able to remove from buffer list after writing the temp file
     augroup KnopOpenQf
       au!
       " reposition after closing
@@ -272,6 +273,15 @@ if !exists("*s:KnopVerboseEcho()")
     if exists("g:krlTmpFile")
       execute 'silent! bd! ' . substitute(g:krlTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
     endif
+    " also delete unnamed buffers, where the h*** they ever come from I have no
+    " idea. They are generated after the "silent save!" command
+    let l:b = {}
+    for l:b in getbufinfo()
+      if l:b["name"]=="" && bufexists(l:b["bufnr"])
+        let l:cmd = "silent bwipeout! " . l:b["bufnr"]
+        execute l:cmd
+      endif
+    endfor
   endfunction " <SID>KrlCleanBufferList()
 
   function <SID>KrlIsVkrc()
@@ -1111,6 +1121,7 @@ if !exists("*s:KnopVerboseEcho()")
       endif
       execute 'silent save! ' . g:krlTmpFile
       setlocal nomodifiable
+      setlocal nobuflisted " to be able to remove from buffer list after writing the temp file
       if exists("l:getback")
         unlet l:getback
         wincmd p
