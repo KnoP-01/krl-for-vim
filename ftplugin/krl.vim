@@ -277,7 +277,11 @@ if !exists("*s:KnopVerboseEcho()")
     " idea. They are generated after the "silent save!" command
     let l:b = {}
     for l:b in getbufinfo()
-      if l:b["name"]=="" && bufexists(l:b["bufnr"])
+      " make sure only do delete those strange empty buffers
+      if        l:b["name"]==""       " not named
+            \&& l:b["windows"]==[]    " not shown in any window
+            \&& !l:b["hidden"]        " not hidden
+            \&& !l:b["changed"]       " not modified
         let l:cmd = "silent bwipeout! " . l:b["bufnr"]
         execute l:cmd
       endif
