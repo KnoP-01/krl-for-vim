@@ -199,8 +199,8 @@ if !exists("*s:KnopVerboseEcho()")
       endif
       execute 'silent save! ' . g:knopTmpFile
       setlocal nomodifiable
+      setlocal nobuflisted " to be able to remove from buffer list after writing the temp file
     endif
-    setlocal nobuflisted " to be able to remove from buffer list after writing the temp file
     augroup KnopOpenQf
       au!
       " reposition after closing
