@@ -585,12 +585,11 @@ g:knopShortenQFPath:
 Note: g:krlShortenQFPath is synonym for g:knopShortenQFPath.
 Use the g:knop* variable!
 
-Disable shortening of paths that are longer than 40 char in quickfix-window: >
+Disable shortening of paths in quickfix-window, thus always show full paths: >
     let g:knopShortenQFPath = 0
 
-If omitted or set to 1 full paths are shown in quickfix-window.
-
-See also |pathshorten|.
+If omitted or set to 1 paths longer than 40 characters in quickfix-window are
+shortened with |pathshorten()|.
 
 
 Index: |krl-index|
@@ -667,7 +666,7 @@ This option may be changed any time and will take effect immediately.
 
 
 Index: |krl-index|
-                        *krl-matchit-support*  
+                        *krl-matchit-support*   *krl-matchup-support*
 Match it support:
 -----------------
 You may have to install the matchit plugin to use this. See |matchit-install|
