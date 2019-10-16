@@ -4,6 +4,7 @@
 " Version: 2.0.1
 " Last Change: 16.10.2019
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
+"          Thanks for beta testing to Thomas Baginski
 "
 " Suggestions of improvement are very welcome. Please email me!
 "
