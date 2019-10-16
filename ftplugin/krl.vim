@@ -1,14 +1,15 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 2.0.0
-" Last Change: 07. Apr 2019
+" Version: 2.0.1
+" Last Change: 16.10.2019
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "
 " Suggestions of improvement are very welcome. Please email me!
 "
 " ToDo's {{{
-" TODO: see and use :h :syn-iskeyword
+" BUG:  - matchit fold, text object fold doesn't work
+" TODO: - see and use :h :syn-iskeyword
 " TODO  - Clean .dat or highlight unused data in .dat (if .src is present)
 "       - make search for enum value declaration possible. Problem: there may be
 "         more then one enum that uses this value
@@ -41,6 +42,12 @@ if exists("g:krlNoVerbose")
     let g:knopNoVerbose=g:krlNoVerbose
   endif
   unlet g:krlNoVerbose
+endif
+if exists("g:krlVerbose")
+  if !exists("g:knopVerbose")
+    let g:knopVerbose=get(g:,'krlVerbose')
+  endif
+  unlet g:krlVerbose
 endif
 " if knopVerbose exists it overrides knopNoVerbose
 if exists("g:knopVerbose")
@@ -1521,7 +1528,7 @@ if get(g:,'krlPath',1)
   setlocal path-=/usr/include
 
   let b:undo_ftplugin = b:undo_ftplugin." pa<"
-endif
+endif " get(g:,'krlPath',1)
 
 " folding
 if <SID>KrlIsVkrc() && get(g:,'krlConcealFoldTail',1)
