@@ -1309,11 +1309,15 @@ if !exists("*s:KnopVerboseEcho()")
       if l:foundFold==1
         silent normal 0V%
         if a:inner == 1
+          silent normal! k
+          " ggf fold oeffnen der innerhalb des fold ist dessen inhalt geloescht werden soll 
+          silent normal! zo
+          normal! '<
+          silent normal 0V%
           " eigentlich will ich an der stelle nur <esc> druecken um die visual
           " selection wieder abzubrechen, aber das funktioniert irgendwie
           " nicht, also dieser hack
           silent normal! :<C-U><CR>
-          " normal! '<
           silent normal! j
           silent normal! V
           silent normal! '>
@@ -1640,7 +1644,8 @@ if exists("loaded_matchit") " depends on matchit (or matchup)
         \.'^\s*\(global\s\+\)\?\<def\(fct\)\?\>.*:^\s*\<resume\>.*:^\s*\<return\>.*:^\s*\<end\(fct\)\?\>.*,'
         \.'^\s*\<defdat\>.*:^\s*\<enddat\>.*,'
         \.'^\s*\<spline\>.*:^\s*\<endspline\>.*,'
-        \.'^\s*;\s*\<fold\>.*:^\s*;\s*\<endfold\>.*'
+        \.'\<fold\>:\<endfold\>'
+        " \.'^\s*;\s*\<fold\>.*:^\s*;\s*\<endfold\>.*'    " doesn't work because of syntax item krlFoldComment
   let b:match_ignorecase = 1 " KRL does ignore case
   " matchit makes fold text objects easy
   if get(g:,'krlFoldTextObject',0)
