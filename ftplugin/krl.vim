@@ -268,22 +268,30 @@ if !exists("*s:KnopVerboseEcho()")
 
   function <SID>KrlCleanBufferList()
     if exists("g:knopTmpFile")
-      execute 'silent! bd! ' . substitute(g:knopTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
+      let l:knopTmpFile = substitute(g:knopTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
     endif
     if exists("g:krlTmpFile")
-      execute 'silent! bd! ' . substitute(g:krlTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
+      let l:krlTmpFile = substitute(g:krlTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
     endif
-    " also delete unnamed buffers, where the h*** they ever come from I have no
-    " idea. They are generated after the "silent save!" command
     let l:b = {}
     for l:b in getbufinfo()
-      " make sure only do delete those strange empty buffers
+      " delete temp file buffer
+      if exists("g:knopTmpFile")
+            \&& l:b["name"] =~ l:knopTmpFile . '$'
+            \&& !l:b["hidden"]
+        call setbufvar(l:b["bufnr"],"&buflisted",0)
+      endif
+      if exists("g:krlTmpFile")
+            \&& l:b["name"] =~ l:krlTmpFile . '$'
+            \&& !l:b["hidden"]
+        call setbufvar(l:b["bufnr"],"&buflisted",0)
+      endif
+      " delete those strange empty unnamed buffers
       if        l:b["name"]==""       " not named
             \&& l:b["windows"]==[]    " not shown in any window
             \&& !l:b["hidden"]        " not hidden
             \&& !l:b["changed"]       " not modified
-        let l:cmd = "silent bwipeout! " . l:b["bufnr"]
-        execute l:cmd
+        execute "silent bwipeout! " . l:b["bufnr"]
       endif
     endfor
   endfunction " <SID>KrlCleanBufferList()
@@ -1263,7 +1271,7 @@ if !exists("*s:KnopVerboseEcho()")
 
   " Fold Text Object {{{
 
-  if exists("loaded_matchit") " depends on matchit
+  if exists("loaded_matchit") " depends on matchit (or matchup)
     function <SID>KrlFoldTextObject(inner)
       let l:col = col('.')
       let l:line = line('.')
@@ -1616,7 +1624,8 @@ endif " has("folding") && get(g:,'krlFoldLevel',1)
 " Match It and Fold Text Object mapping {{{
 
 " matchit support
-if exists("loaded_matchit")
+if exists("loaded_matchit") " depends on matchit (or matchup)
+  " ggf for, while etc aufsplitten
   let b:match_words = '^\s*\<if\>\s[^;]\+\<then\>.*:^\s*\<else\>.*:^\s*\<endif\>.*,'
         \.'^\s*\<\(for\|while\|loop\|repeat\)\>.*:^\s*\<exit\>.*:^\s*\<\(end\(for\|while\|loop\)\|until\)\>.*,'
         \.'^\s*\<switch\>.*:^\s*\<case\>.*:^\s*\<default\>.*:^\s*\<endswitch\>.*,'
@@ -1879,7 +1888,7 @@ if has("folding") && get(g:,'krlFoldLevel',1)
 endif
 
 " fold text objects
-if exists("loaded_matchit") " depends on matchit
+if exists("loaded_matchit") " depends on matchit (or matchup)
   xnoremap <silent><buffer> <plug>KrlTxtObjAroundFold     :<C-U>call <SID>KrlFoldTextObject(0)<CR>
   xnoremap <silent><buffer> <plug>KrlTxtObjInnerFold      :<C-U>call <SID>KrlFoldTextObject(1)<CR>
   onoremap <silent><buffer> <plug>KrlTxtObjAroundFold     :<C-U>call <SID>KrlFoldTextObject(0)<CR>
