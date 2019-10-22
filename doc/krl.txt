@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 29. Apr 2019
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 22. Oct 2019
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
