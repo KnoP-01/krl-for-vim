@@ -383,6 +383,9 @@ if !exists("*s:KnopVerboseEcho()")
         return ("comment" . l:word)
         "
       elseif l:countStrChr == 1
+        if l:strUntilCursor =~ '\c\<varstate\s*(\s*"$'
+          return ("var" . l:word)
+        endif
         return ("string" . l:word)
         "
       elseif l:currentChar == "$"
