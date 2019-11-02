@@ -212,12 +212,10 @@ if !exists("*s:KnopVerboseEcho()")
     augroup KnopOpenQf
       au!
       " reposition after closing
-      let l:cmd = 'au BufWinLeave <buffer='.bufnr('%').'> let g:knopPositionQf=1'
-      execute l:cmd
+      execute 'au BufWinLeave <buffer='.bufnr('%').'> let g:knopPositionQf=1'
     augroup END
     if a:useSyntax!='' 
-      let l:cmd = 'set syntax='.a:useSyntax 
-      execute l:cmd
+      execute 'set syntax='.a:useSyntax 
     endif
     if exists('g:knopPositionQf') && s:KnopQfCompatible() 
       unlet g:knopPositionQf
@@ -235,9 +233,8 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " s:KnopOpenQf()
 
   function s:KnopSearchPathForPatternNTimes(Pattern,path,n,useSyntax)
-    let l:cmd = ':noautocmd ' . a:n . 'vimgrep /' . a:Pattern . '/j ' . a:path
     try
-      execute l:cmd
+      execute ':noautocmd ' . a:n . 'vimgrep /' . a:Pattern . '/j ' . a:path
     catch /^Vim\%((\a\+)\)\=:E303/
       call s:KnopVerboseEcho(":vimgrep stopped with E303. No match found")
       return -1
@@ -317,9 +314,8 @@ if !exists("*s:KnopVerboseEcho()")
 
   function s:KrlPathWithGlobalDataLists()
     call setloclist(0,[])
-    let l:cmd = ':noautocmd lvimgrep /\c\v^\s*defdat\s+(\w+\s+public|\$\w+)/j ' . s:KnopPreparePath(&path,'*.dat')
     try
-      execute l:cmd
+      execute ':noautocmd lvimgrep /\c\v^\s*defdat\s+(\w+\s+public|\$\w+)/j ' . s:KnopPreparePath(&path,'*.dat')
     catch /^Vim\%((\a\+)\)\=:E480/
       call s:KnopVerboseEcho(":lvimgrep stopped with E480! No global data lists found in \'path\'.")
       return ' '
@@ -724,8 +720,7 @@ if !exists("*s:KnopVerboseEcho()")
         return ''
         "
       endif
-      let l:cmd = "edit ".l:sFilename
-      execute l:cmd
+      execute "edit ".l:sFilename
       set fileformat=dos
       setf krl
     endif
@@ -937,8 +932,7 @@ if !exists("*s:KnopVerboseEcho()")
     endif
     " read body
     call s:KrlPositionForRead()
-    let l:cmd = "silent .-1read ".glob(l:sBodyFile)
-    execute l:cmd
+    execute "silent .-1read ".glob(l:sBodyFile)
     " set marks
     let l:start = line('.')
     let l:end = search('\v\c^\s*end(fct|dat)?>','cnW')
@@ -964,8 +958,7 @@ if !exists("*s:KnopVerboseEcho()")
     " indent
     if exists("b:did_indent")
       if l:start>0 && l:end>l:start
-        let l:cmd = "silent normal! " . (l:end-l:start+1) . "=="
-        execute l:cmd
+        execute "silent normal! " . (l:end-l:start+1) . "=="
       endif
     endif
     " position cursor
