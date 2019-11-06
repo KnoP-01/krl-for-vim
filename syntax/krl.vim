@@ -321,13 +321,13 @@ highlight default link krlStructVal Delimiter
 " BuildInFunction {{{
 syn keyword krlBuildInFunction contained abs sin cos acos tan atan atan2 sqrt
 syn keyword krlBuildInFunction contained cClose cOpen cRead cWrite sRead sWrite cast_from cast_to
-syn keyword krlBuildInFunction contained DELETE_BACKWARD_BUFFER DIAG_START DIAG_STOP GET_DIAGSTATE IS_KEY_PRESSED GETCYCDEF GET_DECL_PLACE CHECKPIDONRDC PIDTORDC DELETE_PID_ON_RDC CAL_TO_RDC SET_MAM_ON_HD COPY_MAM_HD_TO_RDC CREATE_RDC_ARCHIVE RESTORE_RDC_ARCHIVE DELETE_RDC_CONTENT RDC_FILE_TO_HD CHECK_MAM_ON_RDC GET_RDC_FS_STATE TOOL_ADJ IOCTL CIOCTL WSPACEGIVE WSPACETAKE SYNCCMD CANCELPROGSYNC REMOTECMD REMOTEREAD ISMESSAGESET TIMER_LIMIT SET_KRLDLGANSWER GET_MSGBUFFER STRTOFRAME STRTOPOS STRTOE3POS STRTOE6POS STRTOAXIS STRTOE3AXIS STRTOE6AXIS VARTYPE FRAND GETVARSIZE MAXIMIZE_USEDXROBVERS SET_USEDXROBVERS SET_OPT_FILTER MD_GETSTATE MD_ASGN EB_TEST EO EMI_ENDPOS EMI_STARTPOS EMI_ACTPOS EMI_RECSTATE M_COMMENT
+syn keyword krlBuildInFunction contained DELETE_BACKWARD_BUFFER DIAG_START DIAG_STOP GET_DIAGSTATE IS_KEY_PRESSED GETCYCDEF GET_DECL_PLACE CHECKPIDONRDC PIDTOHD PIDTORDC DELETE_PID_ON_RDC CAL_TO_RDC SET_MAM_ON_HD COPY_MAM_HD_TO_RDC COPY_MAM_RDC_TO_HD CREATE_RDC_ARCHIVE RESTORE_RDC_ARCHIVE DELETE_RDC_CONTENT RDC_FILE_TO_HD CHECK_MAM_ON_RDC GET_RDC_FS_STATE TOOL_ADJ IOCTL CIOCTL WSPACEGIVE WSPACETAKE SYNCCMD CANCELPROGSYNC REMOTECMD REMOTEREAD ISMESSAGESET TIMER_LIMIT SET_KRLDLGANSWER GET_MSGBUFFER STRTOFRAME STRTOPOS STRTOE3POS STRTOE6POS STRTOAXIS STRTOE3AXIS STRTOE6AXIS VARTYPE FRAND GETVARSIZE MAXIMIZE_USEDXROBVERS SET_USEDXROBVERS SET_OPT_FILTER MD_GETSTATE MD_ASGN EB_TEST EO EMI_ENDPOS EMI_STARTPOS EMI_ACTPOS EMI_RECSTATE M_COMMENT
 syn keyword krlBuildInFunction contained forward inverse inv_pos
 syn keyword krlBuildInFunction contained get_sig_inf GetSysState GET_SYSTEM_DATA
 syn keyword krlBuildInFunction contained StrAdd StrClear StrCopy StrComp StrFind StrLen StrDeclLen StrToBool StrToInt StrToReal StrToString
 syn keyword krlBuildInFunction contained Clear_KrlMsg SET_SYSTEM_DATA SET_SYSTEM_DATA_DELAYED Set_KrlDlg Exists_KrlDlg Set_KrlMsg Exists_KrlMsg
 syn keyword krlBuildInFunction contained Err_Clear Err_Raise
-syn keyword krlBuildInFunction contained varstate EK EB LK sync MD_CMD MD_SETSTATE MBX_REC pulse 
+syn keyword krlBuildInFunction contained EXECFUNC varstate EK EB LK sync MD_CMD MD_SETSTATE MBX_REC pulse 
 syn keyword krlBuildInFunction contained ROB_STOP ROB_STOP_RELEASE SET_BRAKE_DELAY
 " KRC1
 syn keyword krlBuildInFunction contained CLCOPY CCURPOS CNEW CCLEAR CRELEASE CKEY
@@ -378,6 +378,7 @@ if get(g:,'krlShowError',1)
   " a := b + 1
   "   ||
   syn match krlError7 /\v%(^\s*%(return|wait\s+for|if|while|until|%(global\s+)?interrupt\s+decl)>[^;]+[^;])@1<!%(^\s*[_$a-zA-Z]+[_$a-zA-Z0-9.\[\]+\-*/]*\s*)@<=[:=]\=/
+  syn match krlError7 /\v\c%(^\s*%(decl\s+\w+\s+|bool\s+|int\s+|real\s+|char\s+)%(global\s+)?%(const\s+)?\w+\s*)@<=[:=]\=/
   "
   " this one is tricky. Make sure this does not match trigger instructions; OK, next try, now search for false positives
   " TODO optimize performance
