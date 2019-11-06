@@ -1140,6 +1140,8 @@ if !exists("*s:KnopVerboseEcho()")
         unlet l:getback
         wincmd p
       endif
+    else
+      call s:KnopVerboseEcho("Nothing found.",1)
     endif
   endfunction " <SID>KrlListDefinition()
 
