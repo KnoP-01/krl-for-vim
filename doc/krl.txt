@@ -393,7 +393,6 @@ Set this option to 0 to switch folding off completely: >
 If omitted or set to 1 the following folds get closed on opening a file: 
     Movement folds for regular KRC files and 
     second level folds for VKRC files except vw_usr_*. 
-If set to 0 changeing folding via |g:krlFoldingKeyMap| is not possible.
 
 See also |fold-commands| and |g:krlFoldMethodSyntax|.
 
@@ -485,7 +484,7 @@ Index: |krl-index|
 g:krlGoDefinitionKeyMap:
 ------------------------
 
-Note: This mapping overshadows the default vim command |gd|.
+Note: This mapping overshadows the default Vim command |gd|.
 
     `gd`: Jump to or shows variable or def/deffct declarations.
 
@@ -555,7 +554,7 @@ Index: |krl-index|
 g:krlMoveAroundKeyMap:
 ----------------------
 
-Note: These mappings overshadow the default vim commands 
+Note: These mappings overshadow the default Vim commands 
 |[[|, |]]|, |[]| and |][|!
 
 [count]`[[`   Jumps backward to the next def/deffct [count] times. Works in
