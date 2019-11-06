@@ -1146,8 +1146,6 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " <SID>KrlListDefinition()
 
   function <SID>KrlListUsage()
-    " dont start from within qf or loc window
-    if getbufvar('%', "&buftype")=="quickfix" | return | endif
     "
     if search('\w','cW',line("."))
       let l:currentWord = s:KrlCurrentWordIs()
