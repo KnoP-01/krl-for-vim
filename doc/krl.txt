@@ -129,9 +129,9 @@ A: If there is no existing mapping which would be overridden and no <plug>
             Can be forced with
         let g:krlFoldingKeyMap = 1
 
-    gd Go to or show definition of variable or def/deffct.
-            Can be forced with
-        let g:krlGoDefinitionKeyMap = 1
+    gd Go to or show definition of variable or def/deffct. Overshadows Vims gd.
+            Can be forced off with
+        let g:krlGoDefinitionKeyMap = 0
 
     <leader>u List all appearances of word under cursor outside a comment,
             string or enum declaration.
@@ -187,7 +187,7 @@ Q: Does krl-for-vim provide a mapping to quickly switch between the
 A: No, but you may put the following in your .vimrc or
     ~/.vim/after/ftplugin/krl.vim: >
 
-    nnoremap ANYKEY :if expand('%')=~'\.dat' <bar> e %:s?\.dat$?.src? <bar> else <bar> e %:s?\.src$?.dat? <bar> endif<CR>
+    nnoremap ANYKEY :if expand('%')=~'\.dat$' <bar> e %:s?\.dat$?.src? <bar> else <bar> e %:s?\.src$?.dat? <bar> endif<CR>
 
 Q: Scrolling feels sluggish. What can I do?  
 A: Switch error highlighting off and/or folding to marker: >
