@@ -39,6 +39,7 @@ Some features need the case insensitive file system to work properly.
 
 Installation with vim-plug:  ~  
 Put this in your .vimrc:  >
+
     call plug#begin('~/.vim/plugged')
       Plug 'KnoP-01/krl-for-vim'
     call plug#end()
