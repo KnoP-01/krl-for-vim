@@ -656,8 +656,8 @@ PowerOn/        |  +-Program/                         |  +-Mada/
 
 krl-for-vim looks up to 5 levels upward for a `KRC/` folder. If found
 `/absolut/path/KRC/**` gets added to 'path'. See |starstar|.
-If not found krl-for-vim looks up to 4 levels upward for `R1/` and 2 levels up for
-`STEU/` folders. If found `/absolut/path/R1/**` and `/absolut/path/Steu/**`
+If not found krl-for-vim looks up to 4 levels upward for `R1/` and 2 levels up
+for `STEU/` folders. If found `/absolut/path/R1/**` and `/absolut/path/Steu/**`
 gets added.
 If not found krl-for-vim tries to find `Mada`, `Program`, `System` and `TP`. But
 it's best to work below a `KRC` folder or at least below a `R1` folder. 
@@ -725,15 +725,15 @@ To force these text objects if `if`, `af` and/or `aF` is already mapped: >
     let g:krlFunctionTextObject = 1
 
 Alternativ <plug> mappings: >
-    augroup KrlFuncTextObj
-    au!
-    au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFuncInclCo
-    au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFuncInclCo
-    au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjAroundFuncExclCo
-    au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjAroundFuncExclCo
-    au FileType krl xmap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
-    au FileType krl omap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
-    augroup END
+  augroup KrlFuncTextObj
+  au!
+  au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFuncInclCo
+  au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFuncInclCo
+  au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjAroundFuncExclCo
+  au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjAroundFuncExclCo
+  au FileType krl xmap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
+  au FileType krl omap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
+  augroup END
 
 
 Index: |krl-index|
@@ -911,34 +911,34 @@ Note: Mappings marked with * will have a little delay until they trigger.
 
                         *<Plug>KrlAutoForm*
 Alternativ <plug> mappings: >
-    augroup KrlAutoFormMapping
-    au!
-    au FileType krl nmap <silent><buffer> ANYKEY01 <Plug>KrlAutoForm
-    au FileType krl nmap <silent><buffer> ANYKEY02 <Plug>KrlAutoFormLocalDat       
-    au FileType krl nmap <silent><buffer> ANYKEY03 <Plug>KrlAutoFormLocalDef       
-    au FileType krl nmap <silent><buffer> ANYKEY04 <Plug>KrlAutoFormLocalFct       
-    au FileType krl nmap <silent><buffer> ANYKEY05 <Plug>KrlAutoFormLocalFctBool   
-    au FileType krl nmap <silent><buffer> ANYKEY06 <Plug>KrlAutoFormLocalFctInt    
-    au FileType krl nmap <silent><buffer> ANYKEY07 <Plug>KrlAutoFormLocalFctReal   
-    au FileType krl nmap <silent><buffer> ANYKEY08 <Plug>KrlAutoFormLocalFctChar   
-    au FileType krl nmap <silent><buffer> ANYKEY09 <Plug>KrlAutoFormLocalFctFrame  
-    au FileType krl nmap <silent><buffer> ANYKEY10 <Plug>KrlAutoFormLocalFctPos    
-    au FileType krl nmap <silent><buffer> ANYKEY11 <Plug>KrlAutoFormLocalFctE6Pos  
-    au FileType krl nmap <silent><buffer> ANYKEY12 <Plug>KrlAutoFormLocalFctAxis   
-    au FileType krl nmap <silent><buffer> ANYKEY13 <Plug>KrlAutoFormLocalFctE6Axis 
-    au FileType krl nmap <silent><buffer> ANYKEY14 <Plug>KrlAutoFormGlobalDat      
-    au FileType krl nmap <silent><buffer> ANYKEY15 <Plug>KrlAutoFormGlobalDef      
-    au FileType krl nmap <silent><buffer> ANYKEY16 <Plug>KrlAutoFormGlobalFct      
-    au FileType krl nmap <silent><buffer> ANYKEY17 <Plug>KrlAutoFormGlobalFctBool  
-    au FileType krl nmap <silent><buffer> ANYKEY18 <Plug>KrlAutoFormGlobalFctInt   
-    au FileType krl nmap <silent><buffer> ANYKEY19 <Plug>KrlAutoFormGlobalFctReal  
-    au FileType krl nmap <silent><buffer> ANYKEY20 <Plug>KrlAutoFormGlobalFctChar  
-    au FileType krl nmap <silent><buffer> ANYKEY21 <Plug>KrlAutoFormGlobalFctFrame 
-    au FileType krl nmap <silent><buffer> ANYKEY22 <Plug>KrlAutoFormGlobalFctPos   
-    au FileType krl nmap <silent><buffer> ANYKEY23 <Plug>KrlAutoFormGlobalFctE6Pos 
-    au FileType krl nmap <silent><buffer> ANYKEY24 <Plug>KrlAutoFormGlobalFctAxis  
-    au FileType krl nmap <silent><buffer> ANYKEY25 <Plug>KrlAutoFormGlobalFctE6Axis
-    augroup END
+  augroup KrlAutoFormMapping
+  au!
+  au FileType krl nmap <silent><buffer> KEY01 <Plug>KrlAutoForm
+  au FileType krl nmap <silent><buffer> KEY02 <Plug>KrlAutoFormLocalDat
+  au FileType krl nmap <silent><buffer> KEY03 <Plug>KrlAutoFormLocalDef
+  au FileType krl nmap <silent><buffer> KEY04 <Plug>KrlAutoFormLocalFct
+  au FileType krl nmap <silent><buffer> KEY05 <Plug>KrlAutoFormLocalFctBool
+  au FileType krl nmap <silent><buffer> KEY06 <Plug>KrlAutoFormLocalFctInt
+  au FileType krl nmap <silent><buffer> KEY07 <Plug>KrlAutoFormLocalFctReal
+  au FileType krl nmap <silent><buffer> KEY08 <Plug>KrlAutoFormLocalFctChar
+  au FileType krl nmap <silent><buffer> KEY09 <Plug>KrlAutoFormLocalFctFrame
+  au FileType krl nmap <silent><buffer> KEY10 <Plug>KrlAutoFormLocalFctPos
+  au FileType krl nmap <silent><buffer> KEY11 <Plug>KrlAutoFormLocalFctE6Pos
+  au FileType krl nmap <silent><buffer> KEY12 <Plug>KrlAutoFormLocalFctAxis
+  au FileType krl nmap <silent><buffer> KEY13 <Plug>KrlAutoFormLocalFctE6Axis
+  au FileType krl nmap <silent><buffer> KEY14 <Plug>KrlAutoFormGlobalDat
+  au FileType krl nmap <silent><buffer> KEY15 <Plug>KrlAutoFormGlobalDef
+  au FileType krl nmap <silent><buffer> KEY16 <Plug>KrlAutoFormGlobalFct
+  au FileType krl nmap <silent><buffer> KEY17 <Plug>KrlAutoFormGlobalFctBool
+  au FileType krl nmap <silent><buffer> KEY18 <Plug>KrlAutoFormGlobalFctInt
+  au FileType krl nmap <silent><buffer> KEY19 <Plug>KrlAutoFormGlobalFctReal
+  au FileType krl nmap <silent><buffer> KEY20 <Plug>KrlAutoFormGlobalFctChar
+  au FileType krl nmap <silent><buffer> KEY21 <Plug>KrlAutoFormGlobalFctFrame
+  au FileType krl nmap <silent><buffer> KEY22 <Plug>KrlAutoFormGlobalFctPos
+  au FileType krl nmap <silent><buffer> KEY23 <Plug>KrlAutoFormGlobalFctE6Pos
+  au FileType krl nmap <silent><buffer> KEY24 <Plug>KrlAutoFormGlobalFctAxis
+  au FileType krl nmap <silent><buffer> KEY25 <Plug>KrlAutoFormGlobalFctE6Axis
+  augroup END
 
 
 Index: |krl-index|
