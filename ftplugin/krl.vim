@@ -1811,8 +1811,8 @@ endif " g:krlAutoFormKeyMap
 
 if has("folding") && get(g:,'krlFoldLevel',1)
   if get(g:,'krlFoldingKeyMap',0) 
-        \|| (mapcheck("<F2>","n")=="" && mapcheck("<F3>","n")=="" && mapcheck("<F4>","n")==""
-        \&& !hasmapto('<plug>KrlCloseAllFolds','n') && !hasmapto('<plug>KrlCloseLessFolds','n') && !hasmapto('<plug>KrlCloseNoFolds','n'))
+        \|| mapcheck("<F2>","n")=="" && mapcheck("<F3>","n")=="" && mapcheck("<F4>","n")==""
+        \&& !hasmapto('<plug>KrlCloseAllFolds','n') && !hasmapto('<plug>KrlCloseLessFolds','n') && !hasmapto('<plug>KrlCloseNoFolds','n')
         \&& !exists("g:krlFoldKeyMap")
     " close all folds
     nmap <silent><buffer> <F4> <plug>KrlCloseAllFolds
