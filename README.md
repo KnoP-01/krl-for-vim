@@ -37,7 +37,7 @@ Some features need the case insensitive file system to work properly.
 
 ## Installation:
 
-Installation with vim-plug:  ~  
+### Installation with vim-plug:  ~  
 Put this in your .vimrc:  >
 
     call plug#begin('~/.vim/plugged')
@@ -56,7 +56,7 @@ Update every once in a while with: >
 
     :PlugUpdate
 
-Manual installation:  ~  
+### Manual installation:  ~  
 Extract the most recent [release][1] and copy the folders 
 `/doc`, `/ftdetect`, `/ftplugin`, `/indent` and `/syntax` 
 into your `~/.vim/` or `%USERPROFILE%\vimfiles\` directory. 
