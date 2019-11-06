@@ -1218,11 +1218,11 @@ if !exists("*s:KnopVerboseEcho()")
             call add(l:qftmp2,l:i)
           endif
         endfor
-        " rule out if l:currentWord is part of a strings and inside a backup file
+        " rule out l:currentWord inside a backup file
         let l:qfresult = []
         for l:i in l:qftmp2
           if bufname(get(l:i,'bufnr')) !~ '\~$'
-                \&& get(l:i,'text') =~ '\v\c^([^"]*"[^"]*"[^"]*)*[^"]*'.l:currentWord
+        "         \&& (get(l:i,'text') =~ '\v\c^([^"]*"[^"]*"[^"]*)*[^"]*<'.l:currentWord.'>'
             call add(l:qfresult,l:i)
           endif
         endfor
