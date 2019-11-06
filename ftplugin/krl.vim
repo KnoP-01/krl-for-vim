@@ -1162,12 +1162,12 @@ if !exists("*s:KnopVerboseEcho()")
         let l:currentWord = substitute(l:currentWord,'^var','','')
         let l:currentWord = substitute(l:currentWord,'\$','\\$','g') " escape embeddend dollars in var name (e.g. TMP_$STOPM)
         call s:KnopVerboseEcho([l:currentWord,"appear to be a user defined VARIABLE"])
-      elseif l:currentWord =~ '\v^(sys)?(proc|func)'
+      elseif l:currentWord =~ '\v^%(sys)?%(proc|func)'
         let l:type = "DEF"
         if l:currentWord =~ '^sys'
           let l:type = "KSS " . l:type
         endif
-        if l:currentWord =~ '^\v(sys)?func'
+        if l:currentWord =~ '^\v%(sys)?func'
           let l:type = l:type . "FCT"
         endif
         let l:currentWord = substitute(l:currentWord,'\v^%(sys)?%(proc|func)','','')
