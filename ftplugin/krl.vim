@@ -1738,7 +1738,7 @@ endif
 
 if get(g:,'krlGoDefinitionKeyMap',1) 
       \&& !hasmapto('<plug>KrlGoDef','n')
-  " Go Definition
+  " Go Definition; The condition is different because gd is a vim command
   nmap <silent><buffer> gd <plug>KrlGoDef
 endif
 if get(g:,'krlListDefKeyMap',0)
