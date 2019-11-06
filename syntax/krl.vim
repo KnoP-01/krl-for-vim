@@ -378,6 +378,8 @@ if get(g:,'krlShowError',1)
   " a := b + 1
   "   ||
   syn match krlError7 /\v%(^\s*%(return|wait\s+for|if|while|until|%(global\s+)?interrupt\s+decl)>[^;]+[^;])@1<!%(^\s*[_$a-zA-Z]+[_$a-zA-Z0-9.\[\]+\-*/]*\s*)@<=[:=]\=/
+  syn match krlError7 /\v\c%(^\s*%(decl\s+)%(global\s+)?%(const\s+)?\w+\s+\w+\s*)@<=[:=]\=/
+  syn match krlError7 /\v\c%(^\s*%(decl\s+)?%(global\s+)?%(const\s+)?%(bool\s+|int\s+|real\s+|char\s+)\w+\s*)@<=[:=]\=/
   "
   " this one is tricky. Make sure this does not match trigger instructions; OK, next try, now search for false positives
   " TODO optimize performance
