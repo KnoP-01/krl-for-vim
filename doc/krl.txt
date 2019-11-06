@@ -7,6 +7,44 @@
 
 
 ==============================================================================
+Installation:
+-------------
+
+Installation with vim-plug:  ~
+Put this in your .vimrc:  >
+    call plug#begin('~/.vim/plugged')
+      Plug 'KnoP-01/krl-for-vim'
+    call plug#end()
+    syntax off                 " undo what plug#begin() did to syntax
+    filetype plugin indent off " undo what plugin#begin() did to filetype
+    syntax on                  " syntax and filetype on in the correct order
+    filetype plugin indent on  " syntax and filetype on in the correct order
+
+For the first installation run: >
+    :PlugInstall
+
+Update every once in a while with: >
+    :PlugUpdate
+
+Manual installation:  ~
+Extract the most recent release and copy the folders 
+`/doc`, `/ftdetect`, `/ftplugin`, `/indent` and `/syntax` 
+into your `~/.vim/` or `%USERPROFILE%\vimfiles\` directory. 
+Overwrite krl.* files from older installation. 
+Put the following in your .vimrc: >
+    syntax on                  " syntax and filetype on in the correct order
+    filetype plugin indent on  " syntax and filetype on in the correct order
+
+You may have to run >
+    :helptags ~/.vim/doc/
+or >
+    :helptags ~/vimfiles/doc/
+to use the help within Vim after installation. >
+    :help krl
+
+
+Index: |krl-index|
+==============================================================================
                         *krl-Introduction*
 
 Have a look at |krl-tl:dr| to get a quick overview over the most important
@@ -40,29 +78,6 @@ backup folder structure. KRL for Vim modifies 'path' accordingly. Since
 version 2.0.0 KRC1 backups are supported too.  
 Note to Linux users: Keep your files to be edited on a FAT file system. 
 Some features need the case insensitive file system to work properly.
-
-
-Index: |krl-index|
-==============================================================================
-Installation:
--------------
-
-Extract the most recent release and copy the folders 
-`/doc`, `/ftdetect`, `/ftplugin`, `/indent` and `/syntax` 
-into your `~/.vim/` or `%USERPROFILE%\vimfiles\` directory. 
-Overwrite krl.* files from older installation. 
-
-To use these plugins put >
-    syntax on
-    filetype plugin indent on
-in your .vimrc. Note that the order matters.
-
-You may have to run >
-    :helptags ~/.vim/doc/
-or >
-    :helptags ~/vimfiles/doc/
-to use the help within Vim after installation. >
-    :help krl
 
 
 Index: |krl-index|
