@@ -1037,14 +1037,12 @@ if !exists("*s:KnopVerboseEcho()")
     if a:sAction !~ '^[ lg][ adf][ abcfiprx6]$' | return | endif
     "
     let l:sGlobal = s:KrlGetGlobal(a:sAction)
-    if l:sGlobal == ''
-      return
-    else
-      let l:sGlobal = substitute(l:sGlobal,'local','','g')
-    endif
+    if l:sGlobal == '' | return | endif " return if empty string was entered by user
+    let l:sGlobal = substitute(l:sGlobal,'local','','g')
     "
+    " get def, deffct or defdat
     let l:sType = s:KrlGetType(a:sAction)
-    if l:sType == '' | return | endif
+    if l:sType == '' | return | endif " return if empty string was entered by user
     "
     if l:sType =~ '^defdat\>'
       "
