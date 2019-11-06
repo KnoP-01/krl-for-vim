@@ -37,17 +37,34 @@ Some features need the case insensitive file system to work properly.
 
 ## Installation:
 
+Installation with vim-plug:  ~  
+Put this in your .vimrc:  >
+    call plug#begin('~/.vim/plugged')
+      Plug 'KnoP-01/krl-for-vim'
+    call plug#end()
+    syntax off                 " undo what plug#begin() did to syntax
+    filetype plugin indent off " undo what plugin#begin() did to filetype
+    syntax on                  " syntax and filetype on in the correct order
+    filetype plugin indent on  " syntax and filetype on in the correct order
+
+For the first installation run: >
+
+    :PlugInstall
+
+Update every once in a while with: >
+
+    :PlugUpdate
+
+Manual installation:  ~  
 Extract the most recent [release][1] and copy the folders 
 `/doc`, `/ftdetect`, `/ftplugin`, `/indent` and `/syntax` 
 into your `~/.vim/` or `%USERPROFILE%\vimfiles\` directory. 
 Overwrite krl.\* files from older installation. 
 
-To use these plugins put >
+Put the following in your .vimrc: >
 
-    syntax on
-    filetype plugin indent on
-
-in your .vimrc. Note that the order matters.
+    syntax on                  " syntax and filetype on in the correct order
+    filetype plugin indent on  " syntax and filetype on in the correct order
 
 You may have to run >
 
