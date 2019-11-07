@@ -44,9 +44,9 @@ Put this in your .vimrc:  >
       Plug 'KnoP-01/krl-for-vim'
     call plug#end()
     syntax off                 " undo what plug#begin() did to syntax
-    filetype plugin indent off " undo what plugin#begin() did to filetype
-    syntax on                  " syntax and filetype on in the correct order
-    filetype plugin indent on  " syntax and filetype on in the correct order
+    filetype plugin indent off " undo what plug#begin() did to filetype
+    syntax on                  " syntax and filetype on in that order
+    filetype plugin indent on  " syntax and filetype on in that order
 
 For the first installation run: >
 
@@ -64,8 +64,8 @@ Overwrite krl.\* files from older installation.
 
 Put the following in your .vimrc: >
 
-    syntax on                  " syntax and filetype on in the correct order
-    filetype plugin indent on  " syntax and filetype on in the correct order
+    syntax on                  " syntax and filetype on in that order
+    filetype plugin indent on  " syntax and filetype on in that order
 
 You may have to run >
 
