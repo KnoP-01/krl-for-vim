@@ -2,31 +2,23 @@
 
 ## Introduction:
 
-Have a look at [tl:dr][2] to get a quick overview over the most important
-options provided by KRL for Vim. For more details see the [help][3] file.
+If you want more then syntax and indent `READ [TL:DR][2] FIRST`. It is a quick
+overview over the most important options and mappings provided by KRL for Vim.
+For more details see the [help][3] file.
 
 KRL for Vim (7.4 or later) is a collection of Vim scripts to help programing
 KUKA industrial robots. 
 
 It provides
 * syntax highlighting,
-* support for commentary [vimscript #3695][7] and matchit [vimscript #39][8],
 * auto indention,
 * folding,
+* support for commentary [vimscript #3695][7] and matchit [vimscript #39][8],
 * mappings and settings to navigate through code in a backup folder structure,
-* Text objects for functions and folds and
+* text objects for functions and foldsm
 * mappings to insert a body of a new DEF, DEFFCT or DEFDAT based on user 
-  defined templates or hopefully sane defaults.
-
-Since version 2.0.0 most features are enabled by default, so you don't need
-that many options in your .vimrc. Existing mappings don't get overridden,
-unless the corresponding option is explicitly set. There are \<plug\>-mappings
-available too, if you prefer different key bindings.
-
-KRL for Vim supports viewing and analysing VKRC files. Folding will get
-optimized for VKRC and you can use your Go Definition mapping (default gd) on
-a SPSMAKRO, UP, bin, binin or Marker in a fold line. However, this is NOT a
-VKRC-Editor.
+  defined templates or hopefully sane defaults and
+* optimized folding for viewing `VRKC`. 
 
 **Note:** Keep your files to be edited in one folder or in a regular robot
 backup folder structure. KRL for Vim modifies 'path' accordingly. Since
@@ -97,14 +89,16 @@ A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
     let g:krlFoldLevel = 0 " don't close any fold
 
 Q: I did set g:krlFoldLevel=1 or 2 but folds are open after loading a .src
-    file?!   
-A: Unfortunately the order matters: >
+   file?!   
+A: Unfortunately the order matters: >  
 
     syntax on                   " before filetype plugin on
     filetype plugin indent on   " after syntax on
 
-Q: Folds are still open although I have syntax on and filetype on in the right order?!  
-A: Some plugin manager mess with those commands, so with vim-plug I had to redo this after plug#end(): >
+Q: Folds are still open although I have syntax on and filetype on in the right
+   order?!  
+A: Some plugin manager mess with those commands, so with vim-plug I had to
+   redo this after plug#end(): >  
 
     call plug#end()
     syntax off                 " undo what plug#begin() did to syntax
@@ -114,8 +108,7 @@ A: Some plugin manager mess with those commands, so with vim-plug I had to redo 
 
 Q: Which keys get mapped to what?  
 A: If there is no existing mapping which would be overridden and no \<plug\>
-    mapping is configured for that function then the following keys get
-    mapped: >
+   mapping is configured for that function then the following keys get mapped: >  
 
     <F2> Switch folding off
     <F3> Close movement folds.
@@ -125,11 +118,13 @@ A: If there is no existing mapping which would be overridden and no \<plug\>
         let g:krlFoldingKeyMap = 1
 
     gd Go to or show definition of variable or def/deffct.
+	      Does work on fold lines for `SPSMAKRO`, `UP`, `bin`, `binin` and
+              `M`arker.             
             Can be forced with
         let g:krlGoDefinitionKeyMap = 1
 
-    <leader>u List all appearances of word under cursor outside a comment,
-            string or enum declaration.
+    <leader>u List all appearances of word under cursor outside a comment or
+              enum declaration.
             Can be forced with
         let g:krlListUsageKeyMap = 1
 
@@ -171,6 +166,14 @@ A: If there is no existing mapping which would be overridden and no \<plug\>
             Can be forced with
         let g:krlAutoFormKeyMap = 1
 
+Q: The mappings don't work!  
+A: Existing mappings don't get overridden, unless the corresponding option is
+    explicitly set. 
+
+Q: I want different keys mapped!  
+A: There are \<plug\>-mappings available too, if you prefer different key
+    bindings.
+
 Q: Does krl-for-vim provide a mapping for indenting a complete file?  
 A: No, but you may put the following in your .vimrc or
     ~/.vim/after/ftplugin/krl.vim: >
@@ -203,14 +206,12 @@ think it could be useful if this or that would be different, don't hesitate to
 email me or even better open an [issue][5]. With a little luck and good
 timing you may find me on irc://irc.freenode.net/#vim as KnoP in case you have
 any questions.  
-If you need (world wide) assistance with your robot project [visit us][9].
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases/latest
-[2]: https://github.com/KnoP-01/krl-for-vim#tldr
-[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L190
+[2]: ./krl-for-vim#tldr
+[3]: ./krl-for-vim/blob/master/doc/krl.txt#L190
 [4]: https://www.vim.org/scripts/script.php?script_id=5344
 [5]: https://github.com/KnoP-01/krl-for-vim/issues
 [6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L211
 [7]: https://www.vim.org/scripts/script.php?script_id=3695
 [8]: https://www.vim.org/scripts/script.php?script_id=39
-[9]: http://www.graeff.de
