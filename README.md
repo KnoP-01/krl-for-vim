@@ -122,7 +122,7 @@ A: krl-for-vim will not override existing mappings unless the corresponding
     [; Move around comments. Takes a count.
     ]; Move around comments. Takes a count.
             Will override existing mappings!
-            Doesn't override existing mapping with
+            Prevent overriding of existing mapping with
         let g:krlMoveAroundKeyMap = 0
 
     if Inner function text object.
