@@ -498,9 +498,11 @@ Alternativ <plug> mapping: >
     augroup END
 
 A succesful search for a file local declaration jumps there right away. Get
-back where you were with |''|. A succesful search for a more global
-declaration opens the |quickfix-window|. This also works for Markers, Bin,
-BinIn, UPs and MAKROs in fold lines, e.g.: >
+back where you were with |''|. A succesful search for a global declaration
+opens the |quickfix-window|. 
+
+This also works for Markers, Bin, BinIn, UPs and MAKROs in fold lines of
+`VKRC` files, e.g.: >
     ;FOLD 4: SPSMAKRO23 = M15
     ;ENDFOLD
     ;FOLD 5: bin1 ( EIN ) = binin1
