@@ -208,7 +208,7 @@ timing you may find me on irc://irc.freenode.net/#vim as KnoP in case you have
 any questions.  
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases/latest
-[2]: ./krl-for-vim#tl:dr
+[2]: .#tldr
 [3]: ./krl-for-vim/blob/master/doc/krl.txt#L190
 [4]: https://www.vim.org/scripts/script.php?script_id=5344
 [5]: https://github.com/KnoP-01/krl-for-vim/issues
