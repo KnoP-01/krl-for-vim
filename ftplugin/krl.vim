@@ -116,6 +116,32 @@ if !exists("*s:KnopVerboseEcho()")
     endif
   endfunction " s:KnopVerboseEcho()
 
+  function s:KnopAddFileToCompleteOption(file,path,...)
+    " don't add a:file if it's the current buffer
+    " not so easy actualy
+    " if bufname("%") =~ substitute(a:file,'[$/\\]','\\\1','g')
+    "   return 
+    " endif
+    echo " "
+    echo "attempt to add " a:file
+    if filereadable(a:path . '/' . a:file)!=''
+      echo "filereadable(a:path . a:file)!=''"
+      echo 'setlocal complete+=k' . s:KnopFnameescape4Path(a:path . '/' . a:file)
+      execute 'setlocal complete+=k' . s:KnopFnameescape4Path(a:path . '/' . a:file)
+    elseif exists('a:1')
+      echo "exists('a:1')"
+      if substitute(findfile(a:1,'.'),'\\','/','g')!=''
+        echo "findfile(a:1,'.')!=''"
+        echo 'setlocal complete+=k' . s:KnopFnameescape4Path(substitute(findfile(a:1,'.'),'\\','/','g'))
+        execute 'setlocal complete+=k' . s:KnopFnameescape4Path(substitute(findfile(a:1,'.'),'\\','/','g'))
+      else
+        echo "Not found"
+      endif
+    else
+      echo "Not found"
+    endif
+  endfunction " s:KnopAddFileToCompleteOption()
+
   function s:KnopDirExists(in)
     if finddir( substitute(a:in,'\\','','g') )!=''
       return 1
@@ -1528,6 +1554,28 @@ if get(g:,'krlPath',1)
 
   let b:undo_ftplugin = b:undo_ftplugin." pa<"
 endif " get(g:,'krlPath',1)
+
+" " complete option
+" " <filename>.dat
+if bufname("%") !~ '\.dat$'
+  call s:KnopAddFileToCompleteOption(substitute(bufname("%"),'\c\v([\\/]?\w+)\.s(rc|ub)','\1.dat','g'),'.')
+endif
+" $config.dat
+call s:KnopAddFileToCompleteOption('System/$config.dat','.','$config.dat')
+" " R1/Mada/$robcor.dat
+" call s:KnopAddFileToCompleteOption('R1/Mada/$robcor.dat',substitute(&path,',\*\*','','g'),'$robcor.dat')
+" " R1/Mada/$machine.dat
+" call s:KnopAddFileToCompleteOption('R1/Mada/$machine.dat',substitute(&path,',\*\*','','g'),'$machine.dat')
+" " STEU/Mada/$machine.dat
+" call s:KnopAddFileToCompleteOption('Steu/Mada/$machine.dat',substitute(&path,',\*\*','','g'))
+" " STEU/Mada/$custom.dat
+" call s:KnopAddFileToCompleteOption('Steu/Mada/$custom.dat',substitute(&path,',\*\*','','g'),'$custom.dat')
+" " STEU/Mada/$option.dat
+" call s:KnopAddFileToCompleteOption('Steu/Mada/$option.dat',substitute(&path,',\*\*','','g'),'$option.dat')
+" " TP/Signals.dat
+" call s:KnopAddFileToCompleteOption('TP/Signals.dat',substitute(&path,',\*\*','','g'),'Signals.dat')
+" " syntax file
+" call s:KnopAddFileToCompleteOption('syntax/krl.vim',&rtp)
 
 " folding
 if <SID>KrlIsVkrc() && get(g:,'krlConcealFoldTail',1)
