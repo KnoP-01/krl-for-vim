@@ -463,7 +463,7 @@ Index: |krl-index|
 
 Vim by itself provides a lot of nice features to get around quickly. Some of
 those features depend on proper 'path' setting. Fortunatly krl-for-vim takes
-care abput that and more for you.
+care about that and more for you.
 
 For the best experience keep your files below the `KRC/` or `R1/` folder.
 
@@ -476,7 +476,7 @@ commands like |:find|, |gf|, |^Wf| and the like but also necessary for some of
 the following features.
 
 You may instruct krl-for-vim not to change 'path' if you reset |g:krlPath|.
-'suffixes' and 'suffixesadd' get their values unconditional. 
+'suffixes' and 'suffixesadd' get their values unconditionally. 
 
 Index: |krl-index|
 ==============================================================================
