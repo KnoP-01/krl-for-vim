@@ -2,7 +2,7 @@
 
 ## Introduction:
 
-If you want more then syntax and indent `READ [TL:DR][2] FIRST`. It is a quick
+If you want more then syntax and indent `READ `[TL:DR][2]` FIRST`. It is a quick
 overview over the most important options and mappings provided by KRL for Vim.
 For more details see the [help][3] file.
 
