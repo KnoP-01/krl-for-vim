@@ -174,8 +174,8 @@ A: Some plugin manager mess with those commands, so with vim-plug I had to
    redo this after plug#end(): >  
 
     call plug#end()
-    syntax off                 " undo what plug#begin() did to syntax
-    filetype plugin indent off " undo what plugin#begin() did to filetype
+    syntax off                 	" undo what plug#begin() did to syntax
+    filetype plugin indent off 	" undo what plugin#begin() did to filetype
     syntax on                   " before filetype plugin on
     filetype plugin indent on   " after syntax on
 
