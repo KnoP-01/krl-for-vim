@@ -11,12 +11,12 @@ KUKA industrial robots.
 
 It provides
 * syntax highlighting,
-* auto indention,
+* indenting,
 * folding,
 * support for commentary [vimscript #3695][7] and matchit [vimscript #39][8],
 * mappings and settings to navigate through code in a backup folder structure,
 * text objects for functions and folds,
-* optimized folding for viewing `VRKC` and
+* optimized folding for viewing VRKC and
 * mappings to insert a body of a new DEF, DEFFCT or DEFDAT based on user
   defined templates or hopefully sane defaults.
 
@@ -31,7 +31,6 @@ Some features need the case insensitive file system to work properly.
 
 ### Installation with vim-plug:  ~  
 Put this in your .vimrc:  >
-
     call plug#begin('~/.vim/plugged')
       Plug 'KnoP-01/krl-for-vim'
     call plug#end()
@@ -208,8 +207,8 @@ timing you may find me on irc://irc.freenode.net/#vim as KnoP in case you have
 any questions.  
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases/latest
-[2]: .#tldr
-[3]: ./krl-for-vim/blob/master/doc/krl.txt#L190
+[2]: https://github.com/KnoP-01/krl-for-vim#tldr
+[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L190
 [4]: https://www.vim.org/scripts/script.php?script_id=5344
 [5]: https://github.com/KnoP-01/krl-for-vim/issues
 [6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L211
