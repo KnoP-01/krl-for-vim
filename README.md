@@ -1,13 +1,13 @@
 # krl-for-vim
 
+**READ THIS [TL:DR][2] FIRST** if you want more than just syntax highlight and 
+automatic indenting. It is a quick overview over the most important options and
+mappings provided by KRL for Vim. For more details see the [help][3] file.
+
 ## Introduction:
 
-If you want more then syntax and indent `READ `[TL:DR][2]` FIRST`. It is a quick
-overview over the most important options and mappings provided by KRL for Vim.
-For more details see the [help][3] file.
-
 KRL for Vim (7.4 or later) is a collection of Vim scripts to help programing
-KUKA industrial robots. 
+KUKA industrial robots.
 
 It provides
 * syntax highlighting,
@@ -15,10 +15,10 @@ It provides
 * folding,
 * support for commentary [vimscript #3695][7] and matchit [vimscript #39][8],
 * mappings and settings to navigate through code in a backup folder structure,
-* text objects for functions and foldsm
-* mappings to insert a body of a new DEF, DEFFCT or DEFDAT based on user 
-  defined templates or hopefully sane defaults and
-* optimized folding for viewing `VRKC`. 
+* text objects for functions and folds,
+* optimized folding for viewing `VRKC` and
+* mappings to insert a body of a new DEF, DEFFCT or DEFDAT based on user
+  defined templates or hopefully sane defaults.
 
 **Note:** Keep your files to be edited in one folder or in a regular robot
 backup folder structure. KRL for Vim modifies 'path' accordingly. Since
