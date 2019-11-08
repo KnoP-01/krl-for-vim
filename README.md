@@ -1,6 +1,6 @@
 # krl-for-vim
 
-**READ THIS [TL:DR][2] FIRST** if you want more than just syntax highlight and 
+**READ [TL:DR][2] FIRST** if you want more than just syntax highlight and 
 automatic indenting. It is a quick overview over the most important options and
 mappings provided by KRL for Vim. For more details see the [help][3] file.
 
@@ -103,7 +103,7 @@ A: krl-for-vim will not override existing mappings unless the corresponding
         let g:krlFoldingKeyMap = 1
 
     gd Go to or show definition of variable or def/deffct.
-	    Does work on fold lines for SPSMAKRO, UP, bin, binin and Marker.
+            Does work on fold lines for SPSMAKRO, UP, bin, binin and Marker.
             Override existing mapping with
         let g:krlGoDefinitionKeyMap = 1
 
@@ -150,7 +150,7 @@ A: krl-for-vim will not override existing mappings unless the corresponding
 
 Q: Does krl-for-vim provide a mapping for indenting a complete file?  
 A: No, but you may put the following in your .vimrc or
-    ~/.vim/after/ftplugin/krl.vim: >
+   ~/.vim/after/ftplugin/krl.vim: >
 
     nnoremap ANYKEY gg=G``zz
 
@@ -174,8 +174,8 @@ A: Some plugin manager mess with those commands, so with vim-plug I had to
    redo this after plug#end(): >  
 
     call plug#end()
-    syntax off                 	" undo what plug#begin() did to syntax
-    filetype plugin indent off 	" undo what plugin#begin() did to filetype
+    syntax off                  " undo what plug#begin() did to syntax
+    filetype plugin indent off  " undo what plugin#begin() did to filetype
     syntax on                   " before filetype plugin on
     filetype plugin indent on   " after syntax on
 
