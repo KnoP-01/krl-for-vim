@@ -30,7 +30,9 @@ Some features need the case insensitive file system to work properly.
 ## Installation:
 
 ### Installation with vim-plug:  ~  
+
 Put this in your .vimrc:  >
+
     call plug#begin('~/.vim/plugged')
       Plug 'KnoP-01/krl-for-vim'
     call plug#end()
@@ -48,10 +50,11 @@ Update every once in a while with: >
     :PlugUpdate
 
 ### Manual installation:  ~  
+
 Extract the most recent [release][1] and copy the folders 
 `/doc`, `/ftdetect`, `/ftplugin`, `/indent` and `/syntax` 
 into your `~/.vim/` or `%USERPROFILE%\vimfiles\` directory. 
-Overwrite krl.\* files from older installation. 
+Overwrite krl.\* files from older installation.
 
 Put the following in your .vimrc: >
 
@@ -79,13 +82,84 @@ A: Most optional features are enabled by default now.
 Q: I'm here to feed my kids, not to read. How do I get rid of stuff?  
 A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
 
-    let g:krlAutoComment = 0 " don't continue comments with o, O or Enter
     let g:krlFormatComments = 0 " don't break comment lines automatically
     let g:krlCommentIndent = 1 " indent comments starting in 1st column too
-    let g:krlSpaceIndent = 0 " don't change 'sts', 'sw', 'et' and 'sr'
-    let g:krlKeyWord = 0 " don't treat $, # and & as word char
     let g:krlShortenQFPath = 0 " don't shorten paths in quickfix
+    let g:krlAutoComment = 0 " don't continue comments with o, O or Enter
+    let g:krlSpaceIndent = 0 " don't change 'sts', 'sw', 'et' and 'sr'
     let g:krlFoldLevel = 0 " don't close any fold
+    let g:krlKeyWord = 0 " don't treat $, # and & as word char
+
+Q: Which keys get mapped to what? Will that override my own mappings?  
+A: krl-for-vim will not override existing mappings unless the corresponding
+   option is explicitly set. To use different key bindings use the
+   \<PLUG\>mapping. Otherwise krl-for-vim create the followin mappings >
+
+    <F2> Switch folding off
+    <F3> Close movement folds.
+    <F4> Close all folds.
+            Depend on g:krlFoldLevel not existing or >=1.
+            Override existing mapping with
+        let g:krlFoldingKeyMap = 1
+
+    gd Go to or show definition of variable or def/deffct.
+	    Does work on fold lines for SPSMAKRO, UP, bin, binin and Marker.
+            Override existing mapping with
+        let g:krlGoDefinitionKeyMap = 1
+
+    <leader>u List all significant appearances of word under cursor.
+            Override existing mapping with
+        let g:krlListUsageKeyMap = 1
+
+    <leader>f List all def/deffct of the current file.
+            Override existing mapping with
+        let g:krlListDefKeyMap = 1
+
+    [[ Move around functions. Takes a count.
+    ]] Move around functions. Takes a count.
+    [] Move around functions. Takes a count.
+    ][ Move around functions. Takes a count.
+    [; Move around comments. Takes a count.
+    ]; Move around comments. Takes a count.
+            Will override existing mappings!
+            Doesn't override existing mapping with
+        let g:krlMoveAroundKeyMap = 0
+
+    if Inner function text object.
+    af Around function text object.
+    aF Around function text object including preceding comments.
+            Depend on g:krlMoveAroundKeyMap not existing or >=1.
+            Override existing mapping with
+        let g:krlFunctionTextObject = 1
+
+    io Inner fold text object. Takes a count for nested folds.
+    ao Around fold text object. Takes a count for nested folds.
+            Depend on matchit.
+            Override existing mapping with
+        let g:krlFoldTextObject = 1
+
+    ic Inner comment text object.
+    ac Around comment text object.
+            Depend on g:krlMoveAroundKeyMap not existing or =1.
+            Override existing mapping with
+        let g:krlCommentTextObject = 1
+
+    <leader>n Inserts a new def/deffct.
+            Override existing mapping with
+        let g:krlAutoFormKeyMap = 1
+
+Q: Does krl-for-vim provide a mapping for indenting a complete file?  
+A: No, but you may put the following in your .vimrc or
+    ~/.vim/after/ftplugin/krl.vim: >
+
+    nnoremap ANYKEY gg=G``zz
+
+Q: Does krl-for-vim provide a mapping to quickly switch between the
+   corresponding dat- and src-file?  
+A: No, but you may put the following in your .vimrc or
+   ~/.vim/after/ftplugin/krl.vim: >
+
+    nnoremap ANYKEY :if expand('%')=~'\.dat$' <bar> e %:s?\.dat$?.src? <bar> else <bar> e %:s?\.src$?.dat? <bar> endif<CR>
 
 Q: I did set g:krlFoldLevel=1 or 2 but folds are open after loading a .src
    file?!   
@@ -104,87 +178,6 @@ A: Some plugin manager mess with those commands, so with vim-plug I had to
     filetype plugin indent off " undo what plugin#begin() did to filetype
     syntax on                   " before filetype plugin on
     filetype plugin indent on   " after syntax on
-
-Q: Which keys get mapped to what?  
-A: If there is no existing mapping which would be overridden and no \<plug\>
-   mapping is configured for that function then the following keys get mapped: >  
-
-    <F2> Switch folding off
-    <F3> Close movement folds.
-    <F4> Close all folds.
-            Depend on g:krlFoldLevel not existing or >=1.
-            Can be forced with
-        let g:krlFoldingKeyMap = 1
-
-    gd Go to or show definition of variable or def/deffct.
-	      Does work on fold lines for `SPSMAKRO`, `UP`, `bin`, `binin` and
-              `M`arker.             
-            Can be forced with
-        let g:krlGoDefinitionKeyMap = 1
-
-    <leader>u List all appearances of word under cursor outside a comment or
-              enum declaration.
-            Can be forced with
-        let g:krlListUsageKeyMap = 1
-
-    <leader>f List all def/deffct in the current file.
-            Can be forced with
-        let g:krlListDefKeyMap = 1
-
-    [[ Move around functions. Takes a count.
-    ]] Move around functions. Takes a count.
-    [] Move around functions. Takes a count.
-    ][ Move around functions. Takes a count.
-    [; Move around comments. Takes a count.
-    ]; Move around comments. Takes a count.
-            Will override existing mappings!
-            Can be forced off with
-        let g:krlMoveAroundKeyMap = 0
-
-    if Inner function text object.
-    af Around function text object.
-    aF Around function text object including preceding comments and one
-        following empty line.
-            Depend on g:krlMoveAroundKeyMap not existing or =1.
-            Can be forced with
-        let g:krlFunctionTextObject = 1
-
-    io Inner fold text object. Takes a count for nested folds.
-    ao Around fold text object. Takes a count for nested folds.
-            Depend on matchit.
-            Can be forced with 
-        let g:krlFoldTextObject = 1
-
-    ic Inner comment text object.
-    ac Around comment text object.
-            Depend on g:krlMoveAroundKeyMap not existing or =1.
-            Can be forced with 
-        let g:krlCommentTextObject = 1
-
-    <leader>n Inserts a new def/deffct.
-            Can be forced with
-        let g:krlAutoFormKeyMap = 1
-
-Q: The mappings don't work!  
-A: Existing mappings don't get overridden, unless the corresponding option is
-    explicitly set. 
-
-Q: I want different keys mapped!  
-A: There are \<plug\>-mappings available too, if you prefer different key
-    bindings.
-
-Q: Does krl-for-vim provide a mapping for indenting a complete file?  
-A: No, but you may put the following in your .vimrc or
-    ~/.vim/after/ftplugin/krl.vim: >
-
-    nnoremap ANYKEY gg=G``zz
-
-Q: Does krl-for-vim provide a mapping to quickly switch between the
-    corresponding dat- and src-file?  
-A: No, but you may put the following in your .vimrc or
-    ~/.vim/after/ftplugin/krl.vim: >
-
-    nnoremap ANYKEY :if expand('%')=~'\.dat' <bar> e %:s?\.dat$?.src? <bar> else <bar> e %:s?\.src$?.dat? <bar> endif<CR>
 
 Q: Scrolling feels sluggish. What can I do?  
 A: Switch error highlighting off and/or folding to marker: >
