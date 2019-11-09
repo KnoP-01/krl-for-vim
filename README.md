@@ -6,8 +6,8 @@ mappings provided by KRL for Vim. For more details see the [help][3] file.
 
 ## Introduction:
 
-KRL for Vim (7.4 or later) is a collection of Vim scripts to help programing
-[KUKA industrial robots][9].
+KRL for [Vim][10] (7.4 or later) is a collection of Vim scripts to help
+programing [KUKA industrial robots][9].
 
 It provides
 * syntax highlighting,
@@ -208,3 +208,4 @@ any questions.
 [7]: https://www.vim.org/scripts/script.php?script_id=3695
 [8]: https://www.vim.org/scripts/script.php?script_id=39
 [9]: https://www.kuka.com/
+[10]: https://www.vim.org/
