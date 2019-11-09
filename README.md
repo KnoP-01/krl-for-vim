@@ -13,6 +13,7 @@ It provides
 * syntax highlighting,
 * indenting,
 * folding,
+* completion of words from known or custom global files like $config.dat,
 * support for commentary [vimscript #3695][7], matchit [vimscript #39][8] and
   matchup [vimscript #5624][11],
 * mappings and settings to navigate through code in a backup folder structure,
