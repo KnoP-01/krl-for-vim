@@ -1,8 +1,8 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 2.0.1
-" Last Change: 16.10.2019
+" Version: 2.1.0
+" Last Change: 09.11.2019
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -117,29 +117,51 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " s:KnopVerboseEcho()
 
   function s:KnopAddFileToCompleteOption(file,path,...)
-    " don't add a:file if it's the current buffer
-    " not so easy actualy
-    " if bufname("%") =~ substitute(a:file,'[$/\\]','\\\1','g')
-    "   return 
-    " endif
-    echo " "
-    echo "attempt to add " a:file
-    if filereadable(a:path . '/' . a:file)!=''
-      echo "filereadable(a:path . a:file)!=''"
-      echo 'setlocal complete+=k' . s:KnopFnameescape4Path(a:path . '/' . a:file)
-      execute 'setlocal complete+=k' . s:KnopFnameescape4Path(a:path . '/' . a:file)
-    elseif exists('a:1')
-      echo "exists('a:1')"
-      if substitute(findfile(a:1,'.'),'\\','/','g')!=''
-        echo "findfile(a:1,'.')!=''"
-        echo 'setlocal complete+=k' . s:KnopFnameescape4Path(substitute(findfile(a:1,'.'),'\\','/','g'))
-        execute 'setlocal complete+=k' . s:KnopFnameescape4Path(substitute(findfile(a:1,'.'),'\\','/','g'))
-      else
-        echo "Not found"
+    function! s:knopCompleteEnbMsg()
+      if !exists("g:knopCompleteMsgDone")
+        call s:KnopVerboseEcho("  Adding the following files to 'complete'.\n  Try <Ctrl-p> and <Ctrl-n> to complete words from there:")
+        let g:knopCompleteMsgDone = 1
       endif
-    else
-      echo "Not found"
+    endfunction
+"    echo " "
+"    echo "  attempt to add file >" . a:file . "<"
+"    echo ""
+"    echo "search for file in l:path"
+    for l:path in a:path
+      let l:path = substitute( substitute(l:path,'[\\/]\*\*$','','') ,'\\','/','g' )
+      let l:file = substitute(a:file,'\\','/','g')
+"      echo "l:path = >".l:path."<"
+      if l:path != ''
+"        echo "try " l:path.'/'.l:file
+        if filereadable(l:path.'/'.l:file)!=''
+          call s:knopCompleteEnbMsg()
+          let l:f = s:KnopFnameescape4Path(l:path.'/'.l:file)
+"          echo "file readable"
+"          echo '  setlocal complete+=k'.l:f
+          call s:KnopVerboseEcho(l:f)
+          execute 'setlocal complete+=k'.l:f
+          return
+        endif
+      else
+"        echo "Ignored"
+      endif
+    endfor
+"    echo "Not found"
+    if exists('a:1')
+      let l:f = s:KnopFnameescape4Path( substitute(a:1,'\\','/','g') )
+"      echo ""
+"      echo "search for file in same dir als current file"
+"      echo "try " l:f
+      if filereadable(l:f)!=''
+        call s:knopCompleteEnbMsg()
+"        echo "file readable"
+"        echo '  setlocal complete+=k' . l:f
+        call s:KnopVerboseEcho(l:f)
+        execute 'setlocal complete+=k' . l:f
+        return
+      endif
     endif
+"    echo "  Not found"
   endfunction " s:KnopAddFileToCompleteOption()
 
   function s:KnopDirExists(in)
@@ -1551,31 +1573,48 @@ if get(g:,'krlPath',1)
 
   execute "setlocal path+=".s:krlpath
   setlocal path-=/usr/include
-
   let b:undo_ftplugin = b:undo_ftplugin." pa<"
+
 endif " get(g:,'krlPath',1)
 
-" " complete option
-" " <filename>.dat
-if bufname("%") !~ '\.dat$'
-  call s:KnopAddFileToCompleteOption(substitute(bufname("%"),'\c\v([\\/]?\w+)\.s(rc|ub)','\1.dat','g'),'.')
-endif
-" $config.dat
-call s:KnopAddFileToCompleteOption('System/$config.dat','.','$config.dat')
-" " R1/Mada/$robcor.dat
-" call s:KnopAddFileToCompleteOption('R1/Mada/$robcor.dat',substitute(&path,',\*\*','','g'),'$robcor.dat')
-" " R1/Mada/$machine.dat
-" call s:KnopAddFileToCompleteOption('R1/Mada/$machine.dat',substitute(&path,',\*\*','','g'),'$machine.dat')
-" " STEU/Mada/$machine.dat
-" call s:KnopAddFileToCompleteOption('Steu/Mada/$machine.dat',substitute(&path,',\*\*','','g'))
-" " STEU/Mada/$custom.dat
-" call s:KnopAddFileToCompleteOption('Steu/Mada/$custom.dat',substitute(&path,',\*\*','','g'),'$custom.dat')
-" " STEU/Mada/$option.dat
-" call s:KnopAddFileToCompleteOption('Steu/Mada/$option.dat',substitute(&path,',\*\*','','g'),'$option.dat')
-" " TP/Signals.dat
-" call s:KnopAddFileToCompleteOption('TP/Signals.dat',substitute(&path,',\*\*','','g'),'Signals.dat')
-" " syntax file
-" call s:KnopAddFileToCompleteOption('syntax/krl.vim',&rtp)
+if get(g:,'krlComplete',1)
+  " <filename>.dat
+  if expand("%:p:t") !~ '\.dat$'
+    call s:KnopAddFileToCompleteOption(substitute(expand("%:p:t"),'\.s\%(rc\|ub\)$','.dat',''),[expand("%:p:h")])
+  endif
+  " R1/System/$config.dat
+  call s:KnopAddFileToCompleteOption('R1/System/$config.dat',split(&path,','),expand("%:p:h").'/'.'$config.dat')
+  " R1/System/Global_Points.dat
+  call s:KnopAddFileToCompleteOption('R1/System/Global_Points.dat',split(&path,','),expand("%:p:h").'/'.'Global_Points.dat')
+  " R1/System/MsgLib.src
+  call s:KnopAddFileToCompleteOption('R1/System/MsgLib.src',split(&path,','),expand("%:p:h").'/'.'MsgLib.src')
+  " R1/Mada/$machine.dat
+  call s:KnopAddFileToCompleteOption('R1/Mada/$machine.dat',split(&path,','),expand("%:p:h").'/'.'$machine.dat')
+  " R1/Mada/$robcor.dat
+  call s:KnopAddFileToCompleteOption('R1/Mada/$robcor.dat',split(&path,','),expand("%:p:h").'/'.'$robcor.dat')
+  " STEU/Mada/$custom.dat
+  call s:KnopAddFileToCompleteOption('Steu/Mada/$custom.dat',split(&path,','),expand("%:p:h").'/'.'$custom.dat')
+  " STEU/Mada/$machine.dat
+  call s:KnopAddFileToCompleteOption('Steu/Mada/$machine.dat',split(&path,','))
+  " STEU/Mada/$option.dat
+  call s:KnopAddFileToCompleteOption('Steu/Mada/$option.dat',split(&path,','),expand("%:p:h").'/'.'$option.dat')
+  " TP/Signals.dat
+  call s:KnopAddFileToCompleteOption('R1/TP/Signals.dat',split(&path,','),expand("%:p:h").'/'.'Signals.dat')
+  " syntax file
+  call s:KnopAddFileToCompleteOption('syntax/krl.vim',split(&rtp,','))
+  " custom files
+  if exists('g:krlCompleteAdditions')
+    for s:pathFile in g:krlCompleteAdditions
+"      echo "\n\n~~~ CUSTOM ~~~"
+"      echo "\n\ns:pathFile >" . s:pathFile . '<'
+      let s:file = substitute(s:pathFile,'^.*[\\/]\(\w\+\.\)\(src\|sub\|dat\)$','\1\2','')
+"      echo 's:File >' . s:file . "<\n\n"
+      call s:KnopAddFileToCompleteOption(s:pathFile,split(&path,','),expand("%:p:h").'/'.s:file,)
+"      echo "~~~ CUSTOM ~~~\n\n"
+    endfor
+  endif
+  let b:undo_ftplugin = b:undo_ftplugin." cpt<"
+endif " get(g:,'krlComplete',1)
 
 " folding
 if <SID>KrlIsVkrc() && get(g:,'krlConcealFoldTail',1)
