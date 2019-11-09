@@ -13,7 +13,8 @@ It provides
 * syntax highlighting,
 * indenting,
 * folding,
-* support for commentary [vimscript #3695][7] and matchit [vimscript #39][8],
+* support for commentary [vimscript #3695][7], matchit [vimscript #39][8] and
+  matchup [vimscript #5624][11],
 * mappings and settings to navigate through code in a backup folder structure,
 * text objects for functions and folds,
 * optimized folding for viewing VRKC and
@@ -93,7 +94,7 @@ A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
 Q: Which keys get mapped to what? Will that override my own mappings?  
 A: krl-for-vim will not override existing mappings unless the corresponding
    option is explicitly set. To use different key bindings use the
-   \<PLUG\>mapping. Otherwise krl-for-vim create the followin mappings >
+   \<PLUG\>mapping. Otherwise krl-for-vim create the followin mappings: >
 
     <F2> Switch folding off
     <F3> Close movement folds.
@@ -201,11 +202,12 @@ any questions.
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases/latest
 [2]: https://github.com/KnoP-01/krl-for-vim#tldr
-[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L190
+[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L211
 [4]: https://www.vim.org/scripts/script.php?script_id=5344
 [5]: https://github.com/KnoP-01/krl-for-vim/issues
-[6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L211
+[6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L233
 [7]: https://www.vim.org/scripts/script.php?script_id=3695
 [8]: https://www.vim.org/scripts/script.php?script_id=39
 [9]: https://www.kuka.com/
 [10]: https://www.vim.org/
+[11]: https://www.vim.org/scripts/script.php?script_id=5624

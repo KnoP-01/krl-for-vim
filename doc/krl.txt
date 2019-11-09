@@ -70,7 +70,8 @@ It provides
 * syntax highlighting,
 * indenting,
 * folding,
-* support for commentary [vimscript #3695][7] and matchit [vimscript #39][8],
+* support for commentary [vimscript #3695], matchit [vimscript #39] and
+  matchup [vimscript #5624],
 * mappings and settings to navigate through code in a backup folder structure,
 * text objects for functions and folds,
 * optimized folding for viewing VRKC and
@@ -106,7 +107,7 @@ A: Disable stuff in your |vimrc|, see |krl-options| for details: >
 Q: Which keys get mapped to what? Will that override my own mappings?  
 A: krl-for-vim will not override existing mappings unless the corresponding
    option is explicitly set. To use different key bindings use the
-   \<PLUG\>mapping. Otherwise krl-for-vim create the followin mappings >
+   \<PLUG\>mapping. Otherwise krl-for-vim create the followin mappings: >
 
     <F2> Switch folding off
     <F3> Close movement folds.
@@ -163,20 +164,20 @@ A: krl-for-vim will not override existing mappings unless the corresponding
 
 Q: Does krl-for-vim provide a mapping for indenting a complete file?  
 A: No, but you may put the following in your .vimrc or
-   ~/.vim/after/ftplugin/krl.vim: >
+   `~/.vim/after/ftplugin/krl.vim`: >
 
     nnoremap ANYKEY gg=G``zz
 
 Q: Does krl-for-vim provide a mapping to quickly switch between the
    corresponding dat- and src-file?  
 A: No, but you may put the following in your .vimrc or
-   ~/.vim/after/ftplugin/krl.vim: >
+   `~/.vim/after/ftplugin/krl.vim`: >
 
     nnoremap ANYKEY :if expand('%')=~'\.dat$' <bar> e %:s?\.dat$?.src? <bar> else <bar> e %:s?\.src$?.dat? <bar> endif<CR>
 
 Q: I did set g:krlFoldLevel=1 or 2 but folds are open after loading a .src
    file?!   
-A: Unfortunately the order matters: >  
+A: Unfortunately the order matters: >
 
     syntax on                   " before filetype plugin on
     filetype plugin indent on   " after syntax on
@@ -184,7 +185,7 @@ A: Unfortunately the order matters: >
 Q: Folds are still open although I have syntax on and filetype on in the right
    order?!  
 A: Some plugin manager mess with those commands, so with vim-plug I had to
-   redo this after plug#end(): >  
+   redo this after plug#end(): >
 
     call plug#end()
     syntax off                  " undo what plug#begin() did to syntax
@@ -274,6 +275,8 @@ Also see these options for alternative <PLUG> mappings.
 |g:krlRhsQuickfix|        Open quickfix right hand side
 |g:krlLhsQuickfix|        Open quickfix left hand side
 |g:krlPath|               Disable 'path' setting
+
+*krl-debug-options*
 |g:krlVerbose|            Enable verbose messages
 
 
@@ -647,52 +650,40 @@ Note: Many features of krl-for-vim depend on a proper 'path' setting.
 
 Expected folder structure:
 
-`KRC1`:         `KRC2+`:                                `VKRC2+`:
+`KRC1`:         `KRC2+`:                                `VKRC`:
 MaDa/         KRC/                                  KRC/
   +-R1/         +-R1/                                 +-R1/
   +-Steu/       |  +-Mada/                            |  +-Folgen/
 PowerOn/        |  +-Program/                         |  +-Mada/
-  +-R1/         |  |    `+-UpToTwo/SubFolders/`         |  +-Makros/
+  +-R1/         |  |    +-`UpToTwo`/`SubFolders`/         |  +-Makros/
   +-Steu/       |  +-System/                          |  +-System/
                 |  +-TP/                              |  +-UPs/
-                +-STEU/                               |  +-VW_User/
-                    +-Mada/                           +-STEU/
-                                                          +-Mada/
+                |  +-`UpToThree`/`custom`/`folders`/        |  +-VW_User/
+                +-STEU/                               +-STEU/      
+                    +-Mada/                               +-Mada/  
 
-krl-for-vim looks up to 5 levels upward for a `KRC/` folder. If found
-`/absolut/path/KRC/**` gets added to 'path'. See |starstar|.
+
+krl-for-vim does looks up to 5 levels upward for a `KRC/` folder. If found
+`/absolut/path/to/KRC/**` gets added to 'path'. See |starstar|.
 If not found krl-for-vim looks up to 4 levels upward for `R1/` and 2 levels up
 for `STEU/` folders. If found `/absolut/path/R1/**` and `/absolut/path/Steu/**`
 gets added.
-If not found krl-for-vim tries to find `Mada`, `Program`, `System` and `TP`. But
-it's best to work below a `KRC` folder or at least below a `R1` folder. 
-
-
-Index: |krl-index|
-                        *g:krlVerbose*
-g:knopVerbose:
---------------
-
-Note: g:krlVerbose is synonym for g:knopVerbose.
-Use the g:knop* variable!
-
-Enable verbose messages: >
-    let g:knopVerbose = 1
-
-If omitted or set to 0 no messages are generate by krl-for-vim.
-
-This option may be changed any time and will take effect immediately.
+If not found krl-for-vim tries to find `Mada`, `Program`, `System` and `TP`. But it's 
+best to work below a `KRC/` folder or have all files in the same directory.    
 
 
 Index: |krl-index|
                         *krl-matchit-support*   *krl-matchup-support*
 Match it support:
 -----------------
-You may have to install the matchit plugin to use this. See |matchit-install|
-for help on this. See also http://www.vim.org/scripts/script.php?script_id=39
+You may have to install the |matchit| plugin to use this. See |matchit-install|
+for help on this. 
+See also https://www.vim.org/scripts/script.php?script_id=39
+An alternative for matchit is |matchup|. 
+See also https://www.vim.org/scripts/script.php?script_id=5624
 
-If |matchit| is loaded you can use |%| to not only jump between (), [] and {}
-but also between >
+If |matchit| or |matchup| is loaded you can use |%| to not only jump between
+(), [] and {} but also between >
     DEF -> RESUME -> RETURN -> END,
     DEFFCT -> RESUME -> RETURN -> ENDFCT,
     DEFDAT -> ENDDAT,
@@ -703,6 +694,24 @@ but also between >
     LOOP -> EXIT -> ENDLOOP,
     SWITCH -> CASE -> DEFAULT -> ENDSWITCH and
     FOLD -> ENDFOLD
+
+
+Index: |krl-index|
+==============================================================================
+                        *krl-debug*  
+==============================================================================
+                        *g:krlVerbose*
+g:knopVerbose:
+--------------
+
+Note: `g:krlVerbose` is synonym for `g:knopVerbose`. Use the g:knop* variable!
+
+Enable verbose messages: >
+    let g:knopVerbose = 1
+
+If omitted or set to 0 no messages are generate by krl-for-vim.
+
+This option may be changed any time and will take effect immediately.
 
 
 Index: |krl-index|
