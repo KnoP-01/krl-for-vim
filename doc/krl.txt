@@ -70,6 +70,7 @@ It provides
 * syntax highlighting,
 * indenting,
 * folding,
+* completion of words from known global files like $config.dat,
 * support for commentary [vimscript #3695], matchit [vimscript #39] and
   matchup [vimscript #5624],
 * mappings and settings to navigate through code in a backup folder structure,
@@ -219,6 +220,7 @@ A: `:let g:knopVerbose=1` any time.
 |krl-jump-quickly|
     |krl-matchit-support|
     |krl-text-objects|
+|krl-complete|
 |krl-formatting-comments|
 |krl-auto-form|
 |krl-known-bugs|
@@ -275,6 +277,10 @@ Also see these options for alternative <PLUG> mappings.
 |g:krlRhsQuickfix|        Open quickfix right hand side
 |g:krlLhsQuickfix|        Open quickfix left hand side
 |g:krlPath|               Disable 'path' setting
+
+*krl-complete-options*
+|g:krlComplete|           Disable 'complete' setting
+|g:krlCompleteAdditions|  Add custom files to 'complete' setting
 
 *krl-debug-options*
 |g:krlVerbose|            Enable verbose messages
@@ -694,6 +700,80 @@ If |matchit| or |matchup| is loaded you can use |%| to not only jump between
     LOOP -> EXIT -> ENDLOOP,
     SWITCH -> CASE -> DEFAULT -> ENDSWITCH and
     FOLD -> ENDFOLD
+
+
+Index: |krl-index|
+==============================================================================
+                        *krl-complete*  
+
+krl-complete adds known global data lists and src files to 'complete' as
+{dict}.
+
+Can't remember if the name of that variable was `$conf_mess` or `$confmess`?
+No problem! Just insert `$con` and hit |i_CTRL-P| or |i_CTRL-N|. 
+
+For this feature to work you need to start your edit below the
+.../`KRC`/-Folder or have all files you need in the same directory as the
+current file. 
+
+The syntax file will also be added, so you can complete known KSS functions
+and keywords.
+
+Index: |krl-index|
+==============================================================================
+                        *g:krlComplete*
+g:krlComplete:
+--------------
+
+Disables the modification of 'complete': >
+    let g:krlComplete = 0
+
+If omitted or set to 1 krl-for-vim will attempt to add the following files to
+'complete' as {dict}. >
+
+    KRC/R1/System/$config.dat
+    KRC/R1/System/Global_Points.dat
+    KRC/R1/System/MsgLib.src
+    KRC/R1/Mada/$machine.dat
+    KRC/R1/Mada/$robcor.dat
+    KRC/STEU/Mada/$machine.dat
+    KRC/STEU/Mada/$custom.dat
+    KRC/STEU/Mada/$option.dat
+    KRC/TP/Signals.dat
+    'runtimepath'/syntax/krl.vim
+
+Enable |g:krlVerbose| to see what files are actually added.
+
+See |krl-complete| for limitations.
+
+
+Index: |krl-index|
+                        *g:krlCompleteAdditions*
+g:krlCompleteAdditions:
+-----------------------
+
+Note: This feature depend on |g:krlComplete| ommited or set to 1.
+
+Add custom files to 'complete': >
+    let g:krlCompleteAdditions = [
+      \'R1\my tech\mymessagelib.src' , 
+      \'R1/my tech/mymessagelib.dat' , 
+      \'R1\Program\util\global_var.dat' , 
+      \'R1/Program/util/global_fct.src']
+
+Note that spaces in paths are fine, just don't use too fancy special
+characters.
+
+You should add the path relative to .../`KRC`. Even if you put all the files
+you edit are in one directory they will be found. 
+You may also add just a file name, However, in that case the file will only be
+found if present in the same directory as the current file. 
+
+Enable |g:krlVerbose| to see what files are actually added.
+
+See also |krl-complete|.
+
+If omitted or set to 0 no custom files get added to complete.
 
 
 Index: |krl-index|
