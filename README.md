@@ -13,7 +13,7 @@ It provides
 * syntax highlighting,
 * indenting,
 * folding,
-* completion of words from known or custom global files like $config.dat,
+* completion of words from known global files like $config.dat or custom files,
 * support for commentary [vimscript #3695][7], matchit [vimscript #39][8] and
   matchup [vimscript #5624][11],
 * mappings and settings to navigate through code in a backup folder structure,
@@ -89,7 +89,9 @@ A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
     let g:krlShortenQFPath = 0 " don't shorten paths in quickfix
     let g:krlAutoComment = 0 " don't continue comments with o, O or Enter
     let g:krlSpaceIndent = 0 " don't change 'sts', 'sw', 'et' and 'sr'
-    let g:krlFoldLevel = 0 " don't close any fold
+    "let g:krlFoldLevel = 0 " switch folding off completely
+    "let g:krlFoldLevel = 1 " close movement folds on startup (default)
+    let g:krlFoldLevel = 2 " close all folds on startup
     let g:krlKeyWord = 0 " don't treat $, # and & as word char
 
 Q: Which keys get mapped to what? Will that override my own mappings?  
@@ -97,9 +99,9 @@ A: krl-for-vim will not override existing mappings unless the corresponding
    option is explicitly set. To use different key bindings use the
    \<PLUG\>mapping. Otherwise krl-for-vim create the followin mappings: >
 
-    <F2> Switch folding off
-    <F3> Close movement folds.
-    <F4> Close all folds.
+    <F2> Open all folds
+    <F3> Open none movement folds
+    <F4> Close all folds
             Depend on g:krlFoldLevel not existing or >=1.
             Override existing mapping with
         let g:krlFoldingKeyMap = 1
@@ -209,6 +211,6 @@ any questions.
 [6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L233
 [7]: https://www.vim.org/scripts/script.php?script_id=3695
 [8]: https://www.vim.org/scripts/script.php?script_id=39
-[9]: https://www.kuka.com/
+[9]: https://www.kuka.com/en-de/products/robot-systems/industrial-robots
 [10]: https://www.vim.org/
 [11]: https://www.vim.org/scripts/script.php?script_id=5624
