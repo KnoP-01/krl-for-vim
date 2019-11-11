@@ -18,7 +18,7 @@ It provides
   matchup [vimscript #5624][11],
 * mappings and settings to navigate through code in a backup folder structure,
 * text objects for functions and folds,
-* optimized folding for viewing VRKC and
+* optimized folding and concealing for viewing VRKC and
 * mappings to insert a body of a new DEF, DEFFCT or DEFDAT based on user
   defined templates or hopefully sane defaults.
 
@@ -187,7 +187,7 @@ Q: Scrolling feels sluggish. What can I do?
 A: Switch error highlighting off and/or folding to marker: >
 
     let g:krlFoldMethodSyntax = 0 " better performance, but case sensitive
-    let g:krlShowError = 0        " better performance
+    let g:krlShowError        = 0 " better performance
 
 Q: Still sluggish!  
 A: Switch syntax off or jump instead of scroll!  
