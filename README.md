@@ -108,8 +108,9 @@ A: krl-for-vim will not override existing mappings unless the corresponding
 
     gd Go to or show definition of variable or def/deffct.
             Does work on fold lines for SPSMAKRO, UP, bin, binin and Marker.
-            Override existing mapping with
-        let g:krlGoDefinitionKeyMap = 1
+            Does override existing mappings and Vim's default.
+            Disable override existing mapping and Vim's default with
+        let g:krlGoDefinitionKeyMap = 0
 
     <leader>u List all significant appearances of word under cursor.
             Override existing mapping with
@@ -125,8 +126,8 @@ A: krl-for-vim will not override existing mappings unless the corresponding
     ][ Move around functions. Takes a count.
     [; Move around comments. Takes a count.
     ]; Move around comments. Takes a count.
-            Will override existing mappings!
-            Prevent overriding of existing mapping with
+            Does override existing mappings and overshadow Vim's default.
+            Disable override existing mapping and Vim's default with
         let g:krlMoveAroundKeyMap = 0
 
     if Inner function text object.
