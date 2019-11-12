@@ -143,6 +143,16 @@ if !exists("*s:KnopVerboseEcho()")
     endif
   endfunction " s:knopCompleteMsg
 
+  function s:KnopSplitAndUnescapeCommaSeparatedPathStr(commaSeparatedPathStr)
+    let l:pathList = []
+    for l:pathItem in split(a:commaSeparatedPathStr,'\\\@1<!,')
+      if l:pathItem != ''
+        call add(l:pathList,substitute(l:pathItem,'\\','','g'))
+      endif
+    endfor
+    return l:pathList
+  endfunction
+
   function s:KnopAddFileToCompleteOption(file,pathList,...)
 "    echo " "
 "    echo "  attempt to add \nl:file = >" . a:file . "< at"
@@ -1008,6 +1018,7 @@ if !exists("*s:KnopVerboseEcho()")
     " indent
     if exists("b:did_indent")
       if l:start>0 && l:end>l:start
+        execute l:start.','.l:end."substitute/^/ /"
         execute "silent normal! " . (l:end-l:start+1) . "=="
       endif
     endif
@@ -1027,6 +1038,7 @@ if !exists("*s:KnopVerboseEcho()")
     call setline('.',"enddat")
     call search('\s*defdat ','bW')
     if exists("b:did_indent")
+      execute ','.+2."substitute/^/ /"
       silent normal! 3==
     endif
     if get(g:,'krlAutoFormUpperCase',0)
@@ -1045,6 +1057,7 @@ if !exists("*s:KnopVerboseEcho()")
     call setline('.',"end ; ".a:sName."()")
     call search('\v\c^\s*(global )?def ','bW')
     if exists("b:did_indent")
+      execute ','.+2."substitute/^/ /"
       silent normal! 3==
     endif
     if get(g:,'krlAutoFormUpperCase',0)
@@ -1073,6 +1086,7 @@ if !exists("*s:KnopVerboseEcho()")
     call setline('.',"endfct ; ".a:sName."()")
     call search('\v\c^\s*(global )?deffct ','bW')
     if exists("b:did_indent")
+      execute ','.+4."substitute/^/ /"
       silent normal! 5==
     endif
     if get(g:,'krlAutoFormUpperCase',0)
@@ -1579,16 +1593,8 @@ if get(g:,'krlPath',1)
 
 endif " get(g:,'krlPath',1)
 
+" complete option
 if get(g:,'krlComplete',1)
-  function! s:KnopSplitAndUnescapeCommaSeparatedPathStr(commaSeparatedPathStr)
-    let l:pathList = []
-    for l:pathItem in split(a:commaSeparatedPathStr,'\\\@1<!,')
-      if l:pathItem != ''
-        call add(l:pathList,substitute(l:pathItem,'\\','','g'))
-      endif
-    endfor
-    return l:pathList
-  endfunction
   let s:pathList = s:KnopSplitAndUnescapeCommaSeparatedPathStr(&path)
   let s:pathToCurrentFile = substitute(expand("%:p:h"),'\\','/','g')
   " <filename>.dat
