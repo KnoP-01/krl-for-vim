@@ -97,7 +97,7 @@ A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
 Q: Which keys get mapped to what? Will that override my own mappings?  
 A: krl-for-vim will not override existing mappings unless the corresponding
    option is explicitly set. To use different key bindings use the
-   \<PLUG\>mapping. Otherwise krl-for-vim create the followin mappings: >
+   `<PLUG>`mapping. Otherwise krl-for-vim create the followin mappings: >
 
     <F2> Open all folds
     <F3> Open none movement folds
@@ -168,7 +168,7 @@ A: No, but you may put the following in your .vimrc or
 
 Q: I did set g:krlFoldLevel=1 or 2 but folds are open after loading a .src
    file?!   
-A: Unfortunately the order matters: >  
+A: Unfortunately the order matters: >
 
     syntax on                   " before filetype plugin on
     filetype plugin indent on   " after syntax on
@@ -176,7 +176,7 @@ A: Unfortunately the order matters: >
 Q: Folds are still open although I have syntax on and filetype on in the right
    order?!  
 A: Some plugin manager mess with those commands, so with vim-plug I had to
-   redo this after plug#end(): >  
+   redo this after plug#end(): >
 
     call plug#end()
     syntax off                  " undo what plug#begin() did to syntax
