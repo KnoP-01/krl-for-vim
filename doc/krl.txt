@@ -709,20 +709,14 @@ Index: |krl-index|
 ==============================================================================
                         *krl-complete*  
 
-krl-complete adds known global data lists and src files to 'complete' as
-{dict}.
-
 Can't remember if the name of that variable was `$conf_mess` or `$confmess`?
 No problem! Just insert `$con` and hit |i_CTRL-P| or |i_CTRL-N|. 
 
-For this feature to work you need to start your edit below the
-.../`KRC`/-Folder or have all files you need in the same directory as the
-current file. 
-
+krl-complete adds known global data lists and src files to 'complete' as
+{dict}. You may add your own global files, see |g:krlCompleteAdditions|.
 The syntax file will also be added, so you can complete known KSS functions
 and keywords.
 
-Index: |krl-index|
 ==============================================================================
                         *g:krlComplete*
 g:krlComplete:
@@ -733,7 +727,6 @@ Disables the modification of 'complete': >
 
 If omitted or set to 1 krl-for-vim will attempt to add the following files to
 'complete' as {dict}. >
-
     KRC/R1/System/$config.dat
     KRC/R1/System/Global_Points.dat
     KRC/R1/System/MsgLib.src
@@ -745,9 +738,11 @@ If omitted or set to 1 krl-for-vim will attempt to add the following files to
     KRC/TP/Signals.dat
     'runtimepath'/syntax/krl.vim
 
-Enable |g:krlVerbose| to see what files are actually added.
+For this feature to work you need to start your edit below the
+.../`KRC`/-Folder or have all files you need in the same directory as the
+current file. 
 
-See |krl-complete| for limitations.
+Enable |g:krlVerbose| to see what files are actually added.
 
 
 Index: |krl-index|
@@ -759,18 +754,19 @@ Note: This feature depend on |g:krlComplete| ommited or set to 1.
 
 Add custom files to 'complete': >
     let g:krlCompleteAdditions = [
-      \'R1\my tech\mymessagelib.src' , 
+      \'R1/my tech/mymessagelib.src' , 
       \'R1/my tech/mymessagelib.dat' , 
-      \'R1\Program\util\global_var.dat' , 
+      \'R1/Program/util/global_var.dat' , 
       \'R1/Program/util/global_fct.src']
 
 Note that spaces in paths are fine, just don't use too fancy special
-characters.
+characters. Make sure to use forward slashes (`/`) as path separator, also on
+Windows!
 
 You should add the path relative to .../`KRC`. Even if you put all the files
-you edit are in one directory they will be found. 
-You may also add just a file name, However, in that case the file will only be
-found if present in the same directory as the current file. 
+you edit are in the same directory, they will be found. You may also add just
+a file name, However, in that case the file will only be found if present in
+the same directory as the current file. 
 
 Enable |g:krlVerbose| to see what files are actually added.
 
