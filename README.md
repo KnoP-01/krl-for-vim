@@ -13,12 +13,12 @@ It provides
 * syntax highlighting,
 * indenting,
 * folding,
-* completion of words from known global files like $config.dat or custom files,
 * support for commentary [vimscript #3695][7], matchit [vimscript #39][8] and
   matchup [vimscript #5624][11],
 * mappings and settings to navigate through code in a backup folder structure,
 * text objects for functions and folds,
 * optimized folding and concealing for viewing VRKC and
+* completion of words from known or custom global files like $config.dat,
 * mappings to insert a body of a new DEF, DEFFCT or DEFDAT based on user
   defined templates or hopefully sane defaults.
 
