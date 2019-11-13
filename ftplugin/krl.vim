@@ -364,6 +364,10 @@ if !exists("*s:KnopVerboseEcho()")
         execute "silent bwipeout! " . l:b["bufnr"]
       endif
     endfor
+    augroup KrlCleanBufferList
+      " work around where buffer list is not cleaned if knopVerbose is enabled
+      autocmd!
+    augroup END
   endfunction " <SID>KrlCleanBufferList()
 
   function <SID>KrlIsVkrc()
@@ -644,6 +648,11 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " s:KrlSearchProc()
 
   function <SID>KrlGoDefinition()
+    augroup KrlCleanBufferList
+      " work around where buffer list is not cleaned if knopVerbose is enabled
+      autocmd!
+      autocmd CursorMoved * call <SID>KrlCleanBufferList()
+    augroup END
     "
     let l:declPrefix = '\c\v^\s*((global\s+)?(const\s+)?(bool|int|real|char|frame|pos|axis|e6pos|e6axis|signal|channel)\s+[a-zA-Z0-9_,\[\] \t]*|(decl\s+)?(global\s+)?(struc|enum)\s+|decl\s+(global\s+)?(const\s+)?\w+\s+[a-zA-Z0-9_,\[\] \t]*)'
     "
@@ -1182,6 +1191,11 @@ if !exists("*s:KnopVerboseEcho()")
   " List Def/Usage {{{
 
   function <SID>KrlListDefinition()
+    augroup KrlCleanBufferList
+      " work around where buffer list is not cleaned if knopVerbose is enabled
+      autocmd!
+      autocmd CursorMoved * call <SID>KrlCleanBufferList()
+    augroup END
     " list defs in qf
     if s:KnopSearchPathForPatternNTimes('\v\c^\s*(global\s+)?def(fct)?>','%','','krl')==0
       if getqflist()==[] | return | endif
@@ -1215,6 +1229,11 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " <SID>KrlListDefinition()
 
   function <SID>KrlListUsage()
+    augroup KrlCleanBufferList
+      " work around where buffer list is not cleaned if knopVerbose is enabled
+      autocmd!
+      autocmd CursorMoved * call <SID>KrlCleanBufferList()
+    augroup END
     "
     if search('\w','cW',line("."))
       let l:currentWord = s:KrlCurrentWordIs()
