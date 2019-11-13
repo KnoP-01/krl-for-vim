@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 10. Nov 2019
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 13. Nov 2019
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
@@ -110,7 +110,7 @@ A: Disable stuff in your |vimrc|, see |krl-options| for details: >
 Q: Which keys get mapped to what? Will that override my own mappings?  
 A: krl-for-vim will not override existing mappings unless the corresponding
    option is explicitly set. To use different key bindings use the
-   \<PLUG\>mapping. Otherwise krl-for-vim create the followin mappings: >
+   <PLUG>mapping. Otherwise krl-for-vim create the followin mappings: >
 
     <F2> Open all folds
     <F3> Open none movement folds
@@ -226,10 +226,6 @@ A: `:let g:knopVerbose=1` any time.
 |krl-complete|
 |krl-formatting-comments|
 |krl-auto-form|
-|krl-known-bugs|
-    |krl-indent-bugs|
-    |krl-highlight-bugs|
-    |krl-go-definition-bugs|
 
 
 ==============================================================================
@@ -409,6 +405,8 @@ If omitted or set to 1 the following folds get closed on opening a file:
     Movement folds for regular KRC files and 
     second level folds for VKRC files except vw_usr_*. 
 
+Switch quickly between fold level with |g:krlFoldingKeyMap|.
+
 See also |fold-commands| and |g:krlFoldMethodSyntax|.
 
 
@@ -451,13 +449,13 @@ g:krlFoldingKeyMap:
 Note: These mappings depend on |g:krlFoldLevel| >= 1 or omitted.
 
 Regular KRC files and vw_usr*:
-    `<F2>`: Switch folding off
-    `<F3>`: Close only movement folds
+    `<F2>`: Open all folds
+    `<F3>`: Open none movement folds
     `<F4>`: Close all folds
 
 VKRC FOLGE, UP and MAKRO:
-    `<F2>`: Switch folding off
-    `<F3>`: Close second level folds
+    `<F2>`: Open all folds
+    `<F3>`: Open first level folds
     `<F4>`: Close all folds
 
 To force these mappings if your F-Keys are already mapped: >
@@ -535,9 +533,9 @@ Index: |krl-index|
 g:krlListUsageKeyMap:
 ---------------------
 
-    `<leader>u`: List all appearances, outside of strings, enum declarations
-                and comments (unless used in a vkrc file), of the word under
-                the cursor in the |quickfix-window|.
+    `<leader>u`: List all appearances, outside of enum declarations and comments 
+                 (unless used in a vkrc file), of the word under the cursor 
+                 in the |quickfix-window|.
 
 To force this mapping if `<leader>u` is already mapped: >
     let g:krlListUsageKeyMap = 1
@@ -574,19 +572,19 @@ g:krlMoveAroundKeyMap:
 Note: These mappings overshadow the default Vim commands 
 |[[|, |]]|, |[]| and |][|!
 
-[count]`[[`   Jumps backward to the next def/deffct [count] times. Works in
+[count]`[[`   Jumps backward to the next DEF/DEFFCT [count] times. Works in
             |Normal|-, |Visual|- and |Operator-pending|-mode, see |operator|. 
             In Normal-mode it respects 'wrapscan'.
-       
-[count]`]]`   Like [[ but jumps forward to the next def/deffct.
-       
-[count]`[]`   Like [[ but jumps backward to the next end/endfct.
-       
-[count]`][`   Like [[ but jumps forward to the next end/endfct.
-       
+
+[count]`]]`   Like [[ but jumps forward to the next DEF/DEFFCT.
+
+[count]`[]`   Like [[ but jumps backward to the next END/ENDFCT.
+
+[count]`][`   Like [[ but jumps forward to the next END/ENDFCT.
+
 [count]`[;`   Like [[ but jumps backward to the start of current or, if in
             between, previous comment.
-       
+
 [count]`];`   Like [[ but jumps forward to the end of the current or, if in
             between, next comment.
 
@@ -613,7 +611,7 @@ Index: |krl-index|
 g:knopShortenQFPath:
 --------------------
 
-Note: g:krlShortenQFPath is synonym for g:knopShortenQFPath.
+Note: g:krlShortenQFPath is synonym for `g:knopShortenQFPath`.
 Use the g:knop* variable!
 
 Disable shortening of paths in quickfix-window, thus always show full paths: >
@@ -725,8 +723,8 @@ g:krlComplete:
 Disables the modification of 'complete': >
     let g:krlComplete = 0
 
-If omitted or set to 1 krl-for-vim will attempt to add the following files to
-'complete' as {dict}. >
+If omitted or set to 1 krl-for-vim will attempt to add the following files 
+to 'complete' as {dict}. >
     KRC/R1/System/$config.dat
     KRC/R1/System/Global_Points.dat
     KRC/R1/System/MsgLib.src
@@ -739,7 +737,7 @@ If omitted or set to 1 krl-for-vim will attempt to add the following files to
     'runtimepath'/syntax/krl.vim
 
 For this feature to work you need to start your edit below the
-.../`KRC`/-Folder or have all files you need in the same directory as the
+.../`KRC`/-folder or have all files you need in the same directory as the
 current file. 
 
 Enable |g:krlVerbose| to see what files are actually added.
@@ -797,21 +795,21 @@ Index: |krl-index|
 ==============================================================================
                         *krl-text-objects*  
 
-krl-for-vim text objects work similar as |text-objects|.
+krl-for-vim text objects work similar as other Vim |text-objects|.
 They can be used in |Visual|- and |Operator-pending|-mode, see |operator|. 
 
 ==============================================================================
-                    *g:krlFunctionTextObject*   *<plug>KrlTxtObjInnerFunc*
-                                              *<plug>KrlTxtObjAroundFuncExclCo*
-                                              *<plug>KrlTxtObjAroundFuncInclCo*
+                  *g:krlFunctionTextObject*   *<plug>KrlTxtObjInnerFunc*
+                                            *<plug>KrlTxtObjAroundFuncExclCo*
+                                            *<plug>KrlTxtObjAroundFuncInclCo*
 g:krlFunctionTextObject:
 ------------------------
 
 Note: These text objects depend on |g:krlMoveAroundKeyMap| = 1 or omitted.
 
-    [count]`if`: inner part of def/deffct.
-    [count]`af`: outer part of def/deffct.
-    [count]`aF`: outer part of def/deffct including, if present, one empty
+    [count]`if`: inner part of DEF/DEFFCT.
+    [count]`af`: outer part of DEF/DEFFCT.
+    [count]`aF`: outer part of DEF/DEFFCT including, if present, one empty
             following line and directly preceding comments.
 
 To force these text objects if `if`, `af` and/or `aF` is already mapped: >
@@ -888,7 +886,7 @@ g:krlAutoComment:
 Disable 'formatoptions' += ro. See |fo-table|: >
     let g:krlAutoComment = 0
 
-If omitted or set to 1 the comment char ; is automatically added after
+If omitted or set to 1 the comment char `;` is automatically added after
 hitting |i_<CR>|, |o| or |O| on a comment line.  
 
 
@@ -912,12 +910,12 @@ Index: |krl-index|
 With krl-for-vim you can quickly create a new DEF, DEFFCT or DEFDAT after your
 liking. 
 
-Type <leader>n anywhere in a *.src, *.sub or *.dat file. You will get prompted
+Type `<leader>n` anywhere in a *.src, *.sub or *.dat file. You will get prompted
 on some details for the new body. The last prompt is the name. The name prompt
-is mandatory, all others may be typed quickly after <leader>n. Hit <esc> or
+is mandatory, all others may be typed quickly after `<leader>n`. Hit <esc> or
 enter an empty string at any prompt to abort.
 
-Example: <leader>ngfb will insert a body for a new global function of type
+Example: `<leader>ngfb` will insert a body for a new global function of type
 bool.
 Mnemonic: New Global Function of type Bool
 
@@ -948,59 +946,59 @@ defd[a]t?" and "Datatype? [b]ool, [i]nt, [r]eal...".
 
 Note: Mappings marked with * will have a little delay until they trigger.
 
-  `<leader>n`:     New prompted body *
-  `<leader>nn`:    New prompted body
+  `<leader>n`     New prompted body *
+  `<leader>nn`    New prompted body
   
-  `<leader>nl`:    New Local prompted body *
-  `<leader>nll`:   New Local prompted body
+  `<leader>nl`    New Local prompted body *
+  `<leader>nll`   New Local prompted body
   
-  `<leader>nla`:   New Local defdAt body
-  `<leader>nld`:   New Local Def body
-  `<leader>nlf`:   New Local defFct with prompted type *
-  `<leader>nlfu`:  New Local defFct with prompted type
+  `<leader>nla`   New Local defdAt body
+  `<leader>nld`   New Local Def body
+  `<leader>nlf`   New Local defFct with prompted type *
+  `<leader>nlfu`  New Local defFct with prompted type
   
-  `<leader>nlfb`:  New Local defFct of type Bool
-  `<leader>nlfi`:  New Local defFct of type Integer
-  `<leader>nlfr`:  New Local defFct of type Real
-  `<leader>nlfc`:  New Local defFct of type Char
-  `<leader>nlff`:  New Local defFct of type Frame
-  `<leader>nlfp`:  New Local defFct of type Pos
-  `<leader>nlf6`:  New Local defFct of type e6pos
-  `<leader>nlfa`:  New Local defFct of type Axis
-  `<leader>nlfx`:  New Local defFct of type e6aXis
+  `<leader>nlfb`  New Local defFct of type Bool
+  `<leader>nlfi`  New Local defFct of type Integer
+  `<leader>nlfr`  New Local defFct of type Real
+  `<leader>nlfc`  New Local defFct of type Char
+  `<leader>nlff`  New Local defFct of type Frame
+  `<leader>nlfp`  New Local defFct of type Pos
+  `<leader>nlf6`  New Local defFct of type e6pos
+  `<leader>nlfa`  New Local defFct of type Axis
+  `<leader>nlfx`  New Local defFct of type e6aXis
   
-  `<leader>na`:    New local defdAt body
-  `<leader>nd`:    New local Def body
-  `<leader>nf`:    New local defFct with prompted type *
-  `<leader>nfu`:   New local defFct with prompted type
+  `<leader>na`    New local defdAt body
+  `<leader>nd`    New local Def body
+  `<leader>nf`    New local defFct with prompted type *
+  `<leader>nfu`   New local defFct with prompted type
   
-  `<leader>nfb`:   New local defFct of type Bool
-  `<leader>nfi`:   New local defFct of type Integer
-  `<leader>nfr`:   New local defFct of type Real
-  `<leader>nfc`:   New local defFct of type Char
-  `<leader>nff`:   New local defFct of type Frame
-  `<leader>nfp`:   New local defFct of type Pos
-  `<leader>nf6`:   New local defFct of type e6pos
-  `<leader>nfa`:   New local defFct of type Axis
-  `<leader>nfx`:   New local defFct of type e6aXis
+  `<leader>nfb`   New local defFct of type Bool
+  `<leader>nfi`   New local defFct of type Integer
+  `<leader>nfr`   New local defFct of type Real
+  `<leader>nfc`   New local defFct of type Char
+  `<leader>nff`   New local defFct of type Frame
+  `<leader>nfp`   New local defFct of type Pos
+  `<leader>nf6`   New local defFct of type e6pos
+  `<leader>nfa`   New local defFct of type Axis
+  `<leader>nfx`   New local defFct of type e6aXis
   
-  `<leader>ng`:    New Global prompted body *
-  `<leader>ngg`:   New Global prompted body
+  `<leader>ng`    New Global prompted body *
+  `<leader>ngg`   New Global prompted body
   
-  `<leader>nga`:   New Global defdAt body
-  `<leader>ngd`:   New Global Def body
-  `<leader>ngf`:   New Global defFct with prompted type *
-  `<leader>ngfu`:  New Global defFct with prompted type
+  `<leader>nga`   New Global defdAt body
+  `<leader>ngd`   New Global Def body
+  `<leader>ngf`   New Global defFct with prompted type *
+  `<leader>ngfu`  New Global defFct with prompted type
   
-  `<leader>ngfb`:  New Global defFct of type Bool
-  `<leader>ngfi`:  New Global defFct of type Integer
-  `<leader>ngfr`:  New Global defFct of type Real
-  `<leader>ngfc`:  New Global defFct of type Char
-  `<leader>ngff`:  New Global defFct of type Frame
-  `<leader>ngfp`:  New Global defFct of type Pos
-  `<leader>ngf6`:  New Global defFct of type e6pos
-  `<leader>ngfa`:  New Global defFct of type Axis
-  `<leader>ngfx`:  New Global defFct of type e6aXis
+  `<leader>ngfb`  New Global defFct of type Bool
+  `<leader>ngfi`  New Global defFct of type Integer
+  `<leader>ngfr`  New Global defFct of type Real
+  `<leader>ngfc`  New Global defFct of type Char
+  `<leader>ngff`  New Global defFct of type Frame
+  `<leader>ngfp`  New Global defFct of type Pos
+  `<leader>ngf6`  New Global defFct of type e6pos
+  `<leader>ngfa`  New Global defFct of type Axis
+  `<leader>ngfx`  New Global defFct of type e6aXis
 
                         *<Plug>KrlAutoForm*
 Alternativ <plug> mappings: >
