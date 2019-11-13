@@ -1,8 +1,8 @@
 " Kuka Robot Language syntax file for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 2.0.1
-" Last Change: 16.10.2019
+" Version: 2.0.2
+" Last Change: 13.11.2019
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
