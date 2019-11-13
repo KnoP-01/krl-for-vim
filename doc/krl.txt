@@ -239,7 +239,7 @@ have no effect.
 
 *krl-key-mappings*
 Also see these options for alternative <PLUG> mappings.
-|g:krlFoldingKeyMap|      `<F2>` - `<F4>` changes folding
+|g:krlFoldingKeyMap|      `<F2>` - `<F4>` chang folding level
 |g:krlGoDefinitionKeyMap| `gd` to see declaration of word under cursor
 |g:krlListUsageKeyMap|    `<leader>u` lists all appearances of current word
 |g:krlListDefKeyMap|      `<leader>f` lists def/deffct of current file
