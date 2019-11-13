@@ -99,6 +99,7 @@ if !exists("*s:KnopVerboseEcho()")
 
   if get(g:,'knopVerbose',0)
     let g:knopCompleteMsg = 1
+    let g:knopCompleteMsg2 = 1
     let g:knopVerboseMsg = 1
   endif
   if exists('g:knopVerboseMsg')
@@ -141,7 +142,7 @@ if !exists("*s:KnopVerboseEcho()")
       unlet g:knopCompleteMsg
       call s:KnopVerboseEcho("Add the following files to 'complete'.\n  Try <Ctrl-p> and <Ctrl-n> to complete words from there:")
     endif
-  endfunction " s:knopCompleteMsg
+  endfunction " s:knopCompleteEnbMsg
 
   function s:KnopSplitAndUnescapeCommaSeparatedPathStr(commaSeparatedPathStr)
     let l:pathList = []
@@ -166,7 +167,9 @@ if !exists("*s:KnopVerboseEcho()")
 "          echo "file readable"
 "          echo '  setlocal complete+=k'.l:f
           call s:knopCompleteEnbMsg()
-          call s:KnopVerboseEcho(l:f)
+          if exists("g:knopCompleteMsg2")
+            call s:KnopVerboseEcho(l:f)
+          endif
           execute 'setlocal complete+=k'.l:f
           return
         else
@@ -186,7 +189,9 @@ if !exists("*s:KnopVerboseEcho()")
 "        echo "file readable"
 "        echo '  setlocal complete+=k'.l:f
         call s:knopCompleteEnbMsg()
-        call s:KnopVerboseEcho(l:f)
+        if exists("g:knopCompleteMsg2")
+          call s:KnopVerboseEcho(l:f)
+        endif
         execute 'setlocal complete+=k'.l:f
         return
       else
@@ -1632,6 +1637,9 @@ if get(g:,'krlComplete',1)
   endif
   " syntax file
   call s:KnopAddFileToCompleteOption('syntax/krl.vim',split(&rtp,'\\\@1<!,'))
+  if exists("g:knopCompleteMsg2")
+    unlet g:knopCompleteMsg2
+  endif
   let b:undo_ftplugin = b:undo_ftplugin." cpt<"
 endif " get(g:,'krlComplete',1)
 
