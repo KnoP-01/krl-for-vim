@@ -212,7 +212,6 @@ A: `:let g:knopVerbose=1` any time.
 
 ==============================================================================
                         *krl*   *krl-index*   *krl-for-vim*
-==============================================================================
 
 |krl-Introduction|
     |krl-tl:dr|     Short overview
@@ -235,7 +234,6 @@ Set or reset options in your .vimrc. Except |g:krlCommentIndent| and
 |g:knopVerbose| changeing a krl option during an editing session will 
 have no effect.
 
-==============================================================================
 
 *krl-key-mappings*
 Also see these options for alternative <PLUG> mappings.
@@ -288,7 +286,6 @@ Also see these options for alternative <PLUG> mappings.
 Index: |krl-index|
 ==============================================================================
                         *krl-highlighting*
-==============================================================================
                         *g:krlShowError*
 g:krlShowError:
 ---------------
@@ -346,7 +343,6 @@ colorscheme tortus or tortusless which makes use of these groups:
 Index: |krl-index|
 ==============================================================================
                         *krl-indent*
-==============================================================================
                         *g:krlSpaceIndent*
 g:krlSpaceIndent:
 -----------------
@@ -390,7 +386,6 @@ This option may be changed any time and will take effect immediately.
 Index: |krl-index|
 ==============================================================================
                         *krl-folding*
-==============================================================================
                         *g:krlFoldLevel*
 g:krlFoldLevel:
 ---------------
@@ -492,7 +487,6 @@ You may instruct krl-for-vim not to change 'path' if you reset |g:krlPath|.
 'suffixes' and 'suffixesadd' get their values unconditionally. 
 
 Index: |krl-index|
-==============================================================================
                         *g:krlGoDefinitionKeyMap*   *<Plug>KrlGoDef*
 g:krlGoDefinitionKeyMap:
 ------------------------
@@ -710,15 +704,17 @@ Index: |krl-index|
 Can't remember if the name of that variable was `$conf_mess` or `$confmess`?
 No problem! Just insert `$con` and hit |i_CTRL-P| or |i_CTRL-N|. 
 
-krl-complete adds known global data lists and src files to 'complete' as
-{dict}. You may add your own global files, see |g:krlCompleteCustom|.
+krl-complete adds known global files to 'complete' as {dict}. 
+You may add your own files, see |g:krlCompleteCustom|.
 The syntax file will also be added, so you can complete known KSS functions
 and keywords.
 
-==============================================================================
                         *g:krlCompleteStd*
 g:krlCompleteStd:
 -----------------
+
+Note that if you work below a path with special characters (one of `{}[]) in
+it this feature may not work.
 
 Disables the modification of 'complete': >
     let g:krlCompleteStd = 0
@@ -748,6 +744,9 @@ Index: |krl-index|
 g:krlCompleteCustom:
 --------------------
 
+Note that if you work below a path with special characters (one of `{}[]) in
+it this feature may not work.
+
 Add custom files to 'complete': >
     let g:krlCompleteCustom = [
       \'R1/my tech/mymessagelib.src' , 
@@ -755,8 +754,7 @@ Add custom files to 'complete': >
       \'R1/Program/util/global_var.dat' , 
       \'R1/Program/util/global_fct.src']
 
-Note that spaces in paths are fine, just don't use too fancy special
-characters. Make sure to use forward slashes (`/`) as path separator, also on
+Note: Make sure to use forward slashes (`/`) as path separator, also on
 Windows!
 
 You should add the path relative to .../`KRC`. Even if you put all the files
@@ -774,7 +772,6 @@ If omitted or set to 0 no custom files get added to complete.
 Index: |krl-index|
 ==============================================================================
                         *krl-debug*  
-==============================================================================
                         *g:krlVerbose*
 g:knopVerbose:
 --------------
@@ -796,7 +793,6 @@ Index: |krl-index|
 krl-for-vim text objects work similar as other Vim |text-objects|.
 They can be used in |Visual|- and |Operator-pending|-mode, see |operator|. 
 
-==============================================================================
                   *g:krlFunctionTextObject*   *<plug>KrlTxtObjInnerFunc*
                                             *<plug>KrlTxtObjAroundFuncExclCo*
                                             *<plug>KrlTxtObjAroundFuncInclCo*
@@ -876,7 +872,6 @@ Alternativ <plug> mappings: >
 Index: |krl-index|
 ==============================================================================
                         *krl-formatting-comments*
-==============================================================================
                         *g:krlAutoComment*
 g:krlAutoComment:
 -----------------
@@ -929,7 +924,6 @@ insertion is finished and may be used for further customization: >
     augroup END
 
 Index: |krl-index|
-==============================================================================
                         *g:krlAutoFormKeyMap*
 g:krlAutoFormKeyMap:
 --------------------
