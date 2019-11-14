@@ -278,8 +278,8 @@ Also see these options for alternative <PLUG> mappings.
 |g:krlPath|               Disable 'path' setting
 
 *krl-complete-options*
-|g:krlComplete|           Disable 'complete' setting
-|g:krlCompleteAdditions|  Add custom files to 'complete' setting
+|g:krlCompleteStd|        Disable standard 'complete' setting
+|g:krlCompleteCustom|     Enable custom 'complete' setting
 
 *krl-debug-options*
 |g:krlVerbose|            Enable verbose messages
@@ -511,7 +511,7 @@ Alternativ <plug> mapping: >
     augroup END
 
 A succesful search for a file local declaration jumps there right away. Get
-back where you were with |''|. A succesful search for a global declaration
+back where you were with |CTRL-O|. A succesful search for a global declaration
 opens the |quickfix-window|. 
 
 This also works for `M`arkers, `Bin`, `BinIn`, `UP`s and `SPSMAKRO`s in fold
@@ -711,17 +711,17 @@ Can't remember if the name of that variable was `$conf_mess` or `$confmess`?
 No problem! Just insert `$con` and hit |i_CTRL-P| or |i_CTRL-N|. 
 
 krl-complete adds known global data lists and src files to 'complete' as
-{dict}. You may add your own global files, see |g:krlCompleteAdditions|.
+{dict}. You may add your own global files, see |g:krlCompleteCustom|.
 The syntax file will also be added, so you can complete known KSS functions
 and keywords.
 
 ==============================================================================
-                        *g:krlComplete*
-g:krlComplete:
---------------
+                        *g:krlCompleteStd*
+g:krlCompleteStd:
+-----------------
 
 Disables the modification of 'complete': >
-    let g:krlComplete = 0
+    let g:krlCompleteStd = 0
 
 If omitted or set to 1 krl-for-vim will attempt to add the following files 
 to 'complete' as {dict}. >
@@ -744,14 +744,12 @@ Enable |g:krlVerbose| to see what files are actually added.
 
 
 Index: |krl-index|
-                        *g:krlCompleteAdditions*
-g:krlCompleteAdditions:
------------------------
-
-Note: This feature depend on |g:krlComplete| ommited or set to 1.
+                        *g:krlCompleteCustom*
+g:krlCompleteCustom:
+--------------------
 
 Add custom files to 'complete': >
-    let g:krlCompleteAdditions = [
+    let g:krlCompleteCustom = [
       \'R1/my tech/mymessagelib.src' , 
       \'R1/my tech/mymessagelib.dat' , 
       \'R1/Program/util/global_var.dat' , 

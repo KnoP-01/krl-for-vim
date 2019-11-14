@@ -1600,11 +1600,21 @@ if get(g:,'krlPath',1)
 
 endif " get(g:,'krlPath',1)
 
-" complete option
-if get(g:,'krlComplete',1)
+" complete
+let s:pathList = s:KnopSplitAndUnescapeCommaSeparatedPathStr(&path)
+let s:pathToCurrentFile = substitute(expand("%:p:h"),'\\','/','g')
+"
+" complete custom files
+if exists('g:krlCompleteCustom')
+  for s:customCompleteAdditions in g:krlCompleteCustom
+    let s:file = substitute(s:customCompleteAdditions,'^.*[\\/]\(\w\+\.\)\(\w\+\)$','\1\2','')
+    call s:KnopAddFileToCompleteOption(s:customCompleteAdditions,s:pathList,s:pathToCurrentFile.'/'.s:file,)
+  endfor
+endif
+"
+" complete standard files
+if get(g:,'krlCompleteStd',1)
   "
-  let s:pathList = s:KnopSplitAndUnescapeCommaSeparatedPathStr(&path)
-  let s:pathToCurrentFile = substitute(expand("%:p:h"),'\\','/','g')
   "
   " <filename>.dat
   if expand("%:p:t") !~ '\.dat$'
@@ -1629,14 +1639,6 @@ if get(g:,'krlComplete',1)
   " TP/Signals.dat
   call s:KnopAddFileToCompleteOption('R1/TP/Signals.dat',s:pathList,s:pathToCurrentFile.'/'.'Signals.dat')
   "
-  " user custom files
-  if exists('g:krlCompleteAdditions')
-    for s:customCompleteAdditions in g:krlCompleteAdditions
-      let s:file = substitute(s:customCompleteAdditions,'^.*[\\/]\(\w\+\.\)\(src\|sub\|dat\)$','\1\2','')
-      call s:KnopAddFileToCompleteOption(s:customCompleteAdditions,s:pathList,s:pathToCurrentFile.'/'.s:file,)
-    endfor
-  endif
-  "
   " syntax file
   let s:pathList=[]
   for s:i in split(&rtp,'\\\@1<!,')
@@ -1646,7 +1648,9 @@ if get(g:,'krlComplete',1)
   if exists("g:knopCompleteMsg2")|unlet g:knopCompleteMsg2|endif
   "
   let b:undo_ftplugin = b:undo_ftplugin." cpt<"
-endif " get(g:,'krlComplete',1)
+endif " get(g:,'krlCompleteStd',1)
+unlet s:pathList
+unlet s:pathToCurrentFile
 
 " folding
 if <SID>KrlIsVkrc() && get(g:,'krlConcealFoldTail',1)
