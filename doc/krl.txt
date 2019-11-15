@@ -110,7 +110,7 @@ A: Disable stuff in your |vimrc|, see |krl-options| for details: >
 Q: Which keys get mapped to what? Will that override my own mappings?  
 A: krl-for-vim will not override existing mappings unless the corresponding
    option is explicitly set. To use different key bindings use the
-   <PLUG>mapping. Otherwise krl-for-vim create the followin mappings: >
+   <Plug> mapping. Otherwise krl-for-vim create the followin mappings: >
 
     <F2> Open all folds
     <F3> Open none movement folds
@@ -214,8 +214,9 @@ A: `:let g:knopVerbose=1` any time.
                         *krl*   *krl-index*   *krl-for-vim*
 
 |krl-Introduction|
-    |krl-tl:dr|     Short overview
-|krl-options|       List of all options and <plug> mappings
+    If you don't know what to read, READ krl-tl:dr ~
+    |krl-tl:dr|     Short overview.
+|krl-options|       List of all options and <Plug> mappings
 |krl-highlighting|
 |krl-indent|
 |krl-folding|
@@ -234,9 +235,14 @@ Set or reset options in your .vimrc. Except |g:krlCommentIndent| and
 |g:knopVerbose| changeing a krl option during an editing session will 
 have no effect.
 
+Most features are enabled by default. Unless a mapping doesn't work as
+expected, a mapping should be redefined or you want do get rid of some 
+annoying feature there is no need to put any option in your .vimrc.
+Exceptions may be |g:krlCompleteCustom| and |g:krlPathToBodyFiles|.
+
 
 *krl-key-mappings*
-Also see these options for alternative <PLUG> mappings.
+Also see these options for alternative <Plug> mappings.
 |g:krlFoldingKeyMap|      `<F2>` - `<F4>` chang folding level
 |g:krlGoDefinitionKeyMap| `gd` to see declaration of word under cursor
 |g:krlListUsageKeyMap|    `<leader>u` lists all appearances of current word
@@ -456,7 +462,7 @@ VKRC FOLGE, UP and MAKRO:
 To force these mappings if your F-Keys are already mapped: >
     let g:krlFoldingKeyMap = 1
 
-Alternativ <plug> mappings: >
+Alternativ <Plug> mappings: >
     augroup KrlFoldMapping
     au!
     au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlCloseAllFolds
@@ -498,7 +504,7 @@ Note: This mapping overshadows the default Vim command |gd|.
 To force this mapping off and make Vims default available: >
     let g:krlGoDefinitionKeyMap = 0
 
-Alternativ <plug> mapping: >
+Alternativ <Plug> mapping: >
     augroup KrlGoDefMapping
     au!
     au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlGoDef
@@ -534,7 +540,7 @@ g:krlListUsageKeyMap:
 To force this mapping if `<leader>u` is already mapped: >
     let g:krlListUsageKeyMap = 1
 
-Alternativ <plug> mapping: >
+Alternativ <Plug> mapping: >
     augroup KrlListUseMapping
     au!
     au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlListUse
@@ -551,7 +557,7 @@ g:krlListDefKeyMap:
 To force this mapping if `<leader>f` is already mapped: >
     let g:krlListDefKeyMap = 1
 
-Alternativ <plug> mapping: >
+Alternativ <Plug> mapping: >
     augroup KrlListDefMapping
     au!
     au FileType krl nmap <silent><buffer> ANYKEY <Plug>KrlListDef
@@ -793,9 +799,9 @@ Index: |krl-index|
 krl-for-vim text objects work similar as other Vim |text-objects|.
 They can be used in |Visual|- and |Operator-pending|-mode, see |operator|. 
 
-                  *g:krlFunctionTextObject*   *<plug>KrlTxtObjInnerFunc*
-                                            *<plug>KrlTxtObjAroundFuncExclCo*
-                                            *<plug>KrlTxtObjAroundFuncInclCo*
+                  *g:krlFunctionTextObject*   *<Plug>KrlTxtObjInnerFunc*
+                                            *<Plug>KrlTxtObjAroundFuncExclCo*
+                                            *<Plug>KrlTxtObjAroundFuncInclCo*
 g:krlFunctionTextObject:
 ------------------------
 
@@ -809,7 +815,7 @@ Note: These text objects depend on |g:krlMoveAroundKeyMap| = 1 or omitted.
 To force these text objects if `if`, `af` and/or `aF` is already mapped: >
     let g:krlFunctionTextObject = 1
 
-Alternativ <plug> mappings: >
+Alternativ <Plug> mappings: >
   augroup KrlFuncTextObj
   au!
   au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFuncInclCo
@@ -822,8 +828,8 @@ Alternativ <plug> mappings: >
 
 
 Index: |krl-index|
-                    *g:krlCommentTextObject*    *<plug>KrlTxtObjInnerComment*
-                                              *<plug>KrlTxtObjAroundComment*
+                    *g:krlCommentTextObject*    *<Plug>KrlTxtObjInnerComment*
+                                              *<Plug>KrlTxtObjAroundComment*
 g:krlCommentTextObject:
 -----------------------
 
@@ -835,7 +841,7 @@ Note: These text objects depend on |g:krlMoveAroundKeyMap| = 1 or omitted.
 To force these text objects if `ic` and/or `ac` is already mapped: >
     let g:krlCommentTextObject = 1
 
-Alternativ <plug> mappings: >
+Alternativ <Plug> mappings: >
     augroup KrlCommentTextObj
     au!
     au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundComment
@@ -846,8 +852,8 @@ Alternativ <plug> mappings: >
 
 
 Index: |krl-index|
-                        *g:krlFoldTextObject*   *<plug>KrlTxtObjInnerFold*
-                                              *<plug>KrlTxtObjAroundFold*
+                        *g:krlFoldTextObject*   *<Plug>KrlTxtObjInnerFold*
+                                              *<Plug>KrlTxtObjAroundFold*
 g:krlFoldTextObject:
 --------------------
 
@@ -859,7 +865,7 @@ Note: These text objects depend on |matchit|. See |matchit-install|.
 To force these text objects if `io` and/or `ao` is already mapped: >
     let g:krlFoldTextObject = 1
 
-Alternativ <plug> mappings: >
+Alternativ <Plug> mappings: >
     augroup KrlFoldTextObj
     au!
     au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFold
@@ -993,7 +999,7 @@ Note: Mappings marked with * will have a little delay until they trigger.
   `<leader>ngfx`  New Global defFct of type e6aXis
 
                         *<Plug>KrlAutoForm*
-Alternativ <plug> mappings: >
+Alternativ <Plug> mappings: >
   augroup KrlAutoFormMapping
   au!
   au FileType krl nmap <silent><buffer> KEY01 <Plug>KrlAutoForm
