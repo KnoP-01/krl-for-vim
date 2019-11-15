@@ -353,9 +353,6 @@ if get(g:,'krlShowError',1)
   " should be interrupt (on|off) \w+
   syn match krlError1 /\vinterrupt[ \t(]+[_$a-zA-Z0-9]+[_$a-zA-Z0-9.\[\]()+\-*/]*[ \t)]+o%(n|ff)>/
   "
-  " more or less common misspellings. unnecessary. if misspelled they will not get their regular highlighting
-  " syn match krlError2 /\v^\s*\zs%(fasle|ture|elseif|esle|endfi|ednif|ednswitch|swithc|swtich|endswithc|endswtich|ednwhile|ednfor|endfro|ednloop|utnil|unitl)>/
-  "
   " for bla==5 to 7...
   "        ||
   syn match krlError3 /\v%(^\s*for%(\(|\s)+[_$a-zA-Z]+[_$a-zA-Z0-9.\[\]()+\-*/ ]*\s*)@<=[:=]\=/
