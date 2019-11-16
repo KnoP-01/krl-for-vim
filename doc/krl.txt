@@ -525,8 +525,6 @@ lines of `VKRC` files, e.g.: >
 
 Works best with `:syntax on` and both |g:krlPath| and |g:krlKeyWord| omitted.
 
-Limitations: See |krl-go-definition-bugs|.
-
 
 Index: |krl-index|
                         *g:krlListUsageKeyMap*  *<Plug>KrlListUse*
