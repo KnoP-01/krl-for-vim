@@ -1,6 +1,6 @@
 # krl-for-vim
 
-**READ [TL:DR][2] FIRST** if you want more than just syntax highlight and 
+**READ [FAQ][2] FIRST** if you want more than just syntax highlight and 
 automatic indenting. It is a quick overview over the most important options and
 mappings provided by KRL for Vim. For more details see the [help][3] file.
 
@@ -76,7 +76,7 @@ to use the help within Vim after installation. >
     :help krl
 
 
-## tl:dr
+## FAQ
 
 Q: Since version 2.0.0 everything's weird. How so?  
 A: Most optional features are enabled by default now.  
@@ -205,7 +205,7 @@ timing you may find me on irc://irc.freenode.net/#vim as KnoP in case you have
 any questions.  
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases/latest
-[2]: https://github.com/KnoP-01/krl-for-vim#tldr
+[2]: https://github.com/KnoP-01/krl-for-vim#FAQ
 [3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L213
 [4]: https://www.vim.org/scripts/script.php?script_id=5344
 [5]: https://github.com/KnoP-01/krl-for-vim/issues

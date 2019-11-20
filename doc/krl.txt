@@ -59,7 +59,7 @@ Index: |krl-index|
 ==============================================================================
                         *krl-Introduction*
 
-**READ |tl:dr| FIRST** if you want more than just syntax highlight and 
+**READ |krl-FAQ| FIRST** if you want more than just syntax highlight and 
 automatic indenting. It is a quick overview over the most important options and
 mappings provided by KRL for Vim.
 
@@ -88,7 +88,7 @@ Some features need the case insensitive file system to work properly.
 
 Index: |krl-index|
 ==============================================================================
-                        *krl-tl:dr*
+                        *krl-FAQ*
 Short description:
 ------------------
 Q: Since version 2.0.0 everything's weird. How so?  
@@ -214,8 +214,8 @@ A: `:let g:knopVerbose=1` any time.
                         *krl*   *krl-index*   *krl-for-vim*
 
 |krl-Introduction|
-    If you don't know what to read, READ krl-tl:dr ~
-    |krl-tl:dr|     Short overview.
+    If you don't know what to read, READ krl-FAQ ~
+    |krl-FAQ|       Short overview.
 |krl-options|       List of all options and <Plug> mappings
 |krl-highlighting|
 |krl-indent|
