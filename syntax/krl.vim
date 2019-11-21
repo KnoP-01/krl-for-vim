@@ -93,7 +93,7 @@ highlight default link krlHeader PreProc
 
 " Operator {{{
 " Boolean operator
-syn keyword krlBoolOperator AND OR EXOR NOT DIV MOD B_AND B_OR B_EXOR B_NOT
+syn keyword krlBoolOperator and or exor not div mod b_and b_or b_exor b_not
 highlight default link krlBoolOperator Operator
 " Arithmetic operator
 syn match krlArithOperator /[+-]/ containedin=krlFloat
@@ -115,11 +115,11 @@ highlight default link krlGeomOperator Operator
 syn match krlAnyType /\v%(%(decl\s+|struc\s+|enum\s+)|%(global\s+)|%(const\s+)|%(deffct\s+))+\w+>/ contains=krlStorageClass,krlType,krlTypedef
 highlight default link krlAnyType Type
 " Simple data types
-syn keyword krlType BOOL CHAR REAL INT containedin=krlAnyType
+syn keyword krlType bool char real int containedin=krlAnyType
 " External program and function
-syn keyword krlType EXT EXTFCT EXTFCTP EXTP containedin=krlAnyType
+syn keyword krlType ext extfct extfctp extp containedin=krlAnyType
 " Communication
-syn keyword krlType SIGNAL CHANNEL containedin=krlAnyType
+syn keyword krlType signal channel containedin=krlAnyType
 highlight default link krlType Type
 " StorageClass
 syn keyword krlStorageClass decl global const struc enum contained
@@ -135,7 +135,7 @@ syn match krlParamdef /[:]\s*out\>/
 highlight default link krlParamdef StorageClass
 " Not a typedef but I like to have those highlighted
 " different then types, structures or strorage classes
-syn match krlTypedef /\c\v<deffct>(\s+\w+\s+\w+\()@=/
+syn match krlTypedef /\c\v<DEFFCT>(\s+\w+\s+\w+\()@=/
 syn keyword krlTypedef DEF END ENDFCT DEFDAT ENDDAT
 highlight default link krlTypedef Typedef
 " }}} Type, StorageClass and Typedef
@@ -147,7 +147,7 @@ highlight default link krlDelimiter Delimiter
 
 " Constant values {{{
 " Boolean
-syn keyword krlBoolean TRUE FALSE containedin=krlStructVal
+syn keyword krlBoolean true false containedin=krlStructVal
 highlight default link krlBoolean Boolean
 " Integer
 syn match krlInteger /\W\@1<=[+-]\?\d\+/ containedin=krlStructVal
@@ -181,65 +181,65 @@ highlight default link krlEnumVal Constant
 " basisTech, gripperTech and spotTech
 "
 " Predefined data types found in krc1
-syn keyword krlStructure SERVOPARA KEYMOVE POWERMODUL TRACE TECHANGLE TECH TECHFCT TECHCPS TECHFCTCTRL AXIS_INC AXIS_CAL DATE DISPLAY_VAR PRO_IP CON BUS 
-syn keyword krlEnum IDENT_STATE SIG_STATE MOVE_STATE ASYNC_STATE EMT_MODE BOXMODE MSG_PRM_TYP MSG_TYP CMD_STAT ASYS TRACE_STATE TRACE_MODE DIRECTION TECHSYS TECHGEOREF TECHCLASS TECHMODE HPU_KEY_VAL PRO_STATE EAX TRANSSYS MODE_MOVE COSYS DEVICE ROTSYS EMSTOP CAUSE_T 
+syn keyword krlStructure servopara keymove powermodul trace techangle tech techfct techcps techfctctrl axis_inc axis_cal date display_var pro_ip con bus 
+syn keyword krlEnum ident_state sig_state move_state async_state emt_mode boxmode msg_prm_typ msg_typ cmd_stat asys trace_state trace_mode direction techsys techgeoref techclass techmode hpu_key_val pro_state eax transsys mode_move cosys device rotsys emstop cause_t 
 "
 " Predefined data types found in kss functions
-syn keyword krlEnum EDIAGSTATE RDC_FS_STATE RET_C_PSYNC_E VAR_TYPE CANCEL_PSYNC_E SYS_VARS 
-syn keyword krlStructure SIGINF RW_RDC_FILE RW_MAM_FILE DIAGPAR_T ERROR_T STOPMESS CASE_SENSE_T MSGBUF_T E3POS E3AXIS DIAGOPT_T 
+syn keyword krlEnum ediagstate rdc_fs_state ret_c_psync_e var_type cancel_psync_e sys_vars 
+syn keyword krlStructure siginf rw_rdc_file rw_mam_file diagpar_t error_t stopmess case_sense_t msgbuf_t e3pos e3axis diagopt_t 
 "
 " Predefined structures for movement
-syn keyword krlStructure FRAME E6POS POS E6AXIS AXIS
-syn keyword krlStructure FDAT LDAT PDAT
-syn keyword krlStructure LOAD INERTIA
+syn keyword krlStructure frame e6pos pos e6axis axis
+syn keyword krlStructure fdat ldat pdat
+syn keyword krlStructure load inertia
 "
 " Predefined structures for shapes
-syn keyword krlStructure AXBOX CYLINDER BOX
+syn keyword krlStructure axbox cylinder box
 "
 " Predefined structures and enums found in /r1/mada/$machine.dat
-syn keyword krlStructure CP FRA ACC_CAR JERK_STRUC DHART SPIN TRPSPIN EX_KIN ET_AX MAXTOOL
-syn keyword krlEnum INDIVIDUAL_MAMES SUPPLY_VOLTAGE KINCLASS MAIN_AXIS WRIST_AXIS SW_ONOFF
+syn keyword krlStructure cp fra acc_car jerk_struc dhart spin trpspin ex_kin et_ax maxtool
+syn keyword krlEnum individual_mames supply_voltage kinclass main_axis wrist_axis sw_onoff
 "
 " Predefined structures and enums found in /r1/mada/$robcor.dat
 " syn keyword krlStructure
-syn keyword krlEnum ADAP_ACC MODEL_TYPE CONTROL_PARAMETER EKO_MODE
+syn keyword krlEnum adap_acc model_type control_parameter eko_mode
 "
 " Predefined structures and enums found in /steu/mada/$custom.dat
-syn keyword krlStructure PRO_IO_T SER EXT_MOD_T COOP_KRC WS_CONFIG BIN_TYPE COOP_UPDATE_T LDC_REACTION
-syn keyword krlEnum AXIS_OF_COORDINATES SPLINE_PARA_VARIANT TARGET_STATUS CP_VEL_TYPE CP_STATMON
+syn keyword krlStructure pro_io_t ser ext_mod_t coop_krc ws_config bin_type coop_update_t ldc_reaction
+syn keyword krlEnum axis_of_coordinates spline_para_variant target_status cp_vel_type cp_statmon
 "
 " Predefined structures and enums found in /steu/mada/$machine.dat
-syn keyword krlStructure EMSTOP_PATH BOXSTATESAFEIN BOXSTATESAFEOUT
-syn keyword krlEnum DIGINCODE
+syn keyword krlStructure emstop_path boxstatesafein boxstatesafeout
+syn keyword krlEnum digincode
 "
 " Predefined structures and enums found in /steu/mada/$option.dat
-syn keyword krlStructure MSG_T
+syn keyword krlStructure msg_t
 " syn keyword krlEnum
 "
 " Predefined structures and enums found in /r1/system/$config.dat
 " BasisTech
-syn keyword krlStructure DIG_OUT_TYPE CTRL_IN_T CTRL_OUT_T FCT_OUT_T FCT_IN_T ODAT BASIS_SUGG_T OUT_SUGG_T MD_STATE MACHINE_DEF_T MACHINE_TOOL_T MACHINE_FRAME_T TRIGGER_PARA CONSTVEL_PARA CONDSTOP_PARA ADAT TM_SUGG_T TQM_TQDAT_T SPS_PROG_TYPE
-syn keyword krlEnum BAS_COMMAND OUT_MODETYPE IPO_M_T APO_MODE_T FUNCT_TYPE P00_COMMAND
+syn keyword krlStructure dig_out_type ctrl_in_t ctrl_out_t fct_out_t fct_in_t odat basis_sugg_t out_sugg_t md_state machine_def_t machine_tool_t machine_frame_t trigger_para constvel_para condstop_para adat tm_sugg_t tqm_tqdat_t sps_prog_type
+syn keyword krlEnum bas_command out_modetype ipo_m_t apo_mode_t funct_type p00_command
 "
 " GripperTech
-syn keyword krlStructure GRP_TYP GRP_TYPES GRP_SUGG_T
-syn keyword krlEnum ON_OFF_TYP APO_TYP
+syn keyword krlStructure grp_typ grp_types grp_sugg_t
+syn keyword krlEnum on_off_typ apo_typ
 "
 " SpotTech
-syn keyword krlStructure SPOT_TYPE SPOT_SUGG_T
-syn keyword krlEnum S_COMMAND S_PAIR_SLCT COMMAND_RETR
+syn keyword krlStructure spot_type spot_sugg_t
+syn keyword krlEnum s_command s_pair_slct command_retr
 "
 " VW
-syn keyword krlStructure VW_MPARA_TYP ZANGENTYP ZANGENBEDINGUNG IBSZANGENTYP LAST_IBS_TYP VERR_TYP VERRCHECK_T T_FB_STATE Kollisionsdaten State_T MODUS_T
-syn keyword krlEnum SYNCTYPE DIR_TYP SUBTYPE ARI_TYP BOOL_TYP VW_COMMAND IBGN_COMMAND VW_USER_CMD MOVE_TYPES ADV_T_TYPE BAS_TYPE IBS_MODE_TYP VW_USER_CMD PRO_MODE MODE_OP
+syn keyword krlStructure vw_mpara_typ zangentyp zangenbedingung ibszangentyp last_ibs_typ verr_typ verrcheck_t t_fb_state kollisionsdaten state_t modus_t
+syn keyword krlEnum synctype dir_typ subtype ari_typ bool_typ vw_command ibgn_command vw_user_cmd move_types adv_t_type bas_type ibs_mode_typ vw_user_cmd pro_mode mode_op
 "
 " ProgCoop
-syn keyword krlStructure YDAT
+syn keyword krlStructure ydat
 " syn keyword krlEnum
 "
 " bas.src
-syn keyword krlStructure CONT
-syn keyword krlEnum ESYS IPO_MODE CIRC_MODE CIRC_TYPE ORI_TYPE VAR_STATE
+syn keyword krlStructure cont
+syn keyword krlEnum esys ipo_mode circ_mode circ_type ori_type var_state
 "
 " MsgLib.src
 syn keyword krlStructure KrlMsg_T KrlMsgParType_T KrlMsgPar_T KrlMsgOpt_T KrlMsgDlgSK_T
@@ -260,7 +260,7 @@ endif
 
 " Statements, keywords et al {{{
 " continue
-syn keyword krlContinue CONTINUE
+syn keyword krlContinue continue
 if g:krlGroupName
   highlight default link krlContinue Continue
 else
@@ -269,25 +269,25 @@ endif
 " interrupt 
 syn match krlStatement /\v\c%(<global>\s+)?<INTERRUPT>%(\s+<decl>)?/ contains=krlStorageClass
 " keywords
-syn keyword krlStatement WAIT ON OFF ENABLE DISABLE STOP TRIGGER WITH WHEN DISTANCE ONSTART DELAY DO PRIO IMPORT IS MINIMUM MAXIMUM CONFIRM ON_ERROR_PROCEED
+syn keyword krlStatement wait on off enable disable stop trigger with when distance onstart delay do prio import is minimum maximum confirm on_error_proceed
 syn match krlStatement /\v\c%(<wait\s+)@7<=<sec>/
 syn match krlStatement /\v\c%(<when\s+)@7<=<path>/
 highlight default link krlStatement Statement
 " Conditional
-syn keyword krlConditional IF THEN ELSE ENDIF SWITCH CASE DEFAULT ENDSWITCH
+syn keyword krlConditional if then else endif switch case default endswitch
 highlight default link krlConditional Conditional
 " Repeat
-syn keyword krlRepeat FOR TO STEP ENDFOR WHILE ENDWHILE REPEAT UNTIL LOOP ENDLOOP EXIT
+syn keyword krlRepeat for to step endfor while endwhile repeat until loop endloop exit
 highlight default link krlRepeat Repeat
 " Label
-syn keyword krlLabel GOTO
+syn keyword krlLabel goto
 syn match krlLabel /^\s*\w\+:\ze\s*\%(;.*\)\?$/
 highlight default link krlLabel Label
 " Keyword
-syn keyword krlKeyword ANIN ANOUT DIGIN
+syn keyword krlKeyword anin anout digin
 highlight default link krlKeyword Keyword
 " Exception
-syn keyword krlException RETURN RESUME HALT
+syn keyword krlException return resume halt
 highlight default link krlException Exception
 " }}} Statements, keywords et al
 
@@ -300,7 +300,7 @@ else
   highlight default link krlMovement Special
 endif
 " movement modifiers
-syn keyword krlMoveMod CA C_PTP C_DIS C_VEL C_ORI C_SPL SPLINE ENDSPLINE
+syn keyword krlMoveMod ca c_ptp c_dis c_vel c_ori c_spl spline endspline
 if g:krlGroupName
   highlight default link krlMoveMod Movement
 else
@@ -319,18 +319,18 @@ highlight default link krlStructVal Delimiter
 " }}} Structure value
 
 " BuildInFunction {{{
-syn keyword krlBuildInFunction contained abs sin cos acos tan atan atan2 sqrt
+syn keyword krlBuildInFunction contained Abs Sin Cos Acos Tan Atan Atan2 Sqrt
 syn keyword krlBuildInFunction contained cClose cOpen cRead cWrite sRead sWrite cast_from cast_to
-syn keyword krlBuildInFunction contained DELETE_BACKWARD_BUFFER DIAG_START DIAG_STOP GET_DIAGSTATE IS_KEY_PRESSED GETCYCDEF GET_DECL_PLACE CHECKPIDONRDC PIDTOHD PIDTORDC DELETE_PID_ON_RDC CAL_TO_RDC SET_MAM_ON_HD COPY_MAM_HD_TO_RDC COPY_MAM_RDC_TO_HD CREATE_RDC_ARCHIVE RESTORE_RDC_ARCHIVE DELETE_RDC_CONTENT RDC_FILE_TO_HD CHECK_MAM_ON_RDC GET_RDC_FS_STATE TOOL_ADJ IOCTL CIOCTL WSPACEGIVE WSPACETAKE SYNCCMD CANCELPROGSYNC REMOTECMD REMOTEREAD ISMESSAGESET TIMER_LIMIT SET_KRLDLGANSWER GET_MSGBUFFER STRTOFRAME STRTOPOS STRTOE3POS STRTOE6POS STRTOAXIS STRTOE3AXIS STRTOE6AXIS VARTYPE FRAND GETVARSIZE MAXIMIZE_USEDXROBVERS SET_USEDXROBVERS SET_OPT_FILTER MD_GETSTATE MD_ASGN EB_TEST EO EMI_ENDPOS EMI_STARTPOS EMI_ACTPOS EMI_RECSTATE M_COMMENT
-syn keyword krlBuildInFunction contained forward inverse inv_pos
-syn keyword krlBuildInFunction contained get_sig_inf GetSysState GET_SYSTEM_DATA
+syn keyword krlBuildInFunction contained delete_backward_buffer diag_start diag_stop get_DiagState is_key_pressed GetCycDef get_decl_place CheckPidOnRdc PidToHd PidToRdc delete_pid_on_rdc cal_to_rdc set_mam_on_hd copy_mam_hd_to_rdc copy_mam_rdc_to_hd create_rdc_archive restore_rdc_archive delete_rdc_content rdc_file_to_hd check_mam_on_rdc get_rdc_fs_state tool_adj IoCtl CioCtl WSpaceGive WSpaceTake SyncCmd CancelProgSync RemoteCmd RemoteRead IsMessageSet timer_limit set_KrlDlgAnswer get_MsgBuffer StrToFrame StrToPos StrToE3Pos StrToE6Pos StrToAxis StrToE3Axis StrToE6Axis VarType Frand GetVarsize maximize_UsedxRobvers set_UsedxRobvers set_opt_filter md_GetState md_Asgn eb_test EO emi_EndPos emi_StartPos emi_ActPos emi_RecState m_comment
+syn keyword krlBuildInFunction contained Forward Inverse inv_pos
+syn keyword krlBuildInFunction contained get_sig_inf GetSysState get_system_data
 syn keyword krlBuildInFunction contained StrAdd StrClear StrCopy StrComp StrFind StrLen StrDeclLen StrToBool StrToInt StrToReal StrToString
-syn keyword krlBuildInFunction contained Clear_KrlMsg SET_SYSTEM_DATA SET_SYSTEM_DATA_DELAYED Set_KrlDlg Exists_KrlDlg Set_KrlMsg Exists_KrlMsg
-syn keyword krlBuildInFunction contained Err_Clear Err_Raise
-syn keyword krlBuildInFunction contained EXECFUNC varstate EK EB LK sync MD_CMD MD_SETSTATE MBX_REC pulse 
-syn keyword krlBuildInFunction contained ROB_STOP ROB_STOP_RELEASE SET_BRAKE_DELAY
+syn keyword krlBuildInFunction contained clear_KrlMsg set_system_data set_system_data_delayed set_KrlDlg exists_KrlDlg set_KrlMsg exists_KrlMsg
+syn keyword krlBuildInFunction contained err_clear err_raise
+syn keyword krlBuildInFunction contained ExecFunc Varstate EK EB LK Sync md_Cmd md_SetState mbx_rec Pulse 
+syn keyword krlBuildInFunction contained rob_stop rob_stop_release set_brake_delay
 " KRC1
-syn keyword krlBuildInFunction contained CLCOPY CCURPOS CNEW CCLEAR CRELEASE CKEY
+syn keyword krlBuildInFunction contained cLcopy cCurpos cNew cClear cRelease cKey
 if g:krlGroupName
   highlight default link krlBuildInFunction BuildInFunction
 else
