@@ -1,6 +1,6 @@
 # krl-for-vim
 
-**READ [TL:DR][2] FIRST** if you want more than just syntax highlight and 
+**READ [FAQ][2] FIRST** if you want more than just syntax highlight and 
 automatic indenting. It is a quick overview over the most important options and
 mappings provided by KRL for Vim. For more details see the [help][3] file.
 
@@ -13,10 +13,12 @@ It provides
 * syntax highlighting,
 * indenting,
 * folding,
-* support for commentary [vimscript #3695][7] and matchit [vimscript #39][8],
+* support for commentary [vimscript #3695][7], matchit [vimscript #39][8] and
+  matchup [vimscript #5624][11],
 * mappings and settings to navigate through code in a backup folder structure,
 * text objects for functions and folds,
-* optimized folding for viewing VRKC and
+* optimized folding and concealing for viewing VRKC and
+* completion of words from known or custom global files like $config.dat,
 * mappings to insert a body of a new DEF, DEFFCT or DEFDAT based on user
   defined templates or hopefully sane defaults.
 
@@ -74,7 +76,7 @@ to use the help within Vim after installation. >
     :help krl
 
 
-## tl:dr
+## FAQ
 
 Q: Since version 2.0.0 everything's weird. How so?  
 A: Most optional features are enabled by default now.  
@@ -87,25 +89,28 @@ A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
     let g:krlShortenQFPath = 0 " don't shorten paths in quickfix
     let g:krlAutoComment = 0 " don't continue comments with o, O or Enter
     let g:krlSpaceIndent = 0 " don't change 'sts', 'sw', 'et' and 'sr'
-    let g:krlFoldLevel = 0 " don't close any fold
+    "let g:krlFoldLevel = 0 " switch folding off completely
+    "let g:krlFoldLevel = 1 " close movement folds on startup (default)
+    let g:krlFoldLevel = 2 " close all folds on startup
     let g:krlKeyWord = 0 " don't treat $, # and & as word char
 
 Q: Which keys get mapped to what? Will that override my own mappings?  
 A: krl-for-vim will not override existing mappings unless the corresponding
    option is explicitly set. To use different key bindings use the
-   \<PLUG\>mapping. Otherwise krl-for-vim create the followin mappings >
+   `<PLUG>`mapping. Otherwise krl-for-vim create the followin mappings: >
 
-    <F2> Switch folding off
-    <F3> Close movement folds.
-    <F4> Close all folds.
+    <F2> Open all folds
+    <F3> Open none movement folds
+    <F4> Close all folds
             Depend on g:krlFoldLevel not existing or >=1.
             Override existing mapping with
         let g:krlFoldingKeyMap = 1
 
     gd Go to or show definition of variable or def/deffct.
             Does work on fold lines for SPSMAKRO, UP, bin, binin and Marker.
-            Override existing mapping with
-        let g:krlGoDefinitionKeyMap = 1
+            Does override existing mappings and Vim's default.
+            Disable override existing mapping and Vim's default with
+        let g:krlGoDefinitionKeyMap = 0
 
     <leader>u List all significant appearances of word under cursor.
             Override existing mapping with
@@ -121,8 +126,8 @@ A: krl-for-vim will not override existing mappings unless the corresponding
     ][ Move around functions. Takes a count.
     [; Move around comments. Takes a count.
     ]; Move around comments. Takes a count.
-            Will override existing mappings!
-            Prevent overriding of existing mapping with
+            Does override existing mappings and overshadow Vim's default.
+            Disable override existing mapping and Vim's default with
         let g:krlMoveAroundKeyMap = 0
 
     if Inner function text object.
@@ -163,7 +168,7 @@ A: No, but you may put the following in your .vimrc or
 
 Q: I did set g:krlFoldLevel=1 or 2 but folds are open after loading a .src
    file?!   
-A: Unfortunately the order matters: >  
+A: Unfortunately the order matters: >
 
     syntax on                   " before filetype plugin on
     filetype plugin indent on   " after syntax on
@@ -171,7 +176,7 @@ A: Unfortunately the order matters: >
 Q: Folds are still open although I have syntax on and filetype on in the right
    order?!  
 A: Some plugin manager mess with those commands, so with vim-plug I had to
-   redo this after plug#end(): >  
+   redo this after plug#end(): >
 
     call plug#end()
     syntax off                  " undo what plug#begin() did to syntax
@@ -183,7 +188,7 @@ Q: Scrolling feels sluggish. What can I do?
 A: Switch error highlighting off and/or folding to marker: >
 
     let g:krlFoldMethodSyntax = 0 " better performance, but case sensitive
-    let g:krlShowError = 0        " better performance
+    let g:krlShowError        = 0 " better performance
 
 Q: Still sluggish!  
 A: Switch syntax off or jump instead of scroll!  
@@ -200,12 +205,13 @@ timing you may find me on irc://irc.freenode.net/#vim as KnoP in case you have
 any questions.  
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases/latest
-[2]: https://github.com/KnoP-01/krl-for-vim#tldr
-[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L190
+[2]: https://github.com/KnoP-01/krl-for-vim#FAQ
+[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L213
 [4]: https://www.vim.org/scripts/script.php?script_id=5344
 [5]: https://github.com/KnoP-01/krl-for-vim/issues
-[6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L211
+[6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L231
 [7]: https://www.vim.org/scripts/script.php?script_id=3695
 [8]: https://www.vim.org/scripts/script.php?script_id=39
-[9]: https://www.kuka.com/
+[9]: https://www.kuka.com/en-de/products/robot-systems/industrial-robots
 [10]: https://www.vim.org/
+[11]: https://www.vim.org/scripts/script.php?script_id=5624
