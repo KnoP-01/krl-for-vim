@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 13. Nov 2019
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 13. Dec 2019
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
@@ -761,7 +761,7 @@ Add custom files to 'complete': >
 Note: Make sure to use forward slashes (`/`) as path separator, also on
 Windows!
 
-You should add the path relative to .../`KRC`. Even if you put all the files
+You should add the path relative to `KRC/`. Even if you put all the files
 you edit are in the same directory, they will be found. You may also add just
 a file name, However, in that case the file will only be found if present in
 the same directory as the current file. 
@@ -816,12 +816,12 @@ To force these text objects if `if`, `af` and/or `aF` is already mapped: >
 Alternativ <Plug> mappings: >
   augroup KrlFuncTextObj
   au!
-  au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFuncInclCo
-  au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFuncInclCo
-  au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjAroundFuncExclCo
-  au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjAroundFuncExclCo
-  au FileType krl xmap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
-  au FileType krl omap <silent><buffer> OTHERKEY <Plug>KrlTxtObjInnerFunc
+  au FileType krl xmap <silent><buffer> KEY1 <Plug>KrlTxtObjAroundFuncInclCo
+  au FileType krl omap <silent><buffer> KEY1 <Plug>KrlTxtObjAroundFuncInclCo
+  au FileType krl xmap <silent><buffer> KEY2 <Plug>KrlTxtObjAroundFuncExclCo
+  au FileType krl omap <silent><buffer> KEY2 <Plug>KrlTxtObjAroundFuncExclCo
+  au FileType krl xmap <silent><buffer> KEY3 <Plug>KrlTxtObjInnerFunc
+  au FileType krl omap <silent><buffer> KEY3 <Plug>KrlTxtObjInnerFunc
   augroup END
 
 
@@ -842,10 +842,10 @@ To force these text objects if `ic` and/or `ac` is already mapped: >
 Alternativ <Plug> mappings: >
     augroup KrlCommentTextObj
     au!
-    au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundComment
-    au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundComment
-    au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerComment
-    au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerComment
+    au FileType krl xmap <silent><buffer> KEY1 <Plug>KrlTxtObjAroundComment
+    au FileType krl omap <silent><buffer> KEY1 <Plug>KrlTxtObjAroundComment
+    au FileType krl xmap <silent><buffer> KEY2 <Plug>KrlTxtObjInnerComment
+    au FileType krl omap <silent><buffer> KEY2 <Plug>KrlTxtObjInnerComment
     augroup END
 
 
@@ -866,10 +866,10 @@ To force these text objects if `io` and/or `ao` is already mapped: >
 Alternativ <Plug> mappings: >
     augroup KrlFoldTextObj
     au!
-    au FileType krl xmap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFold
-    au FileType krl omap <silent><buffer> ANYKEY <Plug>KrlTxtObjAroundFold
-    au FileType krl xmap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerFold
-    au FileType krl omap <silent><buffer> SOMEKEY <Plug>KrlTxtObjInnerFold
+    au FileType krl xmap <silent><buffer> KEY1 <Plug>KrlTxtObjAroundFold
+    au FileType krl omap <silent><buffer> KEY1 <Plug>KrlTxtObjAroundFold
+    au FileType krl xmap <silent><buffer> KEY2 <Plug>KrlTxtObjInnerFold
+    au FileType krl omap <silent><buffer> KEY2 <Plug>KrlTxtObjInnerFold
     augroup END
 
 
