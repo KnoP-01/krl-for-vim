@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.0.2
-" Last Change: 13.11.2019
+" Last Change: 10. Feb 2020
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -135,7 +135,8 @@ syn match krlParamdef /[:]\s*out\>/
 highlight default link krlParamdef StorageClass
 " Not a typedef but I like to have those highlighted
 " different then types, structures or strorage classes
-syn match krlTypedef /\c\v<DEFFCT>(\s+\w+\s+\w+\()@=/
+syn match krlTypedef /\c\v<DEFFCT>(\s+\w+(\[\d+(,\d+){,2}\])?\s+\w+\s*\()@=/
+" syn keyword krlTypedef DEFFCT
 syn keyword krlTypedef DEF END ENDFCT DEFDAT ENDDAT
 highlight default link krlTypedef Typedef
 " }}} Type, StorageClass and Typedef
