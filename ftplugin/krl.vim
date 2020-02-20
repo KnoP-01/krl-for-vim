@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.1.2
-" Last Change: 10. Feb 2020
+" Last Change: 20. Feb 2020
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -1025,7 +1025,7 @@ if !exists("*s:KnopVerboseEcho()")
     if exists("b:did_indent")
       if l:start>0 && l:end>l:start
         execute l:start.','.l:end."substitute/^/ /"
-        execute "silent normal! " . (l:end-l:start+1) . "=="
+        execute "silent normal! " . (l:end-l:start) . "k" . (l:end-l:start+1) . "=="
       endif
     endif
     " position cursor
@@ -1044,8 +1044,8 @@ if !exists("*s:KnopVerboseEcho()")
     call setline('.',"enddat")
     call search('\s*defdat ','bW')
     if exists("b:did_indent")
-      execute ','.+2."substitute/^/ /"
-      silent normal! 3==
+      execute ",+2substitute/^/ /"
+      silent normal! 2k3==
     endif
     if get(g:,'krlAutoFormUpperCase',0)
       call s:KnopUpperCase(line('.'),search('\v\c^\s*enddat>','cnW'))
@@ -1063,8 +1063,8 @@ if !exists("*s:KnopVerboseEcho()")
     call setline('.',"end ; ".a:sName."()")
     call search('\v\c^\s*(global )?def ','bW')
     if exists("b:did_indent")
-      execute ','.+2."substitute/^/ /"
-      silent normal! 3==
+      execute ",+2substitute/^/ /"
+      silent normal! 2k3==
     endif
     if get(g:,'krlAutoFormUpperCase',0)
       call s:KnopUpperCase(line('.'),search('\v\c^\s*end>','cnW'))
@@ -1092,8 +1092,8 @@ if !exists("*s:KnopVerboseEcho()")
     call setline('.',"endfct ; ".a:sName."()")
     call search('\v\c^\s*(global )?deffct ','bW')
     if exists("b:did_indent")
-      execute ','.+4."substitute/^/ /"
-      silent normal! 5==
+      execute ",+4substitute/^/ /"
+      silent normal! 4k5==
     endif
     if get(g:,'krlAutoFormUpperCase',0)
       call s:KnopUpperCase(line('.'),search('\v\c^\s*endfct>','cnW'))
