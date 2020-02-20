@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.0.2
-" Last Change: 10. Feb 2020
+" Last Change: 19. Feb 2020
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -93,7 +93,7 @@ highlight default link krlHeader PreProc
 
 " Operator {{{
 " Boolean operator
-syn keyword krlBoolOperator and or exor not div mod b_and b_or b_exor b_not
+syn keyword krlBoolOperator and or exor not b_and b_or b_exor b_not
 highlight default link krlBoolOperator Operator
 " Arithmetic operator
 syn match krlArithOperator /[+-]/ containedin=krlFloat
