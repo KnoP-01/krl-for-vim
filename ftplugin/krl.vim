@@ -1,7 +1,7 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 2.2.0
+" Version: 2.2.1
 " Last Change: 21. Feb 2020
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
@@ -1025,7 +1025,8 @@ if !exists("*s:KnopVerboseEcho()")
     if exists("b:did_indent")
       if l:start>0 && l:end>l:start
         execute l:start.','.l:end."substitute/^/ /"
-        execute "silent normal! " . (l:end-l:start) . "k" . (l:end-l:start+1) . "=="
+        call cursor(l:start,0)
+        execute "silent normal! " . (l:end-l:start+1) . "=="
       endif
     endif
     " position cursor
