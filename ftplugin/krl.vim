@@ -1,8 +1,8 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 2.1.2
-" Last Change: 20. Feb 2020
+" Version: 2.2.0
+" Last Change: 21. Feb 2020
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -1759,6 +1759,22 @@ if has("folding") && get(g:,'krlFoldLevel',1)
 endif " has("folding") && get(g:,'krlFoldLevel',1)
 
 " }}} Vim Settings
+
+" Endwise (tpope) {{{
+
+" endwise support
+if exists("loaded_endwise")
+  if get(g:,'krlEndwiseUpperCase',0)
+    let b:endwise_addition  = '\=submatch(0)=~"DEF" ? "END" : submatch(0)=~"CASE" ? "ENDSWITCH" : submatch(0)=~"REPEAT" ? "UNTIL <condition>" : "END" . submatch(0)'
+  else
+    let b:endwise_addition  = '\=submatch(0)=~"def" ? "end" : submatch(0)=~"case" ? "endswitch" : submatch(0)=~"repeat" ? "until <condition>" : "end" . submatch(0)'
+  endif
+  let b:endwise_words     = 'def,deffct,defdat,then,while,for,repeat,case'
+  let b:endwise_pattern   = '^\s*\(\(global\s\+\)\?\zsdef\|\(global\s\+\)\?def\zs\(dat\|fct\)\|\zsif\|\zswhile\|\zsfor\|\zscase\|\zsrepeat\)\>\ze'
+  let b:endwise_syngroups = 'krlConditional,krlTypedef,krlRepeat'
+endif
+
+" }}} Endwise
 
 " Match It and Fold Text Object mapping {{{
 
