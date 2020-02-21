@@ -1,8 +1,8 @@
 " Kuka Robot Language syntax file for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 2.0.2
-" Last Change: 19. Feb 2020
+" Version: 2.2.0
+" Last Change: 21. Feb 2020
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -112,7 +112,7 @@ highlight default link krlGeomOperator Operator
 " Type, StorageClass and Typedef {{{
 " any type (preceded by 'decl')
 " TODO optimize performance
-syn match krlAnyType /\v%(%(decl\s+|struc\s+|enum\s+)|%(global\s+)|%(const\s+)|%(deffct\s+))+\w+>/ contains=krlStorageClass,krlType,krlTypedef
+syn match krlAnyType /\v%(%(DECL\s+|STRUC\s+|ENUM\s+)|%(GLOBAL\s+)|%(CONST\s+)|%(DEFFCT\s+))+\w+>/ contains=krlStorageClass,krlType,krlTypedef
 highlight default link krlAnyType Type
 " Simple data types
 syn keyword krlType bool char real int containedin=krlAnyType
