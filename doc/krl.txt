@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 20. Feb 2020
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 10. Jun 2020
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
@@ -125,7 +125,7 @@ A: krl-for-vim will not override existing mappings unless the corresponding
             Disable override existing mapping and Vim's default with
         let g:krlGoDefinitionKeyMap = 0
 
-    <leader>u List all significant appearances of word under cursor.
+    <leader>u List all significant references of word under cursor.
             Override existing mapping with
         let g:krlListUsageKeyMap = 1
 
@@ -245,7 +245,7 @@ Exceptions may be |g:krlCompleteCustom| and |g:krlPathToBodyFiles|.
 Also see these options for alternative <Plug> mappings.
 |g:krlFoldingKeyMap|      `<F2>` - `<F4>` chang folding level
 |g:krlGoDefinitionKeyMap| `gd` to see declaration of word under cursor
-|g:krlListUsageKeyMap|    `<leader>u` lists all appearances of current word
+|g:krlListUsageKeyMap|    `<leader>u` lists all references of current word
 |g:krlListDefKeyMap|      `<leader>f` lists def/deffct of current file
 |g:krlMoveAroundKeyMap|   `[[`, `]]` ... jumps around def/deffct
 |g:krlFunctionTextObject| `if`, `af` and `aF` def/deffct text objects
@@ -534,7 +534,7 @@ Index: |krl-index|
 g:krlListUsageKeyMap:
 ---------------------
 
-    `<leader>u`: List all appearances, outside of enum declarations and comments 
+    `<leader>u`: List all references, outside of enum declarations and comments 
                  (unless used in a vkrc file), of the word under the cursor 
                  in the |quickfix-window|.
 
