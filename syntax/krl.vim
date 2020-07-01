@@ -294,7 +294,8 @@ highlight default link krlException Exception
 
 " special keywords for movement commands {{{
 syn keyword krlMovement PTP LIN CIRC SPL SPTP SLIN SCIRC PTP_REL LIN_REL CIRC_REL SPTP_REL SLIN_REL SCIRC_REL
-syn keyword krlMovement ASYPTP ASYCONT ASYSTOP ASYCANCEL BRAKE BRAKE_F
+syn keyword krlMovement ASYPTP ASYCONT ASYSTOP ASYCANCEL
+syn match krlMovement /\v\c^\s*<BRAKE(\s+F)?/
 if g:krlGroupName
   highlight default link krlMovement Movement
 else
