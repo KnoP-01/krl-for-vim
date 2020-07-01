@@ -78,18 +78,17 @@ function s:GetKrlIndentIntern()
   let l:ind = indent(l:preNoneBlankLineNum)
 
   " Add a 'shiftwidth' 
-  if get(g:,'krlNoDefIndent',0)
-    let l:addShiftwidthPattern = '\c\v^\s*('
-  else
+  if get(g:,'krlIndentBetweenDef',1)
     let l:addShiftwidthPattern = '\c\v^\s*(
             \(global\s+)?def
             \(\s+\w
             \|fct\s+\w
             \|dat\s+\w
             \)|'
+  else
+    let l:addShiftwidthPattern = '\c\v^\s*('
   endif
-  let l:addShiftwidthPattern = l:addShiftwidthPattern .
-        \'(if|while|for|loop)>
+  let l:addShiftwidthPattern .= '(if|while|for|loop)>
         \|else>
         \|(case|default)>
         \|repeat>

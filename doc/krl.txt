@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 10. Jun 2020
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 01. Jul 2020
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
@@ -97,10 +97,11 @@ A: Most optional features are enabled by default now.
 Q: I'm here to feed my kids, not to read. How do I get rid of stuff?  
 A: Disable stuff in your |vimrc|, see |krl-options| for details: >
 
-    let g:krlFormatComments = 0 " don't break comment lines automatically
-    let g:krlCommentIndent = 1 " indent comments starting in 1st column too
     let g:krlShortenQFPath = 0 " don't shorten paths in quickfix
     let g:krlAutoComment = 0 " don't continue comments with o, O or Enter
+    let g:krlFormatComments = 0 " don't break comment lines automatically
+    let g:krlCommentIndent = 1 " indent comments starting in 1st column too
+    let g:krlIndentBetweenDef = 0 " don't indent between DEF(fct|dat)?
     let g:krlSpaceIndent = 0 " don't change 'sts', 'sw', 'et' and 'sr'
     "let g:krlFoldLevel = 0 " switch folding off completely
     "let g:krlFoldLevel = 1 " close movement folds on startup (default)
@@ -231,9 +232,9 @@ A: `:let g:knopVerbose=1` any time.
 ==============================================================================
                         *krl-options*
 
-Set or reset options in your .vimrc. Except |g:krlCommentIndent| and
-|g:knopVerbose| changeing a krl option during an editing session will 
-have no effect.
+Set or reset options in your .vimrc. Except |g:krlCommentIndent|,
+|g:krlIndentBetweenDef| and |g:knopVerbose| changeing a krl option during an
+editing session will have no effect.
 
 Most features are enabled by default. Unless a mapping doesn't work as
 expected, a mapping should be redefined or you want do get rid of some 
@@ -259,6 +260,7 @@ Also see these options for alternative <Plug> mappings.
 
 *krl-indent-options*
 |g:krlSpaceIndent|        Disable 'sts', 'sw', 'et' and 'sr' settings
+|g:krlIndentBetweenDef|   Disable indentation between DEF(FCT|DAT)?
 |g:krlCommentIndent|      Enable indent of first column comments
 
 *krl-folding-options*
@@ -368,6 +370,20 @@ If omitted or set to 1 the following Vim options get set:
 
 Keep in mind that space is rare and tabs look really awful on the teach
 pendant.
+
+
+Index: |krl-index|
+                        *g:krlIndentBetweenDef*
+g:krlIndentBetweenDef:
+----------------------
+
+Disable indent between DEF/END, DEFFCT,ENDFCT and DEFDAT/ENDDAT: >
+    let g:krlIndentBetweenDef = 0
+
+If omitted or set to 1 a 'shiftwidth' is added between DEF/END, DEFFCT,ENDFCT
+and DEFDAT/ENDDAT.
+
+This option may be changed any time and will take effect immediately.
 
 
 Index: |krl-index|
