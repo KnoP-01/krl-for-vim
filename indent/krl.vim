@@ -78,14 +78,18 @@ function s:GetKrlIndentIntern()
   let l:ind = indent(l:preNoneBlankLineNum)
 
   " Add a 'shiftwidth' 
-  let l:addShiftwidthPattern = '\c\v^\s*
-        \(
-          \(global\s+)?def
-          \(\s+\w
-          \|fct\s+\w
-          \|dat\s+\w
-          \)
-        \|(if|while|for|loop)>
+  if get(g:,'krlNoDefIndent',0)
+    let l:addShiftwidthPattern = '\c\v^\s*('
+  else
+    let l:addShiftwidthPattern = '\c\v^\s*(
+            \(global\s+)?def
+            \(\s+\w
+            \|fct\s+\w
+            \|dat\s+\w
+            \)|'
+  endif
+  let l:addShiftwidthPattern = l:addShiftwidthPattern .
+        \'(if|while|for|loop)>
         \|else>
         \|(case|default)>
         \|repeat>
@@ -93,6 +97,21 @@ function s:GetKrlIndentIntern()
         \|time_block\s+(start|part)>
         \|const_vel\s+start>
         \)'
+  " let l:addShiftwidthPattern = '\c\v^\s*
+  "       \(
+  "         \(global\s+)?def
+  "         \(\s+\w
+  "         \|fct\s+\w
+  "         \|dat\s+\w
+  "         \)
+  "       \|(if|while|for|loop)>
+  "       \|else>
+  "       \|(case|default)>
+  "       \|repeat>
+  "       \|(skip|(ptp_)?spline)>
+  "       \|time_block\s+(start|part)>
+  "       \|const_vel\s+start>
+  "       \)'
   if l:preNoneBlankLine =~ l:addShiftwidthPattern
     let l:ind += &sw
   endif
