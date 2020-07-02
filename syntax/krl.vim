@@ -321,17 +321,57 @@ highlight default link krlStructVal Delimiter
 " }}} Structure value
 
 " BuildInFunction {{{
+syn keyword krlBuildInFunction contained Pulse
+syn keyword krlBuildInFunction contained m_comment
+syn keyword krlBuildInFunction contained delete_backward_buffer 
+syn keyword krlBuildInFunction contained is_key_pressed 
+syn keyword krlBuildInFunction contained set_opt_filter 
+syn keyword krlBuildInFunction contained timer_limit 
+syn keyword krlBuildInFunction contained tool_adj 
+syn keyword krlBuildInFunction contained Frand 
+syn keyword krlBuildInFunction contained ExecFunc eb_test EB EK EO LK mbx_rec 
+" math
 syn keyword krlBuildInFunction contained Abs Sin Cos Acos Tan Atan Atan2 Sqrt
-syn keyword krlBuildInFunction contained cClose cOpen cRead cWrite sRead sWrite cast_from cast_to
-syn keyword krlBuildInFunction contained delete_backward_buffer diag_start diag_stop get_DiagState is_key_pressed GetCycDef get_decl_place CheckPidOnRdc PidToHd PidToRdc delete_pid_on_rdc cal_to_rdc set_mam_on_hd copy_mam_hd_to_rdc copy_mam_rdc_to_hd create_rdc_archive restore_rdc_archive delete_rdc_content rdc_file_to_hd check_mam_on_rdc get_rdc_fs_state tool_adj IoCtl CioCtl WSpaceGive WSpaceTake SyncCmd CancelProgSync RemoteCmd RemoteRead IsMessageSet timer_limit set_KrlDlgAnswer get_MsgBuffer StrToFrame StrToPos StrToE3Pos StrToE6Pos StrToAxis StrToE3Axis StrToE6Axis VarType Frand GetVarsize maximize_UsedxRobvers set_UsedxRobvers set_opt_filter md_Cmd md_GetState md_SetState md_Asgn eb_test EO emi_ActPos emi_EndPos emi_StartPos emi_RecState emi_RecName m_comment
 syn keyword krlBuildInFunction contained Forward Inverse inv_pos
-syn keyword krlBuildInFunction contained get_sig_inf GetSysState get_system_data
+" cFoo sFoo
+syn keyword krlBuildInFunction contained cClose cOpen cRead cWrite sRead sWrite 
+" string
+syn keyword krlBuildInFunction contained StrToBool StrToInt StrToReal StrToString StrToFrame StrToPos StrToE3Pos StrToE6Pos StrToAxis StrToE3Axis StrToE6Axis 
 syn keyword krlBuildInFunction contained StrAdd StrClear StrCopy StrComp StrFind StrLen StrDeclLen StrToBool StrToInt StrToReal StrToString
-syn keyword krlBuildInFunction contained clear_KrlMsg set_system_data set_system_data_delayed set_KrlDlg exists_KrlDlg set_KrlMsg exists_KrlMsg
+" diag
+syn keyword krlBuildInFunction contained diag_start diag_stop get_DiagState 
+" rdc mam pid
+syn keyword krlBuildInFunction contained CheckPidOnRdc check_mam_on_rdc get_rdc_fs_state 
+syn keyword krlBuildInFunction contained set_mam_on_hd copy_mam_hd_to_rdc copy_mam_rdc_to_hd 
+syn keyword krlBuildInFunction contained PidToHd PidToRdc 
+syn keyword krlBuildInFunction contained cal_to_rdc rdc_file_to_hd 
+syn keyword krlBuildInFunction contained delete_pid_on_rdc delete_rdc_content 
+syn keyword krlBuildInFunction contained create_rdc_archive restore_rdc_archive 
+" ioctl
+syn keyword krlBuildInFunction contained IoCtl CioCtl 
+syn keyword krlBuildInFunction contained WSpaceGive WSpaceTake 
+" sync
+syn keyword krlBuildInFunction contained Sync SyncCmd CancelProgSync 
+" remote
+syn keyword krlBuildInFunction contained RemoteCmd RemoteRead 
+" msg/dlg
+syn keyword krlBuildInFunction contained IsMessageSet set_KrlDlgAnswer get_MsgBuffer clear_KrlMsg set_KrlDlg exists_KrlDlg set_KrlMsg exists_KrlMsg
+" robvers
+syn keyword krlBuildInFunction contained maximize_UsedxRobvers set_UsedxRobvers 
+" md_foo
+syn keyword krlBuildInFunction contained md_Cmd md_GetState md_SetState md_Asgn 
+" emi
+syn keyword krlBuildInFunction contained emi_ActPos emi_EndPos emi_StartPos emi_RecState emi_RecName 
+" var
+syn keyword krlBuildInFunction contained cast_from cast_to
+syn keyword krlBuildInFunction contained GetVarsize GetCycDef get_sig_inf get_decl_place VarType VarState 
+" sys
+syn keyword krlBuildInFunction contained GetSysState get_system_data set_system_data set_system_data_delayed 
+" err
 syn keyword krlBuildInFunction contained err_clear err_raise
-syn keyword krlBuildInFunction contained ExecFunc Varstate EK EB LK Sync mbx_rec Pulse
+" motion
 syn keyword krlBuildInFunction contained rob_stop rob_stop_release set_brake_delay set_torque_limits reset_torque_limits suppress_repositioning 
-" KRC1
+" krc1
 syn keyword krlBuildInFunction contained cLcopy cCurpos cNew cClear cRelease cKey
 if g:krlGroupName
   highlight default link krlBuildInFunction BuildInFunction
