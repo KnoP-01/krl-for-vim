@@ -137,7 +137,8 @@ highlight default link krlParamdef StorageClass
 " different then types, structures or strorage classes
 syn match krlTypedef /\c\v<DEFFCT>(\s+\w+(\[\d+(,\d+){,2}\])?\s+\w+\s*\()@=/
 " syn keyword krlTypedef DEFFCT
-syn keyword krlTypedef DEF END ENDFCT DEFDAT ENDDAT
+syn keyword krlTypedef DEF ENDFCT DEFDAT ENDDAT
+syn match krlTypedef /^\s*END\>/
 highlight default link krlTypedef Typedef
 " }}} Type, StorageClass and Typedef
 
@@ -302,7 +303,10 @@ else
   highlight default link krlMovement Special
 endif
 " movement modifiers
-syn keyword krlMoveMod ca c_ptp c_dis c_vel c_ori c_spl spline endspline
+syn match krlMoveMod /\c\v^\s*TIME_BLOCK\s+(START|PART|END)/
+syn match krlMoveMod /\c\v^\s*CONST_VEL\s+(START|END)/
+syn keyword krlMoveMod ptp_spline spline endspline
+syn keyword krlMoveMod ca c_ptp c_dis c_vel c_ori c_spl
 if g:krlGroupName
   highlight default link krlMoveMod Movement
 else
