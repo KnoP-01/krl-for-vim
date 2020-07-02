@@ -1,13 +1,29 @@
-# a comment
+# Test case
 Execute (Test indention):
   !rm -f testdat.dat
   edit testdat.dat
   AssertEqual 'krl', &filetype
-  normal \nga%
   write
+  normal \nga%
 
 Expect (check defdat):
   defdat testdat public
     ;
+  enddat
+
+Given ():
+      defdat testdat public
+  ;
+    enddat
+
+Execute ( try with g:krlIndentBetweenDef = 0):
+  edit testdat.dat
+  AssertEqual 'krl', &filetype
+  let g:krlIndentBetweenDef = 0
+  normal gg=G
+
+Expect (check defdat):
+  defdat testdat public
+  ;
   enddat
 
