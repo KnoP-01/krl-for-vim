@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.2
-" Last Change: 01. Jul 2020
+" Last Change: 02. Jul 2020
 " Credits: Based on indent/vim.vim
 "
 " Suggestions of improvement are very welcome. Please email me!
@@ -78,24 +78,19 @@ function s:GetKrlIndentIntern()
   let l:ind = indent(l:preNoneBlankLineNum)
 
   " Add a 'shiftwidth' 
+  let   l:addShiftwidthPattern  = '\c\v^\s*('
   if get(g:,'krlIndentBetweenDef',1)
-    let l:addShiftwidthPattern = '\c\v^\s*(
-            \(global\s+)?def
-            \(\s+\w
-            \|fct\s+\w
-            \|dat\s+\w
-            \)|'
-  else
-    let l:addShiftwidthPattern = '\c\v^\s*('
+    let l:addShiftwidthPattern .=           '(global\s+)?def(fct|dat)?\s+\w'
+    let l:addShiftwidthPattern .=           '|'
   endif
-  let l:addShiftwidthPattern .= '(if|while|for|loop)>
-        \|else>
-        \|(case|default)>
-        \|repeat>
-        \|(skip|(ptp_)?spline)>
-        \|time_block\s+(start|part)>
-        \|const_vel\s+start>
-        \)'
+  let   l:addShiftwidthPattern .=           '(if|while|for|loop)>'
+  let   l:addShiftwidthPattern .=           '|else>'
+  let   l:addShiftwidthPattern .=           '|(case|default)>'
+  let   l:addShiftwidthPattern .=           '|repeat>'
+  let   l:addShiftwidthPattern .=           '|(skip|(ptp_)?spline)>'
+  let   l:addShiftwidthPattern .=           '|time_block\s+(start|part)>'
+  let   l:addShiftwidthPattern .=           '|const_vel\s+start>'
+  let   l:addShiftwidthPattern .=         ')'
   " let l:addShiftwidthPattern = '\c\v^\s*
   "       \(
   "         \(global\s+)?def
@@ -116,16 +111,29 @@ function s:GetKrlIndentIntern()
   endif
 
   " Subtract a 'shiftwidth'
-  let l:subtractShiftwidthPattern = '\c\v^\s*
-        \(end(fct|dat)?\s*(;.*)?$
-        \|end(if|while|for|loop)>
-        \|else>
-        \|(case|default|endswitch)>
-        \|until>
-        \|end(skip|spline)>
-        \|time_block\s+(part|end)>
-        \|const_vel\s+end>
-        \)'
+  let   l:subtractShiftwidthPattern  = '\c\v^\s*('
+  if get(g:,'krlIndentBetweenDef',1)
+    let l:subtractShiftwidthPattern .=           'end(fct|dat)?>'
+    let l:subtractShiftwidthPattern .=           '|'
+  endif
+  let   l:subtractShiftwidthPattern .=           'end(if|while|for|loop)>'
+  let   l:subtractShiftwidthPattern .=           '|else>'
+  let   l:subtractShiftwidthPattern .=           '|(case|default|endswitch)>'
+  let   l:subtractShiftwidthPattern .=           '|until>'
+  let   l:subtractShiftwidthPattern .=           '|end(skip|spline)>'
+  let   l:subtractShiftwidthPattern .=           '|time_block\s+(part|end)>'
+  let   l:subtractShiftwidthPattern .=           '|const_vel\s+end>'
+  let   l:subtractShiftwidthPattern .=         ')'
+  " let l:subtractShiftwidthPattern = '\c\v^\s*
+  "       \(end(fct|dat)?\s*(;.*)?$
+  "       \|end(if|while|for|loop)>
+  "       \|else>
+  "       \|(case|default|endswitch)>
+  "       \|until>
+  "       \|end(skip|spline)>
+  "       \|time_block\s+(part|end)>
+  "       \|const_vel\s+end>
+  "       \)'
   if l:currentLine =~ l:subtractShiftwidthPattern
     let l:ind = l:ind - &sw
   endif
