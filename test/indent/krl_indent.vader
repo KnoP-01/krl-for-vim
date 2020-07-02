@@ -1,0 +1,13 @@
+# a comment
+Execute (Test indention):
+  !rm -f testdat.dat
+  edit testdat.dat
+  AssertEqual 'krl', &filetype
+  normal \nga%
+  write
+
+Expect (check defdat):
+  defdat testdat public
+    ;
+  enddat
+
