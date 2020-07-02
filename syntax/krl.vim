@@ -1,8 +1,8 @@
 " Kuka Robot Language syntax file for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 2.2.0
-" Last Change: 21. Feb 2020
+" Version: 2.2.2
+" Last Change: 02. Jul 2020
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -293,8 +293,8 @@ highlight default link krlException Exception
 " }}} Statements, keywords et al
 
 " special keywords for movement commands {{{
-syn keyword krlMovement PTP LIN CIRC SPL SPTP SLIN SCIRC PTP_REL LIN_REL CIRC_REL SPTP_REL SLIN_REL SCIRC_REL
-syn keyword krlMovement ASYPTP ASYCONT ASYSTOP ASYCANCEL
+syn keyword krlMovement PTP PTP_REL LIN LIN_REL CIRC CIRC_REL SPL SPL_REL SPTP SPTP_REL SLIN SLIN_REL SCIRC SCIRC_REL
+syn keyword krlMovement ASYPTP ASYCONT ASYSTOP ASYCANCEL MOVE_EMI
 syn match krlMovement /\v\c^\s*<BRAKE(\s+F)?/
 if g:krlGroupName
   highlight default link krlMovement Movement
@@ -323,14 +323,14 @@ highlight default link krlStructVal Delimiter
 " BuildInFunction {{{
 syn keyword krlBuildInFunction contained Abs Sin Cos Acos Tan Atan Atan2 Sqrt
 syn keyword krlBuildInFunction contained cClose cOpen cRead cWrite sRead sWrite cast_from cast_to
-syn keyword krlBuildInFunction contained delete_backward_buffer diag_start diag_stop get_DiagState is_key_pressed GetCycDef get_decl_place CheckPidOnRdc PidToHd PidToRdc delete_pid_on_rdc cal_to_rdc set_mam_on_hd copy_mam_hd_to_rdc copy_mam_rdc_to_hd create_rdc_archive restore_rdc_archive delete_rdc_content rdc_file_to_hd check_mam_on_rdc get_rdc_fs_state tool_adj IoCtl CioCtl WSpaceGive WSpaceTake SyncCmd CancelProgSync RemoteCmd RemoteRead IsMessageSet timer_limit set_KrlDlgAnswer get_MsgBuffer StrToFrame StrToPos StrToE3Pos StrToE6Pos StrToAxis StrToE3Axis StrToE6Axis VarType Frand GetVarsize maximize_UsedxRobvers set_UsedxRobvers set_opt_filter md_GetState md_Asgn eb_test EO emi_EndPos emi_StartPos emi_ActPos emi_RecState m_comment
+syn keyword krlBuildInFunction contained delete_backward_buffer diag_start diag_stop get_DiagState is_key_pressed GetCycDef get_decl_place CheckPidOnRdc PidToHd PidToRdc delete_pid_on_rdc cal_to_rdc set_mam_on_hd copy_mam_hd_to_rdc copy_mam_rdc_to_hd create_rdc_archive restore_rdc_archive delete_rdc_content rdc_file_to_hd check_mam_on_rdc get_rdc_fs_state tool_adj IoCtl CioCtl WSpaceGive WSpaceTake SyncCmd CancelProgSync RemoteCmd RemoteRead IsMessageSet timer_limit set_KrlDlgAnswer get_MsgBuffer StrToFrame StrToPos StrToE3Pos StrToE6Pos StrToAxis StrToE3Axis StrToE6Axis VarType Frand GetVarsize maximize_UsedxRobvers set_UsedxRobvers set_opt_filter md_Cmd md_GetState md_SetState md_Asgn eb_test EO emi_ActPos emi_EndPos emi_StartPos emi_RecState emi_RecName m_comment
 syn keyword krlBuildInFunction contained Forward Inverse inv_pos
 syn keyword krlBuildInFunction contained get_sig_inf GetSysState get_system_data
 syn keyword krlBuildInFunction contained StrAdd StrClear StrCopy StrComp StrFind StrLen StrDeclLen StrToBool StrToInt StrToReal StrToString
 syn keyword krlBuildInFunction contained clear_KrlMsg set_system_data set_system_data_delayed set_KrlDlg exists_KrlDlg set_KrlMsg exists_KrlMsg
 syn keyword krlBuildInFunction contained err_clear err_raise
-syn keyword krlBuildInFunction contained ExecFunc Varstate EK EB LK Sync md_Cmd md_SetState mbx_rec Pulse 
-syn keyword krlBuildInFunction contained rob_stop rob_stop_release set_brake_delay
+syn keyword krlBuildInFunction contained ExecFunc Varstate EK EB LK Sync mbx_rec Pulse
+syn keyword krlBuildInFunction contained rob_stop rob_stop_release set_brake_delay set_torque_limits reset_torque_limits suppress_repositioning 
 " KRC1
 syn keyword krlBuildInFunction contained cLcopy cCurpos cNew cClear cRelease cKey
 if g:krlGroupName
