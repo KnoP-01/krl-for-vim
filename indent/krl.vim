@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.2
-" Last Change: 02. Jul 2020
+" Last Change: 03. Jul 2020
 " Credits: Based on indent/vim.vim
 "
 " Suggestions of improvement are very welcome. Please email me!
@@ -77,7 +77,7 @@ function s:GetKrlIndentIntern()
   let l:preNoneBlankLine = getline(l:preNoneBlankLineNum)
   let l:ind = indent(l:preNoneBlankLineNum)
 
-  " Add a 'shiftwidth' 
+  " Define add a 'shiftwidth' pattern
   let   l:addShiftwidthPattern  = '\c\v^\s*('
   if get(g:,'krlIndentBetweenDef',1)
     let l:addShiftwidthPattern .=           '(global\s+)?def(fct|dat)?\s+\w'
@@ -91,26 +91,8 @@ function s:GetKrlIndentIntern()
   let   l:addShiftwidthPattern .=           '|time_block\s+(start|part)>'
   let   l:addShiftwidthPattern .=           '|const_vel\s+start>'
   let   l:addShiftwidthPattern .=         ')'
-  " let l:addShiftwidthPattern = '\c\v^\s*
-  "       \(
-  "         \(global\s+)?def
-  "         \(\s+\w
-  "         \|fct\s+\w
-  "         \|dat\s+\w
-  "         \)
-  "       \|(if|while|for|loop)>
-  "       \|else>
-  "       \|(case|default)>
-  "       \|repeat>
-  "       \|(skip|(ptp_)?spline)>
-  "       \|time_block\s+(start|part)>
-  "       \|const_vel\s+start>
-  "       \)'
-  if l:preNoneBlankLine =~ l:addShiftwidthPattern
-    let l:ind += &sw
-  endif
 
-  " Subtract a 'shiftwidth'
+  " Define Subtract a 'shiftwidth' pattern
   let   l:subtractShiftwidthPattern  = '\c\v^\s*('
   if get(g:,'krlIndentBetweenDef',1)
     let l:subtractShiftwidthPattern .=           'end(fct|dat)?>'
@@ -124,16 +106,13 @@ function s:GetKrlIndentIntern()
   let   l:subtractShiftwidthPattern .=           '|time_block\s+(part|end)>'
   let   l:subtractShiftwidthPattern .=           '|const_vel\s+end>'
   let   l:subtractShiftwidthPattern .=         ')'
-  " let l:subtractShiftwidthPattern = '\c\v^\s*
-  "       \(end(fct|dat)?\s*(;.*)?$
-  "       \|end(if|while|for|loop)>
-  "       \|else>
-  "       \|(case|default|endswitch)>
-  "       \|until>
-  "       \|end(skip|spline)>
-  "       \|time_block\s+(part|end)>
-  "       \|const_vel\s+end>
-  "       \)'
+
+  " Add shiftwidth
+  if l:preNoneBlankLine =~ l:addShiftwidthPattern
+    let l:ind += &sw
+  endif
+
+  " Subtract shiftwidth
   if l:currentLine =~ l:subtractShiftwidthPattern
     let l:ind = l:ind - &sw
   endif
@@ -144,8 +123,7 @@ function s:GetKrlIndentIntern()
     let l:ind = l:ind + &sw
   endif
 
-  " Make continue-instructions align with the following
-  " instruction in case a shiftwidth was substracted.
+  " align continue with the following instruction
   if l:currentLine =~ '\c\v^\s*continue>' && 
         \getline(v:lnum + 1) =~ l:subtractShiftwidthPattern
     let l:ind = l:ind - &sw
