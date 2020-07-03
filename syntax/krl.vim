@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.2
-" Last Change: 02. Jul 2020
+" Last Change: 03. Jul 2020
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -276,7 +276,7 @@ syn match krlStatement /\v\c%(<wait\s+)@7<=<sec>/
 syn match krlStatement /\v\c%(<when\s+)@7<=<path>/
 highlight default link krlStatement Statement
 " Conditional
-syn keyword krlConditional if then else endif switch case default endswitch
+syn keyword krlConditional if then else endif switch case default endswitch skip endskip
 highlight default link krlConditional Conditional
 " Repeat
 syn keyword krlRepeat for to step endfor while endwhile repeat until loop endloop exit
