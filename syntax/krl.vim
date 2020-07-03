@@ -327,12 +327,11 @@ highlight default link krlStructVal Delimiter
 " BuildInFunction {{{
 syn keyword krlBuildInFunction contained Pulse
 syn keyword krlBuildInFunction contained m_comment
-syn keyword krlBuildInFunction contained delete_backward_buffer 
 syn keyword krlBuildInFunction contained is_key_pressed 
 syn keyword krlBuildInFunction contained set_opt_filter 
 syn keyword krlBuildInFunction contained timer_limit 
 syn keyword krlBuildInFunction contained tool_adj 
-syn keyword krlBuildInFunction contained Frand 
+syn keyword krlBuildInFunction contained FRand 
 syn keyword krlBuildInFunction contained ExecFunc eb_test EB EK EO LK mbx_rec 
 " math
 syn keyword krlBuildInFunction contained Abs Sin Cos Acos Tan Atan Atan2 Sqrt
@@ -359,7 +358,7 @@ syn keyword krlBuildInFunction contained Sync SyncCmd CancelProgSync
 " remote
 syn keyword krlBuildInFunction contained RemoteCmd RemoteRead 
 " msg/dlg
-syn keyword krlBuildInFunction contained IsMessageSet set_KrlDlgAnswer get_MsgBuffer clear_KrlMsg set_KrlDlg exists_KrlDlg set_KrlMsg exists_KrlMsg
+syn keyword krlBuildInFunction contained IsMessageSet clear_KrlMsg get_MsgBuffer exists_KrlDlg set_KrlDlg set_KrlDlgAnswer exists_KrlMsg set_KrlMsg 
 " robvers
 syn keyword krlBuildInFunction contained maximize_UsedxRobvers set_UsedxRobvers 
 " md_foo
@@ -374,7 +373,9 @@ syn keyword krlBuildInFunction contained GetSysState get_system_data set_system_
 " err
 syn keyword krlBuildInFunction contained err_clear err_raise
 " motion
-syn keyword krlBuildInFunction contained rob_stop rob_stop_release set_brake_delay set_torque_limits reset_torque_limits suppress_repositioning 
+syn keyword krlBuildInFunction contained delete_backward_buffer rob_stop rob_stop_release set_brake_delay suppress_repositioning VectorMoveOn VectorMoveOff
+" torque
+syn keyword krlBuildInFunction contained set_torque_limits reset_torque_limits
 " krc1
 syn keyword krlBuildInFunction contained cLcopy cCurpos cNew cClear cRelease cKey
 if g:krlGroupName
