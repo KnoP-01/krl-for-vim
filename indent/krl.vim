@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.2
-" Last Change: 03. Jul 2020
+" Last Change: 12. Jul 2020
 " Credits: Based on indent/vim.vim
 "
 " Suggestions of improvement are very welcome. Please email me!
@@ -58,7 +58,7 @@ function GetKrlIndent()
   endtry
 endfunction
 
-function s:GetKrlIndentIntern()
+function s:GetKrlIndentIntern() abort
 
   let l:currentLine = getline(v:lnum)
   if  l:currentLine =~ '\c\v^;(\s*(end)?fold>)@!' && !get(g:,'krlCommentIndent',0)
@@ -77,22 +77,22 @@ function s:GetKrlIndentIntern()
   let l:preNoneBlankLine = getline(l:preNoneBlankLineNum)
   let l:ind = indent(l:preNoneBlankLineNum)
 
-  " Define add a 'shiftwidth' pattern
+  " Define add 'shiftwidth' pattern
   let   l:addShiftwidthPattern  = '\c\v^\s*('
   if get(g:,'krlIndentBetweenDef',1)
     let l:addShiftwidthPattern .=           '(global\s+)?def(fct|dat)?\s+\w'
     let l:addShiftwidthPattern .=           '|'
   endif
-  let   l:addShiftwidthPattern .=           '(if|while|for|loop)>'
+  let   l:addShiftwidthPattern .=           'if>|while>|for>|loop>'
   let   l:addShiftwidthPattern .=           '|else>'
-  let   l:addShiftwidthPattern .=           '|(case|default)>'
+  let   l:addShiftwidthPattern .=           '|case>|default>'
   let   l:addShiftwidthPattern .=           '|repeat>'
-  let   l:addShiftwidthPattern .=           '|(skip|(ptp_)?spline)>'
+  let   l:addShiftwidthPattern .=           '|skip>|(ptp_)?spline>'
   let   l:addShiftwidthPattern .=           '|time_block\s+(start|part)>'
   let   l:addShiftwidthPattern .=           '|const_vel\s+start>'
   let   l:addShiftwidthPattern .=         ')'
 
-  " Define Subtract a 'shiftwidth' pattern
+  " Define Subtract 'shiftwidth' pattern
   let   l:subtractShiftwidthPattern  = '\c\v^\s*('
   if get(g:,'krlIndentBetweenDef',1)
     let l:subtractShiftwidthPattern .=           'end(fct|dat)?>'
@@ -100,7 +100,7 @@ function s:GetKrlIndentIntern()
   endif
   let   l:subtractShiftwidthPattern .=           'end(if|while|for|loop)>'
   let   l:subtractShiftwidthPattern .=           '|else>'
-  let   l:subtractShiftwidthPattern .=           '|(case|default|endswitch)>'
+  let   l:subtractShiftwidthPattern .=           '|case>|default>|endswitch>'
   let   l:subtractShiftwidthPattern .=           '|until>'
   let   l:subtractShiftwidthPattern .=           '|end(skip|spline)>'
   let   l:subtractShiftwidthPattern .=           '|time_block\s+(part|end)>'
@@ -132,9 +132,9 @@ function s:GetKrlIndentIntern()
   return l:ind
 endfunction
 
-function s:KrlPreNoneBlank(lnum)
-  " This function handles &headers, ;line comments and CONTINUE instructions
-  " like blank lines
+" This function works almost like prevnonblank() but handles &-headers,
+" comments and continue instructions like blank lines
+function s:KrlPreNoneBlank(lnum) abort
 
   let nPreNoneBlank = prevnonblank(a:lnum)
 
