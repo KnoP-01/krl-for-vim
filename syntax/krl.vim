@@ -2,13 +2,14 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.2
-" Last Change: 03. Jul 2020
+" Last Change: 14. Aug 2020
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
 " Suggestions of improvement are very welcome. Please email me!
 "
-" TODO: see and use :h :syn-iskeyword
+" TODO: - see and use :h :syn-iskeyword
+"       - give errors meaningful names
 "
 " Note to self:
 " for testing perfomance
@@ -296,7 +297,7 @@ highlight default link krlException Exception
 " special keywords for movement commands {{{
 syn keyword krlMovement PTP PTP_REL LIN LIN_REL CIRC CIRC_REL SPL SPL_REL SPTP SPTP_REL SLIN SLIN_REL SCIRC SCIRC_REL
 syn keyword krlMovement ASYPTP ASYCONT ASYSTOP ASYCANCEL MOVE_EMI
-syn match krlMovement /\v\c^\s*<BRAKE(\s+F)?/
+syn match krlMovement /\v\c^\s*<BRAKE(\s+F)?>/
 if g:krlGroupName
   highlight default link krlMovement Movement
 else
