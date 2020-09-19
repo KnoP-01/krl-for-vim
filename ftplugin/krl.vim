@@ -1687,7 +1687,7 @@ if has("folding") && get(g:,'krlFoldLevel',1)
 
       setlocal foldtext=KrlFoldText()
 
-      if get(g:,'krlFoldMethodSyntax',1)
+      if get(g:,'krlFoldMethodSyntax',1) && exists("g:syntax_on")
         syn sync fromstart
         setlocal foldmethod=syntax
       else
