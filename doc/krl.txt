@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 01. Jul 2020
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 19. Sep 2020
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
@@ -438,9 +438,8 @@ g:krlFoldMethodSyntax:
 Use 'foldmethod' |fold-marker| instead of |fold-syntax|.  >
    let g:krlFoldMethodSyntax = 0
 
-If omitted or set to 1 'foldmethod' syntax is used. 'foldmethod' marker
-uses less performance, but is case sensitive and will catch less movement
-folds.
+If omitted or set to 1 |fold-syntax| is used. |fold-marker| uses less
+performance, but is case sensitive and will catch less movement folds.
 
 
 Index: |krl-index|
