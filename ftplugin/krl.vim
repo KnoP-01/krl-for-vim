@@ -1071,7 +1071,7 @@ if !exists("*s:KnopVerboseEcho()")
     call setline('.',";")
     normal! o
     call setline('.',"enddat")
-    call search('\s*defdat ','bW')
+    call search('\c^\s*defdat ','bW')
     if exists("b:did_indent")
       execute ",+2substitute/^/ /"
       silent normal! 2k3==
@@ -1085,7 +1085,9 @@ if !exists("*s:KnopVerboseEcho()")
 
   function s:KrlDefaultDefBody(sName,sGlobal) abort
     call s:KrlPositionForEditWrapper()
-    call setline('.',a:sGlobal."def ".a:sName.'()')
+    let l:sGlobal = a:sGlobal
+    if line(".")==1 | let l:sGlobal = '' | endif " assume this is the first def in this file, no global needed
+    call setline('.',l:sGlobal."def ".a:sName.'()')
     normal! o
     call setline('.',";")
     normal! o
@@ -1103,7 +1105,9 @@ if !exists("*s:KnopVerboseEcho()")
 
   function s:KrlDefaultDeffctBody(sName,sGlobal,sDataType,sReturnVar) abort
     call s:KrlPositionForEditWrapper()
-    call setline('.',a:sGlobal."deffct ".a:sDataType." ".a:sName.'()')
+    let l:sGlobal = a:sGlobal
+    if line(".")==1 | let l:sGlobal = '' | endif " assume this is the first def in this file, no global needed
+    call setline('.',l:sGlobal."deffct ".a:sDataType." ".a:sName.'()')
     normal! o
     call setline('.',"decl ".a:sDataType." ".a:sReturnVar)
     let l:sReturnVar = a:sReturnVar
