@@ -1230,48 +1230,60 @@ if !exists("*s:KnopVerboseEcho()")
     "
     if search('\w','cW',line("."))
       let l:currentWord = s:KrlCurrentWordIs()
+      let l:type = ''
       "
       if l:currentWord =~ '^sysvar.*'
+        let l:type = 'SYSVAR'
         let l:currentWord = substitute(l:currentWord,'^sysvar','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a KSS VARIABLE"])
         let l:currentWord = substitute(l:currentWord,'\$','\\$','g') " escape any dollars in var name
       elseif l:currentWord =~ '^header.*'
+        let l:type = 'HEADER'
         let l:currentWord = substitute(l:currentWord,'^header','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a HEADER."])
         let l:currentWord = substitute(l:currentWord,'&','\\&','g') " escape any & in var name
       elseif l:currentWord =~ '^var.*'
+        let l:type = 'USERVAR'
         let l:currentWord = substitute(l:currentWord,'^var','','')
         let l:currentWord = substitute(l:currentWord,'\$','\\$','g') " escape embeddend dollars in var name (e.g. TMP_$STOPM)
         call s:KnopVerboseEcho([l:currentWord,"appear to be a user defined VARIABLE"])
       elseif l:currentWord =~ '\v^%(sys)?%(proc|func)'
-        let l:type = "DEF"
+        let l:type = 'DEF'
         if l:currentWord =~ '^sys'
-          let l:type = "KSS " . l:type
+          let l:type = 'KSS ' . l:type
         endif
         if l:currentWord =~ '^\v%(sys)?func'
-          let l:type = l:type . "FCT"
+          let l:type = l:type . 'FCT'
         endif
         let l:currentWord = substitute(l:currentWord,'\v^%(sys)?%(proc|func)','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a ".l:type])
       elseif l:currentWord =~ '^enumval.*'
+        let l:type = 'ENUMVALUE'
         let l:currentWord = substitute(l:currentWord,'^enumval','','')
+        let l:currentWord = substitute(l:currentWord,'\v(#)(\w+)','(\1\2|(decl\\s+)?(global\\s+)?enum\\s+\\w+\\s+[0-9a-zA-Z_, \t]*\2)','') " search also without # to find the declaration
         call s:KnopVerboseEcho([l:currentWord,"appear to be an ENUM VALUE."])
       elseif l:currentWord =~ '^num.*'
+        let l:type = 'NUMERIC'
         let l:currentWord = substitute(l:currentWord,'^num','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a NUMBER."])
       elseif l:currentWord =~ '^string.*'
+        let l:type = 'STRING'
         let l:currentWord = substitute(l:currentWord,'^string','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a STRING."])
       elseif l:currentWord =~ '^comment.*'
+        let l:type = 'COMMENT'
         let l:currentWord = substitute(l:currentWord,'^comment','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a COMMENT."])
       elseif l:currentWord =~ '^inst.*'
+        let l:type = 'INSTRUCTION'
         let l:currentWord = substitute(l:currentWord,'^inst','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a KRL KEYWORD."])
       elseif l:currentWord =~ '^bool.*'
+        let l:type = 'BOOL'
         let l:currentWord = substitute(l:currentWord,'^bool','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a BOOL VALUE."])
       else
+        let l:type = 'NONE'
         let l:currentWord = substitute(l:currentWord,'^none','','')
         call s:KnopVerboseEcho([l:currentWord,"Unable to determine what to search for at current cursor position. No search performed!"],1)
         return
@@ -1285,13 +1297,17 @@ if !exists("*s:KnopVerboseEcho()")
       endif
       if s:KnopSearchPathForPatternNTimes('\c\v'.l:nonecomment.'<'.l:currentWord.'>',s:KnopPreparePath(&path,'*.src').' '.s:KnopPreparePath(&path,'*.sub').' '.s:KnopPreparePath(&path,'*.dat').' ','','krl')==0
         call setqflist(s:KnopUniqueListItems(getqflist()))
-        " rule out ENUM declaration
+        " rule out ENUM declaration if not looking for ENUM values
         let l:qftmp1 = []
-        for l:i in getqflist()
-          if get(l:i,'text') !~ '\v\c^\s*(global\s+)?enum>'
-            call add(l:qftmp1,l:i)
-          endif
-        endfor
+        if l:type != 'ENUMVALUE'
+          for l:i in getqflist()
+            if get(l:i,'text') !~ '\v\c^\s*(global\s+)?enum>'
+              call add(l:qftmp1,l:i)
+            endif
+          endfor
+        else
+          let l:qftmp1 = getqflist()
+        endif
         " rule out if l:currentWord appear after &header
         let l:qftmp2 = []
         for l:i in l:qftmp1
