@@ -554,6 +554,33 @@ if !exists("*s:KnopVerboseEcho()")
     return -1
   endfunction " s:KrlSearchSysvar()
 
+  function s:KrlSearchEnumVal(declPrefix,currentWord) abort
+    "
+    " search corrosponding dat file
+    call s:KnopVerboseEcho("Search local data list...")
+    let l:filename = substitute(fnameescape(bufname("%")),'\c\.src$','.dat','')
+    if filereadable(glob(l:filename))
+      if (s:KnopSearchPathForPatternNTimes(a:declPrefix.'<'.a:currentWord.">",l:filename,'','krl') == 0)
+        call s:KnopVerboseEcho("Found local data list declaration. The quickfix window will open. See :he quickfix-window",1)
+        return 0
+        "
+      endif
+    else
+      call s:KnopVerboseEcho(["File ",l:filename," not readable"])
+    endif " search corrosponding dat file
+    "
+    " third search global data lists
+    call s:KnopVerboseEcho("Search global data lists...")
+    if (s:KnopSearchPathForPatternNTimes(a:declPrefix.'<'.a:currentWord.">",s:KrlPathWithGlobalDataLists(),'','krl') == 0)
+      call s:KnopVerboseEcho("Found global data list declaration. The quickfix window will open. See :he quickfix-window",1)
+      return 0
+      "
+    endif
+    "
+    call s:KnopVerboseEcho("Nothing found.",1)
+    return -1
+  endfunction
+
   function s:KrlSearchVar(declPrefix,currentWord) abort
     "
     " first search for local declartion
@@ -682,9 +709,10 @@ if !exists("*s:KnopVerboseEcho()")
         return s:KrlSearchVar(l:declPrefix,l:currentWord)
         "
       elseif l:currentWord =~ '^enumval.*'
-        " TODO mach das moeglich
         let l:currentWord = substitute(l:currentWord,'^enumval','','')
-        call s:KnopVerboseEcho([l:currentWord,"appear to be an ENUM VALUE. The search for declarations of enums by their values is not supported (yet?)."],1)
+        call s:KnopVerboseEcho([l:currentWord,"appear to be an ENUM VALUE."],1)
+        return s:KrlSearchEnumVal('\v\c^\s*(global\s+)?enum\s+\w+\s+[0-9a-zA-Z_, \t]*',substitute(l:currentWord,'^#','',''))
+        "
       elseif l:currentWord =~ '^header.*'
         let l:currentWord = substitute(l:currentWord,'^header','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a HEADER. No search performed."],1)
