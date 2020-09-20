@@ -1662,7 +1662,7 @@ let s:pathToCurrentFile = substitute(expand("%:p:h"),'\\','/','g')
 " complete custom files
 if exists('g:krlCompleteCustom')
   for s:customCompleteAdditions in g:krlCompleteCustom
-    let s:file = substitute(s:customCompleteAdditions,'^.*[\\/]\(\w\+\.\)\(\w\+\)$','\1\2','')
+    let s:file = substitute(s:customCompleteAdditions,'^.*[\\/]\(\$?\w\+\.\)\(\w\+\)$','\1\2','')
     call s:KnopAddFileToCompleteOption(s:customCompleteAdditions,s:pathList,s:pathToCurrentFile.'/'.s:file,)
   endfor
 endif
