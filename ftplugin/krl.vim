@@ -795,14 +795,14 @@ if !exists("*s:KnopVerboseEcho()")
       return ''
       "
     elseif l:sName=~'^%$' " sName from current file name
-      let l:sName = substitute(l:sFilename,'\v^.*(<\w+)\.\w\w\w$','\1','')
+      let l:sName = substitute(l:sFilename,'\v^.*(<\$?\w+)\.\w\w\w$','\1','')
     elseif l:sName=~'^ $' " sName from current word
       let l:sName = expand("<cword>")
     endif
-    let l:sName = substitute(l:sName,'\W*','','g')
-    if a:suffix!~substitute(l:sFilename,'^.*\.\(\w\w\w\)$','\1','')
+    let l:sName = substitute(l:sName,'[^0-9a-zA-Z_$]*','','g')
+    if substitute(l:sFilename,'^.*\.\(\w\w\w\)$','\1','') !~ a:suffix
       let l:suffix = substitute(a:suffix,'\\c\\v(src|sub)','src','')
-      let l:sFilename = substitute(l:sFilename,'\v^(.*)<\w+\.\w\w\w$','\1'.l:sName.'.'.l:suffix,'')
+      let l:sFilename = substitute(l:sFilename,'\v^(.*)<\$?\w+\.\w\w\w$','\1'.l:sName.'.'.l:suffix,'')
     endif
     if fnameescape(bufname("%"))!=l:sFilename
       if filereadable(glob(l:sFilename))
