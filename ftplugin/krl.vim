@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.2
-" Last Change: 30. Jun 2020
+" Last Change: 20. Sep 2020
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -1285,10 +1285,10 @@ if !exists("*s:KnopVerboseEcho()")
       endif
       if s:KnopSearchPathForPatternNTimes('\c\v'.l:nonecomment.'<'.l:currentWord.'>',s:KnopPreparePath(&path,'*.src').' '.s:KnopPreparePath(&path,'*.sub').' '.s:KnopPreparePath(&path,'*.dat').' ','','krl')==0
         call setqflist(s:KnopUniqueListItems(getqflist()))
-        " rule out DECL ENUM
+        " rule out ENUM declaration
         let l:qftmp1 = []
         for l:i in getqflist()
-          if get(l:i,'text') !~ '\v\c^\s*(decl\s+)?enum>'
+          if get(l:i,'text') !~ '\v\c^\s*(global\s+)?enum>'
             call add(l:qftmp1,l:i)
           endif
         endfor
