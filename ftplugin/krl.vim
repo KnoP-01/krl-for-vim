@@ -571,7 +571,7 @@ if !exists("*s:KnopVerboseEcho()")
       call cursor(l:numLine,l:numCol)
     endif
     "
-    " search corrosponding dat file
+    " second search corrosponding dat file
     call s:KnopVerboseEcho("Search local data list...")
     let l:filename = substitute(fnameescape(bufname("%")),'\c\.src$','.dat','')
     if filereadable(glob(l:filename))
