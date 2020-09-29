@@ -106,7 +106,7 @@ if !exists("*s:KnopVerboseEcho()")
     unlet g:knopVerboseMsg
     echomsg "Switch verbose messages off with \":let g:knopVerbose=0\" any time. You may put this in your .vimrc"
   endif
-  function s:KnopVerboseEcho(msg, ...)
+  function s:KnopVerboseEcho(msg, ...) abort
     if get(g:,'knopVerbose',0)
       if type(a:msg) == v:t_list
         let l:msg = a:msg
@@ -126,14 +126,14 @@ if !exists("*s:KnopVerboseEcho()")
     endif
   endfunction " s:KnopVerboseEcho()
 
-  function s:KnopDirExists(in)
+  function s:KnopDirExists(in) abort
     if finddir( substitute(a:in,'\\','','g') )!=''
       return 1
     endif
     return 0
   endfunction " s:KnopDirExists
 
-  function s:KnopFnameescape4Path(in)
+  function s:KnopFnameescape4Path(in) abort
     " escape a path for use as 'execute "set path=" . s:KnopFnameescape4Path(mypath)'
     " use / (not \) as a separator for the input parameter
     let l:out = fnameescape( a:in )
@@ -145,14 +145,14 @@ if !exists("*s:KnopVerboseEcho()")
     return l:out
   endfunction
 
-  function s:knopCompleteEnbMsg()
+  function s:knopCompleteEnbMsg() abort
     if exists("g:knopCompleteMsg")
       unlet g:knopCompleteMsg
       call s:KnopVerboseEcho("Add the following files to 'complete'.\n  Try <Ctrl-p> and <Ctrl-n> to complete words from there:")
     endif
   endfunction " s:knopCompleteEnbMsg
 
-  function s:KnopSplitAndUnescapeCommaSeparatedPathStr(commaSeparatedPathStr)
+  function s:KnopSplitAndUnescapeCommaSeparatedPathStr(commaSeparatedPathStr) abort
     let l:pathList = []
     for l:pathItem in split(a:commaSeparatedPathStr,'\\\@1<!,')
       if l:pathItem != ''
@@ -162,7 +162,7 @@ if !exists("*s:KnopVerboseEcho()")
     return l:pathList
   endfunction
 
-  function s:KnopAddFileToCompleteOption(file,pathList,...)
+  function s:KnopAddFileToCompleteOption(file,pathList,...) abort
     let l:file=a:file
     for l:path in a:pathList
       let l:path = substitute(l:path,'[\\/]\*\*$','','')
@@ -191,12 +191,12 @@ if !exists("*s:KnopVerboseEcho()")
     endif
   endfunction " s:KnopAddFileToCompleteOption()
 
-  function s:KnopSubStartToEnd(search,sub,start,end)
+  function s:KnopSubStartToEnd(search,sub,start,end) abort
     execute 'silent '. a:start .','. a:end .' s/'. a:search .'/'. a:sub .'/ge'
     call cursor(a:start,0)
   endfunction " s:KnopSubStartToEnd()
 
-  function s:KnopUpperCase(start,end)
+  function s:KnopUpperCase(start,end) abort
     call cursor(a:start,0)
     execute "silent normal! gU" . (a:end - a:start) . "j"
     call cursor(a:start,0)
@@ -205,14 +205,14 @@ if !exists("*s:KnopVerboseEcho()")
   " taken from Peter Oddings
   " function! xolox#misc#list#unique(list)
   " xolox/misc/list.vim
-  function s:KnopUniqueListItems(list)
+  function s:KnopUniqueListItems(list) abort
     " Remove duplicate values from the given list in-place (preserves order).
     call reverse(a:list)
     call filter(a:list, 'count(a:list, v:val) == 1')
     return reverse(a:list)
   endfunction " s:KnopUniqueListItems()
 
-  function s:KnopPreparePath(path,file)
+  function s:KnopPreparePath(path,file) abort
     " prepares 'path' for use with vimgrep
     let l:path = substitute(a:path,'$',' ','') " make sure that space is the last char
     let l:path = substitute(l:path,'\v(^|[^\\])\zs,+',' ','g') " separate with spaces instead of comma
@@ -230,7 +230,7 @@ if !exists("*s:KnopVerboseEcho()")
     return l:path
   endfunction " s:KnopPreparePath()
 
-  function s:KnopQfCompatible()
+  function s:KnopQfCompatible() abort
     " check for qf.vim compatiblity
     if exists('g:loaded_qf') && get(g:,'qf_window_bottom',1)
           \&& (get(g:,'knopRhsQuickfix',0)
@@ -242,7 +242,7 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " s:KnopQfCompatible()
 
   let g:knopPositionQf=1
-  function s:KnopOpenQf(useSyntax)
+  function s:KnopOpenQf(useSyntax) abort
     if getqflist()==[] | return -1 | endif
     cwindow 4
     if getbufvar('%', "&buftype")!="quickfix"
@@ -288,7 +288,7 @@ if !exists("*s:KnopVerboseEcho()")
     return 0
   endfunction " s:KnopOpenQf()
 
-  function s:KnopSearchPathForPatternNTimes(Pattern,path,n,useSyntax)
+  function s:KnopSearchPathForPatternNTimes(Pattern,path,n,useSyntax) abort
     call setqflist([])
     try
       execute ':noautocmd ' . a:n . 'vimgrep /' . a:Pattern . '/j ' . a:path
@@ -312,7 +312,7 @@ if !exists("*s:KnopVerboseEcho()")
     return 0
   endfunction " s:KnopSearchPathForPatternNTimes()
 
-  function <SID>KnopNTimesSearch(nCount,sSearchPattern,sFlags)
+  function <SID>KnopNTimesSearch(nCount,sSearchPattern,sFlags) abort
     let l:nCount=a:nCount
     let l:sFlags=a:sFlags
     while l:nCount>0
