@@ -2,11 +2,18 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.2
-" Last Change: 20. Sep 2020
+" Last Change: 28. Sep 2020
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
 " Suggestions of improvement are very welcome. Please email me!
+"
+" TODO: - endwise add skip, ptp_spline, TIME_BLOCK and CONST_VEL
+"       - set buftype=nofile bufhidden=delete instead of temp file for altered
+"         quick fix
+"       - test compatiblity with quickfix-reflector
+"       - proper altering of quickfix: see :help quickfix-window then /filled
+"       - use /\%( where possible
 "
 " ToDo's {{{
 " BUG:  - matchit fold, text object fold doesn't work
@@ -347,10 +354,7 @@ if !exists("*s:KnopVerboseEcho()")
         call setbufvar(l:b["bufnr"],"&buflisted",0)
       endif
       " delete those strange empty unnamed buffers
-      if        l:b["name"]==""       " not named
-            \&& l:b["windows"]==[]    " not shown in any window
-            \&& !l:b["hidden"]        " not hidden
-            \&& !l:b["changed"]       " not modified
+      if l:b['name']=='' && l:b['windows']==[] && !l:b['changed']
         execute "silent bwipeout! " . l:b["bufnr"]
       endif
     endfor
@@ -2032,13 +2036,16 @@ endif
 " <PLUG> mappings {{{
 
 " Go Definition
-nnoremap <silent><buffer> <plug>KrlGoDef :call <SID>KrlGoDefinition()<CR>:call <SID>KrlCleanBufferList()<CR>
+" nnoremap <silent><buffer> <plug>KrlGoDef :call <SID>KrlGoDefinition()<CR>:call <SID>KrlCleanBufferList()<CR>
+nnoremap <silent><buffer> <plug>KrlGoDef :call <SID>KrlGoDefinition()<CR>
 
 " list all DEFs of current file
-nnoremap <silent><buffer> <plug>KrlListDef :call <SID>KrlListDefinition()<CR>:call <SID>KrlCleanBufferList()<CR>
+" nnoremap <silent><buffer> <plug>KrlListDef :call <SID>KrlListDefinition()<CR>:call <SID>KrlCleanBufferList()<CR>
+nnoremap <silent><buffer> <plug>KrlListDef :call <SID>KrlListDefinition()<CR>
 
 " list usage
-nnoremap <silent><buffer> <plug>KrlListUse :call <SID>KrlListUsage()<CR>:call <SID>KrlCleanBufferList()<CR>
+" nnoremap <silent><buffer> <plug>KrlListUse :call <SID>KrlListUsage()<CR>:call <SID>KrlCleanBufferList()<CR>
+nnoremap <silent><buffer> <plug>KrlListUse :call <SID>KrlListUsage()<CR>
 
 " auto form
 nnoremap <silent><buffer> <plug>KrlAutoForm                 :call <SID>KrlAutoForm("   ")<cr>
