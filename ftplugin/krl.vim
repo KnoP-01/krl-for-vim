@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.2
-" Last Change: 28. Sep 2020
+" Last Change: 25. Oct 2020
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -378,7 +378,7 @@ if !exists("*s:KnopVerboseEcho()")
   function s:KrlPathWithGlobalDataLists() abort
     call setloclist(0,[])
     try
-      execute ':noautocmd lvimgrep /\c\v^\s*defdat\s+(\w+\s+public|\$\w+)/j ' . s:KnopPreparePath(&path,'*.dat')
+      execute ':noautocmd lvimgrep /\c\v^\s*defdat\s+(\w+\s+public|\$\w+)/j ' . s:KnopPreparePath(&path,'*.[dD][aA][tT]')
     catch /^Vim\%((\a\+)\)\=:E480/
       call s:KnopVerboseEcho(":lvimgrep stopped with E480! No global data lists found in \'path\'.")
       return ' '
@@ -515,7 +515,7 @@ if !exists("*s:KnopVerboseEcho()")
   function s:KrlSearchVkrcMarker(currentWord) abort
     call s:KnopVerboseEcho("Search marker definitions...")
     let l:markerNumber = substitute(a:currentWord,'\cm','','')
-    if (s:KnopSearchPathForPatternNTimes('\c^\s*\$cycflag\s*\[\s*'.l:markerNumber.'\s*\]\s*=',s:KnopPreparePath(&path,'*.src').' '.s:KnopPreparePath(&path,'*.sub'),'','krl') == 0)
+    if (s:KnopSearchPathForPatternNTimes('\c^\s*\$cycflag\s*\[\s*'.l:markerNumber.'\s*\]\s*=',s:KnopPreparePath(&path,'*.[sS][rR][cC]').' '.s:KnopPreparePath(&path,'*.[sS][uU][bB]'),'','krl') == 0)
       call setqflist(s:KnopUniqueListItems(getqflist()))
       call s:KnopOpenQf('krl')
       call s:KnopVerboseEcho("Marker definition found.",1)
@@ -560,7 +560,7 @@ if !exists("*s:KnopVerboseEcho()")
     "
     " search corrosponding dat file
     call s:KnopVerboseEcho("Search local data list...")
-    let l:filename = substitute(fnameescape(bufname("%")),'\c\.src$','.dat','')
+    let l:filename = substitute(fnameescape(bufname("%")),'\c\.src$','.[dD][aA][tT]','')
     if filereadable(glob(l:filename))
       if (s:KnopSearchPathForPatternNTimes(a:declPrefix.'<'.a:currentWord.">",l:filename,'','krl') == 0)
         call s:KnopVerboseEcho("Found local data list declaration. The quickfix window will open. See :he quickfix-window",1)
@@ -602,7 +602,7 @@ if !exists("*s:KnopVerboseEcho()")
     "
     " second search corrosponding dat file
     call s:KnopVerboseEcho("Search local data list...")
-    let l:filename = substitute(fnameescape(bufname("%")),'\c\.src$','.dat','')
+    let l:filename = substitute(fnameescape(bufname("%")),'\c\.src$','.[dD][aA][tT]','')
     if filereadable(glob(l:filename))
       if (s:KnopSearchPathForPatternNTimes(a:declPrefix.'<'.a:currentWord.">",l:filename,'1','krl') == 0)
         call s:KnopVerboseEcho("Found local data list declaration. The quickfix window will open. See :he quickfix-window",1)
@@ -643,12 +643,12 @@ if !exists("*s:KnopVerboseEcho()")
     "
     " second search src file name = a:currentWord
     call s:KnopVerboseEcho("Search .src files in &path...")
-    let l:path = s:KnopPreparePath(&path,a:currentWord.'.src').s:KnopPreparePath(&path,a:currentWord.'.sub')
-    if !filereadable('./'.a:currentWord.'.src') " suppress message about missing file
-      let l:path = substitute(l:path, '\.[\\/]'.a:currentWord.'.src ', ' ','g')
+    let l:path = s:KnopPreparePath(&path,a:currentWord.'.[sS][rR][cC]').s:KnopPreparePath(&path,a:currentWord.'.[sS][uU][bB]')
+    if !filereadable('./'.a:currentWord.'.[sS][rR][cC]') " suppress message about missing file
+      let l:path = substitute(l:path, '\.[\\/]'.a:currentWord.'.\[sS\]\[rR\]\[cC\] ', ' ','g')
     endif
-    if !filereadable('./'.a:currentWord.'.sub') " suppress message about missing file
-      let l:path = substitute(l:path, '\.[\\/]'.a:currentWord.'.sub ', ' ','g')
+    if !filereadable('./'.a:currentWord.'.[sS][uU][bB]') " suppress message about missing file
+      let l:path = substitute(l:path, '\.[\\/]'.a:currentWord.'.\[sS\]\[uU\]\[bB\] ', ' ','g')
     endif
     if (s:KnopSearchPathForPatternNTimes('\c\v^\s*(global\s+)?def(fct\s+\w+(\[[0-9,]*\])?)?\s+'.a:currentWord.">",l:path,'1','krl') == 0)
       call s:KnopVerboseEcho("Found src file. The quickfix window will open. See :he quickfix-window",1)
@@ -658,7 +658,7 @@ if !exists("*s:KnopVerboseEcho()")
     "
     " third search global def(fct)?
     call s:KnopVerboseEcho("Search global def(fct)? definitions in &path...")
-    if (s:KnopSearchPathForPatternNTimes('\c\v^\s*global\s+def(fct\s+\w+(\[[0-9,]*\])?)?\s+'.a:currentWord.">",s:KnopPreparePath(&path,'*.src').s:KnopPreparePath(&path,'*.sub'),'1','krl') == 0)
+    if (s:KnopSearchPathForPatternNTimes('\c\v^\s*global\s+def(fct\s+\w+(\[[0-9,]*\])?)?\s+'.a:currentWord.">",s:KnopPreparePath(&path,'*.[sS][rR][cC]').s:KnopPreparePath(&path,'*.[sS][uU][bB]'),'1','krl') == 0)
       call s:KnopVerboseEcho("Found global def(fct)? declaration. The quickfix window will open. See :he quickfix-window",1)
       return 0
       "
@@ -1329,7 +1329,7 @@ if !exists("*s:KnopVerboseEcho()")
       if !<SID>KrlIsVkrc()
         let l:nonecomment = '^[^;]*'
       endif
-      if s:KnopSearchPathForPatternNTimes('\c\v'.l:nonecomment.'<'.l:currentWord.'>',s:KnopPreparePath(&path,'*.src').' '.s:KnopPreparePath(&path,'*.sub').' '.s:KnopPreparePath(&path,'*.dat').' ','','krl')==0
+      if s:KnopSearchPathForPatternNTimes('\c\v'.l:nonecomment.'<'.l:currentWord.'>',s:KnopPreparePath(&path,'*.[sS][rR][cC]').' '.s:KnopPreparePath(&path,'*.[sS][uU][bB]').' '.s:KnopPreparePath(&path,'*.[dD][aA][tT]').' ','','krl')==0
         call setqflist(s:KnopUniqueListItems(getqflist()))
         " rule out ENUM declaration if not looking for ENUM values
         let l:qftmp1 = []
@@ -1488,7 +1488,7 @@ endif " !exists("*s:KnopVerboseEcho()")
 " default on; no option
 setlocal commentstring=;%s
 setlocal comments=:;
-setlocal suffixes+=.dat
+setlocal suffixes+=.dat,.Dat,.DAT
 if has("win32")
   setlocal suffixesadd+=.src,.sub,.dat
 else
@@ -1676,6 +1676,7 @@ endif
 " complete standard files
 if get(g:,'krlCompleteStd',1)
   "
+  " TODO check/fix case sensitivity of file names/extentions in unix file systems
   "
   " <filename>.dat
   if expand("%:p:t") !~ '\.dat$'
