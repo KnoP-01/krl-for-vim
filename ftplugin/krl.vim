@@ -1679,8 +1679,8 @@ if get(g:,'krlCompleteStd',1)
   " TODO check/fix case sensitivity of file names/extentions in unix file systems
   "
   " <filename>.dat
-  if expand("%:p:t") !~ '\.dat$'
-    call s:KnopAddFileToCompleteOption(substitute(expand("%:p:t"),'\.s\%(rc\|ub\)$','.dat',''),[s:pathToCurrentFile])
+  if expand("%:p:t") !~ '\c\.dat$'
+    call s:KnopAddFileToCompleteOption(substitute(expand("%:p:t"),'\c\.s\%(rc\|ub\)$','.dat',''),[s:pathToCurrentFile])
   endif
   " R1/System/$config.dat
   call s:KnopAddFileToCompleteOption('R1/System/$config.dat',s:pathList,s:pathToCurrentFile.'/'.'$config.dat')
