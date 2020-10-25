@@ -1676,8 +1676,6 @@ endif
 " complete standard files
 if get(g:,'krlCompleteStd',1)
   "
-  " TODO check/fix case sensitivity of file names/extentions in unix file systems
-  "
   " <filename>.dat
   if expand("%:p:t") !~ '\c\.dat$'
     call s:KnopAddFileToCompleteOption(substitute(expand("%:p:t"),'\c\.s\%(rc\|ub\)$','.dat',''),[s:pathToCurrentFile])
