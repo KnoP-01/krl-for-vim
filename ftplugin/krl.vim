@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.2
-" Last Change: 25. Oct 2020
+" Last Change: 27. Oct 2020
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -1488,10 +1488,11 @@ endif " !exists("*s:KnopVerboseEcho()")
 " default on; no option
 setlocal commentstring=;%s
 setlocal comments=:;
-setlocal suffixes+=.dat,.Dat,.DAT
 if has("win32")
+  setlocal suffixes+=.dat
   setlocal suffixesadd+=.src,.sub,.dat
 else
+  setlocal suffixes+=.dat,.Dat,.DAT
   setlocal suffixesadd+=.src,.Src,.SRC,.sub,.Sub,.SUB,.dat,.Dat,.DAT
 endif
 let b:undo_ftplugin = "setlocal com< cms< su< sua<"
