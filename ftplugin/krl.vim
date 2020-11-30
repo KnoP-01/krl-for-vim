@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.2
-" Last Change: 27. Oct 2020
+" Last Change: 30. Nov 2020
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -1815,13 +1815,18 @@ endif " has("folding") && get(g:,'krlFoldLevel',1)
 
 " endwise support
 if exists("loaded_endwise")
-  if get(g:,'krlEndwiseUpperCase',0)
-    let b:endwise_addition  = '\=submatch(0)=~"DEF" ? "END" : submatch(0)=~"CASE" ? "ENDSWITCH" : submatch(0)=~"REPEAT" ? "UNTIL <condition>" : "END" . submatch(0)'
-  else
-    let b:endwise_addition  = '\=submatch(0)=~"def" ? "end" : submatch(0)=~"case" ? "endswitch" : submatch(0)=~"repeat" ? "until <condition>" : "end" . submatch(0)'
-  endif
-  let b:endwise_words     = 'def,deffct,defdat,then,while,for,repeat,case'
-  let b:endwise_pattern   = '^\s*\(\(global\s\+\)\?\zsdef\|\(global\s\+\)\?def\zs\(dat\|fct\)\|\zsif\|\zswhile\|\zsfor\|\zscase\|\zsrepeat\)\>\ze'
+  let b:endwise_addition  = '\=submatch(0)=~#"DEF\\>" ? "END" '
+  let b:endwise_addition .= ': submatch(0)=~#"CASE" ? "ENDSWITCH" '
+  let b:endwise_addition .= ': submatch(0)=~#"DEFAULT" ? "ENDSWITCH" '
+  let b:endwise_addition .= ': submatch(0)=~#"REPEAT" ? "UNTIL <condition>" '
+  let b:endwise_addition .= ': submatch(0)=~"def\\>" ? "end" '
+  let b:endwise_addition .= ': submatch(0)=~"case" ? "endswitch" '
+  let b:endwise_addition .= ': submatch(0)=~"default" ? "endswitch" '
+  let b:endwise_addition .= ': submatch(0)=~"repeat" ? "until <condition>" '
+  let b:endwise_addition .= ': submatch(0)=~"\\u" ? "END" . toupper(submatch(0)) '
+  let b:endwise_addition .= ': "end" . tolower(submatch(0))'
+  let b:endwise_words     = 'def,deffct,defdat,then,while,for,repeat,case,default'
+  let b:endwise_pattern   = '^\s*\(\(global\s\+\)\?\zsdef\|\(global\s\+\)\?def\zs\(dat\|fct\)\|\zsif\|\zswhile\|\zsfor\|\zscase\|\zsdefault\|\zsrepeat\)\>\ze'
   let b:endwise_syngroups = 'krlConditional,krlTypedef,krlRepeat'
 endif
 

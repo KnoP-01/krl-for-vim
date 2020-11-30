@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 19. Sep 2020
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 30. Nov 2020
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
@@ -286,9 +286,6 @@ Also see these options for alternative <Plug> mappings.
 *krl-complete-options*
 |g:krlCompleteStd|        Disable standard 'complete' setting
 |g:krlCompleteCustom|     Enable custom 'complete' setting
-
-*krl-endwise-options*
-|g:krlEndwiseUpperCase|   Use upper case for `vim-endwise`
 
 *krl-debug-options*
 |g:krlVerbose|            Enable verbose messages
@@ -789,17 +786,6 @@ Enable |g:krlVerbose| to see what files are actually added.
 See also |krl-complete|.
 
 If omitted or set to 0 no custom files get added to complete.
-
-
-Index: |krl-index|
-==============================================================================
-                        *g:krlEndwiseUpperCase*
-g:krlEndwiseUpperCase:
-----------------------
-
-Insert upper case `ENDIF` etc. instead of lower case when `vim-endwise`
-triggers: >
-    let g:krlEndwiseUpperCase = 1
 
 
 Index: |krl-index|
