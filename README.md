@@ -90,7 +90,7 @@ A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
     let g:krlCommentIndent = 1 " indent comments starting in 1st column too
     let g:krlIndentBetweenDef = 0 " don't indent between DEF(fct|dat)?
     let g:krlSpaceIndent = 0 " don't change 'sts', 'sw', 'et' and 'sr'
-    "let g:krlFoldLevel = 0 " switch folding off completely
+    "let g:krlFoldLevel = 0 " close no folds on startup
     "let g:krlFoldLevel = 1 " close movement folds on startup (default)
     let g:krlFoldLevel = 2 " close all folds on startup
     let g:krlKeyWord = 0 " don't treat $, # and & as word char
@@ -103,7 +103,6 @@ A: krl-for-vim will not override existing mappings unless the corresponding
     <F2> Open all folds
     <F3> Open none movement folds
     <F4> Close all folds
-            Depend on g:krlFoldLevel not existing or >=1.
             Override existing mapping with
         let g:krlFoldingKeyMap = 1
 

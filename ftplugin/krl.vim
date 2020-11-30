@@ -1724,7 +1724,7 @@ if <SID>KrlIsVkrc() && get(g:,'krlConcealFoldTail',1)
   endif
 endif
 
-if has("folding") && get(g:,'krlFoldLevel',1)
+if has("folding")
 
   if !exists("*KrlFoldText")
 
@@ -1807,7 +1807,7 @@ if has("folding") && get(g:,'krlFoldLevel',1)
 
   let b:undo_ftplugin = b:undo_ftplugin." fdm< fdt< fmr< fdl<"
 
-endif " has("folding") && get(g:,'krlFoldLevel',1)
+endif " has("folding")
 
 " }}} Vim Settings
 
@@ -2017,7 +2017,7 @@ if get(g:,'krlAutoFormKeyMap',0)
   nnoremap <silent><buffer> <leader>ngf6  :call <SID>KrlAutoForm("gf6")<cr>
 endif " g:krlAutoFormKeyMap
 
-if has("folding") && get(g:,'krlFoldLevel',1)
+if has("folding")
   if get(g:,'krlFoldingKeyMap',0) 
         \|| mapcheck("<F2>","n")=="" && mapcheck("<F3>","n")=="" && mapcheck("<F4>","n")==""
         \&& !hasmapto('<plug>KrlCloseAllFolds','n') && !hasmapto('<plug>KrlCloseLessFolds','n') && !hasmapto('<plug>KrlCloseNoFolds','n')
@@ -2099,7 +2099,7 @@ if get(g:,'krlMoveAroundKeyMap',1) " depends on move around key mappings
 endif
 
 " folding
-if has("folding") && get(g:,'krlFoldLevel',1)
+if has("folding")
   nnoremap <silent><buffer> <plug>KrlCloseAllFolds  :call <SID>KrlFoldLevel(2)<CR>
   nnoremap <silent><buffer> <plug>KrlCloseLessFolds :call <SID>KrlFoldLevel(1)<CR>
   nnoremap <silent><buffer> <plug>KrlCloseNoFolds   :call <SID>KrlFoldLevel(0)<CR>
