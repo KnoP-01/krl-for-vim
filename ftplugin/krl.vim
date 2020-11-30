@@ -1437,7 +1437,7 @@ if !exists("*s:KnopVerboseEcho()")
         if a:inner == 1
           silent normal! k
           " ggf fold oeffnen der innerhalb des fold ist dessen inhalt geloescht werden soll 
-          silent normal! zo
+          silent! normal! zo
           normal! '<
           silent normal 0V%
           " eigentlich will ich an der stelle nur <esc> druecken um die visual
