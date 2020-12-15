@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 10. Jun 2020
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 30. Nov 2020
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
@@ -97,12 +97,13 @@ A: Most optional features are enabled by default now.
 Q: I'm here to feed my kids, not to read. How do I get rid of stuff?  
 A: Disable stuff in your |vimrc|, see |krl-options| for details: >
 
-    let g:krlFormatComments = 0 " don't break comment lines automatically
-    let g:krlCommentIndent = 1 " indent comments starting in 1st column too
     let g:krlShortenQFPath = 0 " don't shorten paths in quickfix
     let g:krlAutoComment = 0 " don't continue comments with o, O or Enter
+    let g:krlFormatComments = 0 " don't break comment lines automatically
+    let g:krlCommentIndent = 1 " indent comments starting in 1st column too
+    let g:krlIndentBetweenDef = 0 " don't indent between DEF(fct|dat)?
     let g:krlSpaceIndent = 0 " don't change 'sts', 'sw', 'et' and 'sr'
-    "let g:krlFoldLevel = 0 " switch folding off completely
+    "let g:krlFoldLevel = 0 " close no folds on startup
     "let g:krlFoldLevel = 1 " close movement folds on startup (default)
     let g:krlFoldLevel = 2 " close all folds on startup
     let g:krlKeyWord = 0 " don't treat $, # and & as word char
@@ -115,7 +116,6 @@ A: krl-for-vim will not override existing mappings unless the corresponding
     <F2> Open all folds
     <F3> Open none movement folds
     <F4> Close all folds
-            Depend on g:krlFoldLevel not existing or >=1.
             Override existing mapping with
         let g:krlFoldingKeyMap = 1
 
@@ -231,9 +231,9 @@ A: `:let g:knopVerbose=1` any time.
 ==============================================================================
                         *krl-options*
 
-Set or reset options in your .vimrc. Except |g:krlCommentIndent| and
-|g:knopVerbose| changeing a krl option during an editing session will 
-have no effect.
+Set or reset options in your .vimrc. Except |g:krlCommentIndent|,
+|g:krlIndentBetweenDef| and |g:knopVerbose| changeing a krl option during an
+editing session will have no effect.
 
 Most features are enabled by default. Unless a mapping doesn't work as
 expected, a mapping should be redefined or you want do get rid of some 
@@ -243,7 +243,7 @@ Exceptions may be |g:krlCompleteCustom| and |g:krlPathToBodyFiles|.
 
 *krl-key-mappings*
 Also see these options for alternative <Plug> mappings.
-|g:krlFoldingKeyMap|      `<F2>` - `<F4>` chang folding level
+|g:krlFoldingKeyMap|      `<F2>` - `<F4>` change folding level
 |g:krlGoDefinitionKeyMap| `gd` to see declaration of word under cursor
 |g:krlListUsageKeyMap|    `<leader>u` lists all references of current word
 |g:krlListDefKeyMap|      `<leader>f` lists def/deffct of current file
@@ -259,6 +259,7 @@ Also see these options for alternative <Plug> mappings.
 
 *krl-indent-options*
 |g:krlSpaceIndent|        Disable 'sts', 'sw', 'et' and 'sr' settings
+|g:krlIndentBetweenDef|   Disable indentation between DEF(FCT|DAT)?
 |g:krlCommentIndent|      Enable indent of first column comments
 
 *krl-folding-options*
@@ -284,9 +285,6 @@ Also see these options for alternative <Plug> mappings.
 *krl-complete-options*
 |g:krlCompleteStd|        Disable standard 'complete' setting
 |g:krlCompleteCustom|     Enable custom 'complete' setting
-
-*krl-endwise-options*
-|g:krlEndwiseUpperCase|   Use upper case for `vim-endwise`
 
 *krl-debug-options*
 |g:krlVerbose|            Enable verbose messages
@@ -371,6 +369,20 @@ pendant.
 
 
 Index: |krl-index|
+                        *g:krlIndentBetweenDef*
+g:krlIndentBetweenDef:
+----------------------
+
+Disable indent between DEF/END, DEFFCT,ENDFCT and DEFDAT/ENDDAT: >
+    let g:krlIndentBetweenDef = 0
+
+If omitted or set to 1 a 'shiftwidth' is added between DEF/END, DEFFCT,ENDFCT
+and DEFDAT/ENDDAT.
+
+This option may be changed any time and will take effect immediately.
+
+
+Index: |krl-index|
                         *g:krlCommentIndent*
 g:krlCommentIndent:
 -------------------
@@ -402,7 +414,7 @@ g:krlFoldLevel:
 Set this option to 2 to have all folds closed on opening a file:  >
     let g:krlFoldLevel = 2
 
-Set this option to 0 to switch folding off completely: >
+Set this option to 0 to switch folding off on opening a file: >
    let g:krlFoldLevel = 0
 
 If omitted or set to 1 the following folds get closed on opening a file: 
@@ -422,9 +434,8 @@ g:krlFoldMethodSyntax:
 Use 'foldmethod' |fold-marker| instead of |fold-syntax|.  >
    let g:krlFoldMethodSyntax = 0
 
-If omitted or set to 1 'foldmethod' syntax is used. 'foldmethod' marker
-uses less performance, but is case sensitive and will catch less movement
-folds.
+If omitted or set to 1 |fold-syntax| is used. |fold-marker| uses less
+performance, but is case sensitive and will catch less movement folds.
 
 
 Index: |krl-index|
@@ -449,8 +460,6 @@ Index: |krl-index|
                         *<Plug>KrlCloseLessFolds*  *<Plug>KrlCloseNoFolds*
 g:krlFoldingKeyMap:
 -------------------
-
-Note: These mappings depend on |g:krlFoldLevel| >= 1 or omitted.
 
 Regular KRC files and vw_usr*:
     `<F2>`: Open all folds
@@ -774,17 +783,6 @@ Enable |g:krlVerbose| to see what files are actually added.
 See also |krl-complete|.
 
 If omitted or set to 0 no custom files get added to complete.
-
-
-Index: |krl-index|
-==============================================================================
-                        *g:krlEndwiseUpperCase*
-g:krlEndwiseUpperCase:
-----------------------
-
-Insert upper case `ENDIF` etc. instead of lower case when `vim-endwise`
-triggers: >
-    let g:krlEndwiseUpperCase = 1
 
 
 Index: |krl-index|

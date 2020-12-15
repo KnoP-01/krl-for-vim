@@ -1,12 +1,19 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 2.2.1
-" Last Change: 21. Feb 2020
+" Version: 2.2.2
+" Last Change: 15. Dec 2020
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
 " Suggestions of improvement are very welcome. Please email me!
+"
+" TODO: - endwise add skip, ptp_spline, TIME_BLOCK and CONST_VEL
+"       - set buftype=nofile bufhidden=delete instead of temp file for altered
+"         quick fix
+"       - test compatiblity with quickfix-reflector
+"       - proper altering of quickfix: see :help quickfix-window then /filled
+"       - use /\%( where possible
 "
 " ToDo's {{{
 " BUG:  - matchit fold, text object fold doesn't work
@@ -106,7 +113,7 @@ if !exists("*s:KnopVerboseEcho()")
     unlet g:knopVerboseMsg
     echomsg "Switch verbose messages off with \":let g:knopVerbose=0\" any time. You may put this in your .vimrc"
   endif
-  function s:KnopVerboseEcho(msg, ...)
+  function s:KnopVerboseEcho(msg, ...) abort
     if get(g:,'knopVerbose',0)
       if type(a:msg) == v:t_list
         let l:msg = a:msg
@@ -126,14 +133,14 @@ if !exists("*s:KnopVerboseEcho()")
     endif
   endfunction " s:KnopVerboseEcho()
 
-  function s:KnopDirExists(in)
+  function s:KnopDirExists(in) abort
     if finddir( substitute(a:in,'\\','','g') )!=''
       return 1
     endif
     return 0
   endfunction " s:KnopDirExists
 
-  function s:KnopFnameescape4Path(in)
+  function s:KnopFnameescape4Path(in) abort
     " escape a path for use as 'execute "set path=" . s:KnopFnameescape4Path(mypath)'
     " use / (not \) as a separator for the input parameter
     let l:out = fnameescape( a:in )
@@ -145,14 +152,14 @@ if !exists("*s:KnopVerboseEcho()")
     return l:out
   endfunction
 
-  function s:knopCompleteEnbMsg()
+  function s:knopCompleteEnbMsg() abort
     if exists("g:knopCompleteMsg")
       unlet g:knopCompleteMsg
       call s:KnopVerboseEcho("Add the following files to 'complete'.\n  Try <Ctrl-p> and <Ctrl-n> to complete words from there:")
     endif
   endfunction " s:knopCompleteEnbMsg
 
-  function s:KnopSplitAndUnescapeCommaSeparatedPathStr(commaSeparatedPathStr)
+  function s:KnopSplitAndUnescapeCommaSeparatedPathStr(commaSeparatedPathStr) abort
     let l:pathList = []
     for l:pathItem in split(a:commaSeparatedPathStr,'\\\@1<!,')
       if l:pathItem != ''
@@ -162,7 +169,7 @@ if !exists("*s:KnopVerboseEcho()")
     return l:pathList
   endfunction
 
-  function s:KnopAddFileToCompleteOption(file,pathList,...)
+  function s:KnopAddFileToCompleteOption(file,pathList,...) abort
     let l:file=a:file
     for l:path in a:pathList
       let l:path = substitute(l:path,'[\\/]\*\*$','','')
@@ -191,12 +198,12 @@ if !exists("*s:KnopVerboseEcho()")
     endif
   endfunction " s:KnopAddFileToCompleteOption()
 
-  function s:KnopSubStartToEnd(search,sub,start,end)
+  function s:KnopSubStartToEnd(search,sub,start,end) abort
     execute 'silent '. a:start .','. a:end .' s/'. a:search .'/'. a:sub .'/ge'
     call cursor(a:start,0)
   endfunction " s:KnopSubStartToEnd()
 
-  function s:KnopUpperCase(start,end)
+  function s:KnopUpperCase(start,end) abort
     call cursor(a:start,0)
     execute "silent normal! gU" . (a:end - a:start) . "j"
     call cursor(a:start,0)
@@ -205,14 +212,14 @@ if !exists("*s:KnopVerboseEcho()")
   " taken from Peter Oddings
   " function! xolox#misc#list#unique(list)
   " xolox/misc/list.vim
-  function s:KnopUniqueListItems(list)
+  function s:KnopUniqueListItems(list) abort
     " Remove duplicate values from the given list in-place (preserves order).
     call reverse(a:list)
     call filter(a:list, 'count(a:list, v:val) == 1')
     return reverse(a:list)
   endfunction " s:KnopUniqueListItems()
 
-  function s:KnopPreparePath(path,file)
+  function s:KnopPreparePath(path,file) abort
     " prepares 'path' for use with vimgrep
     let l:path = substitute(a:path,'$',' ','') " make sure that space is the last char
     let l:path = substitute(l:path,'\v(^|[^\\])\zs,+',' ','g') " separate with spaces instead of comma
@@ -230,7 +237,7 @@ if !exists("*s:KnopVerboseEcho()")
     return l:path
   endfunction " s:KnopPreparePath()
 
-  function s:KnopQfCompatible()
+  function s:KnopQfCompatible() abort
     " check for qf.vim compatiblity
     if exists('g:loaded_qf') && get(g:,'qf_window_bottom',1)
           \&& (get(g:,'knopRhsQuickfix',0)
@@ -242,7 +249,7 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " s:KnopQfCompatible()
 
   let g:knopPositionQf=1
-  function s:KnopOpenQf(useSyntax)
+  function s:KnopOpenQf(useSyntax) abort
     if getqflist()==[] | return -1 | endif
     cwindow 4
     if getbufvar('%', "&buftype")!="quickfix"
@@ -288,7 +295,7 @@ if !exists("*s:KnopVerboseEcho()")
     return 0
   endfunction " s:KnopOpenQf()
 
-  function s:KnopSearchPathForPatternNTimes(Pattern,path,n,useSyntax)
+  function s:KnopSearchPathForPatternNTimes(Pattern,path,n,useSyntax) abort
     call setqflist([])
     try
       execute ':noautocmd ' . a:n . 'vimgrep /' . a:Pattern . '/j ' . a:path
@@ -302,9 +309,7 @@ if !exists("*s:KnopVerboseEcho()")
       call s:KnopVerboseEcho(":vimgrep stopped with E683. No match found")
       return -1
     endtry
-    if a:n == 1
-      call setqflist(s:KnopUniqueListItems(getqflist()))
-    endif
+    call setqflist(s:KnopUniqueListItems(getqflist()))
     if s:KnopOpenQf(a:useSyntax)==-1
       call s:KnopVerboseEcho("No match found")
       return -1
@@ -312,7 +317,7 @@ if !exists("*s:KnopVerboseEcho()")
     return 0
   endfunction " s:KnopSearchPathForPatternNTimes()
 
-  function <SID>KnopNTimesSearch(nCount,sSearchPattern,sFlags)
+  function <SID>KnopNTimesSearch(nCount,sSearchPattern,sFlags) abort
     let l:nCount=a:nCount
     let l:sFlags=a:sFlags
     while l:nCount>0
@@ -328,7 +333,7 @@ if !exists("*s:KnopVerboseEcho()")
 
   " Krl Helper {{{
 
-  function <SID>KrlCleanBufferList()
+  function <SID>KrlCleanBufferList() abort
     if exists("g:knopTmpFile")
       let l:knopTmpFile = substitute(g:knopTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
     endif
@@ -349,10 +354,7 @@ if !exists("*s:KnopVerboseEcho()")
         call setbufvar(l:b["bufnr"],"&buflisted",0)
       endif
       " delete those strange empty unnamed buffers
-      if        l:b["name"]==""       " not named
-            \&& l:b["windows"]==[]    " not shown in any window
-            \&& !l:b["hidden"]        " not hidden
-            \&& !l:b["changed"]       " not modified
+      if l:b['name']=='' && l:b['windows']==[] && !l:b['changed']
         execute "silent bwipeout! " . l:b["bufnr"]
       endif
     endfor
@@ -362,7 +364,7 @@ if !exists("*s:KnopVerboseEcho()")
     augroup END
   endfunction " <SID>KrlCleanBufferList()
 
-  function <SID>KrlIsVkrc()
+  function <SID>KrlIsVkrc() abort
     if bufname("%") =~ '\c\v(folge|up|makro(saw|sps|step|trigger)?)\d*.src'
       for l:s in range(1,8)
         if getline(l:s) =~ '\c\v^\s*\&param\s+tpvw_version\s*.*$'
@@ -373,10 +375,10 @@ if !exists("*s:KnopVerboseEcho()")
     return 0
   endfunction " <SID>KrlIsVkrc()
 
-  function s:KrlPathWithGlobalDataLists()
+  function s:KrlPathWithGlobalDataLists() abort
     call setloclist(0,[])
     try
-      execute ':noautocmd lvimgrep /\c\v^\s*defdat\s+(\w+\s+public|\$\w+)/j ' . s:KnopPreparePath(&path,'*.dat')
+      execute ':noautocmd lvimgrep /\c\v^\s*defdat\s+(\w+\s+public|\$\w+)/j ' . s:KnopPreparePath(&path,'*.[dD][aA][tT]')
     catch /^Vim\%((\a\+)\)\=:E480/
       call s:KnopVerboseEcho(":lvimgrep stopped with E480! No global data lists found in \'path\'.")
       return ' '
@@ -393,7 +395,7 @@ if !exists("*s:KnopVerboseEcho()")
     return l:path
   endfunction " s:KrlPathWithGlobalDataLists()
 
-  function s:KrlCurrentWordIs()
+  function s:KrlCurrentWordIs() abort
     " returns the string "<type><name>" depending on the word under the cursor
     "
     let l:numLine = line(".")
@@ -510,10 +512,10 @@ if !exists("*s:KnopVerboseEcho()")
 
   " Go Definition {{{
 
-  function s:KrlSearchVkrcMarker(currentWord)
+  function s:KrlSearchVkrcMarker(currentWord) abort
     call s:KnopVerboseEcho("Search marker definitions...")
     let l:markerNumber = substitute(a:currentWord,'\cm','','')
-    if (s:KnopSearchPathForPatternNTimes('\c^\s*\$cycflag\s*\[\s*'.l:markerNumber.'\s*\]\s*=',s:KnopPreparePath(&path,'*.src').' '.s:KnopPreparePath(&path,'*.sub'),'','krl') == 0)
+    if (s:KnopSearchPathForPatternNTimes('\c^\s*\$cycflag\s*\[\s*'.l:markerNumber.'\s*\]\s*=',s:KnopPreparePath(&path,'*.[sS][rR][cC]').' '.s:KnopPreparePath(&path,'*.[sS][uU][bB]'),'','krl') == 0)
       call setqflist(s:KnopUniqueListItems(getqflist()))
       call s:KnopOpenQf('krl')
       call s:KnopVerboseEcho("Marker definition found.",1)
@@ -523,7 +525,7 @@ if !exists("*s:KnopVerboseEcho()")
     return -1
   endfunction
 
-  function s:KrlSearchVkrcBin(currentWord)
+  function s:KrlSearchVkrcBin(currentWord) abort
     call s:KnopVerboseEcho("Search binary signal definitions...")
     let l:binNumber = substitute(a:currentWord,'\cbin\(in\)\?','','')
     if a:currentWord=~'binin'
@@ -543,7 +545,7 @@ if !exists("*s:KnopVerboseEcho()")
     return -1
   endfunction
 
-  function s:KrlSearchSysvar(declPrefix,currentWord)
+  function s:KrlSearchSysvar(declPrefix,currentWord) abort
     " a:currentWord starts with '$' so we need '\' at the end of declPrefix pattern
     call s:KnopVerboseEcho("Search global data lists...")
     if (s:KnopSearchPathForPatternNTimes(a:declPrefix.'\'.a:currentWord.">",s:KrlPathWithGlobalDataLists(),'1','krl') == 0)
@@ -554,7 +556,44 @@ if !exists("*s:KnopVerboseEcho()")
     return -1
   endfunction " s:KrlSearchSysvar()
 
-  function s:KrlSearchVar(declPrefix,currentWord)
+  function s:KrlSearchEnumVal(declPrefix,currentWord) abort
+    "
+    let l:qf = []
+    " search corrosponding dat file
+    call s:KnopVerboseEcho("Search local data list...")
+    let l:filename = substitute(fnameescape(bufname("%")),'\c\.src$','.[dD][aA][tT]','')
+    if filereadable(glob(l:filename))
+      if (s:KnopSearchPathForPatternNTimes(a:declPrefix.'<'.a:currentWord.">",l:filename,'','krl') == 0)
+        call s:KnopVerboseEcho("Found local data list declaration. The quickfix window will open. See :he quickfix-window",1)
+        let l:qf = getqflist()
+        "
+      endif
+    else
+      call s:KnopVerboseEcho(["File ",l:filename," not readable"])
+    endif " search corrosponding dat file
+    "
+    " also search global data lists
+    call s:KnopVerboseEcho("Search global data lists...")
+    if (s:KnopSearchPathForPatternNTimes(a:declPrefix.'<'.a:currentWord.">",s:KrlPathWithGlobalDataLists(),'','krl') == 0)
+      call s:KnopVerboseEcho("Found global data list declaration. The quickfix window will open. See :he quickfix-window",1)
+      let l:qf = l:qf + getqflist()
+      "
+    endif
+    "
+    if l:qf != []
+      call setqflist(l:qf)
+      if s:KnopOpenQf('krl')==-1
+        call s:KnopVerboseEcho("No match found")
+        return -1
+      endif
+      return 0
+    endif
+    "
+    call s:KnopVerboseEcho("Nothing found.",1)
+    return -1
+  endfunction
+
+  function s:KrlSearchVar(declPrefix,currentWord) abort
     "
     " first search for local declartion
     call s:KnopVerboseEcho("Search def(fct)? local declaration...")
@@ -571,9 +610,9 @@ if !exists("*s:KnopVerboseEcho()")
       call cursor(l:numLine,l:numCol)
     endif
     "
-    " search corrosponding dat file
+    " second search corrosponding dat file
     call s:KnopVerboseEcho("Search local data list...")
-    let l:filename = substitute(fnameescape(bufname("%")),'\c\.src$','.dat','')
+    let l:filename = substitute(fnameescape(bufname("%")),'\c\.src$','.[dD][aA][tT]','')
     if filereadable(glob(l:filename))
       if (s:KnopSearchPathForPatternNTimes(a:declPrefix.'<'.a:currentWord.">",l:filename,'1','krl') == 0)
         call s:KnopVerboseEcho("Found local data list declaration. The quickfix window will open. See :he quickfix-window",1)
@@ -596,7 +635,7 @@ if !exists("*s:KnopVerboseEcho()")
     return -1
   endfunction " s:KrlSearchVar()
 
-  function s:KrlSearchProc(currentWord)
+  function s:KrlSearchProc(currentWord) abort
     "
     " first search for local def(fct)? declartion
     call s:KnopVerboseEcho("Search def(fct)? definitions in current file...")
@@ -614,12 +653,12 @@ if !exists("*s:KnopVerboseEcho()")
     "
     " second search src file name = a:currentWord
     call s:KnopVerboseEcho("Search .src files in &path...")
-    let l:path = s:KnopPreparePath(&path,a:currentWord.'.src').s:KnopPreparePath(&path,a:currentWord.'.sub')
-    if !filereadable('./'.a:currentWord.'.src') " suppress message about missing file
-      let l:path = substitute(l:path, '\.[\\/]'.a:currentWord.'.src ', ' ','g')
+    let l:path = s:KnopPreparePath(&path,a:currentWord.'.[sS][rR][cC]').s:KnopPreparePath(&path,a:currentWord.'.[sS][uU][bB]')
+    if !filereadable('./'.a:currentWord.'.[sS][rR][cC]') " suppress message about missing file
+      let l:path = substitute(l:path, '\.[\\/]'.a:currentWord.'.\[sS\]\[rR\]\[cC\] ', ' ','g')
     endif
-    if !filereadable('./'.a:currentWord.'.sub') " suppress message about missing file
-      let l:path = substitute(l:path, '\.[\\/]'.a:currentWord.'.sub ', ' ','g')
+    if !filereadable('./'.a:currentWord.'.[sS][uU][bB]') " suppress message about missing file
+      let l:path = substitute(l:path, '\.[\\/]'.a:currentWord.'.\[sS\]\[uU\]\[bB\] ', ' ','g')
     endif
     if (s:KnopSearchPathForPatternNTimes('\c\v^\s*(global\s+)?def(fct\s+\w+(\[[0-9,]*\])?)?\s+'.a:currentWord.">",l:path,'1','krl') == 0)
       call s:KnopVerboseEcho("Found src file. The quickfix window will open. See :he quickfix-window",1)
@@ -629,7 +668,7 @@ if !exists("*s:KnopVerboseEcho()")
     "
     " third search global def(fct)?
     call s:KnopVerboseEcho("Search global def(fct)? definitions in &path...")
-    if (s:KnopSearchPathForPatternNTimes('\c\v^\s*global\s+def(fct\s+\w+(\[[0-9,]*\])?)?\s+'.a:currentWord.">",s:KnopPreparePath(&path,'*.src').s:KnopPreparePath(&path,'*.sub'),'1','krl') == 0)
+    if (s:KnopSearchPathForPatternNTimes('\c\v^\s*global\s+def(fct\s+\w+(\[[0-9,]*\])?)?\s+'.a:currentWord.">",s:KnopPreparePath(&path,'*.[sS][rR][cC]').s:KnopPreparePath(&path,'*.[sS][uU][bB]'),'1','krl') == 0)
       call s:KnopVerboseEcho("Found global def(fct)? declaration. The quickfix window will open. See :he quickfix-window",1)
       return 0
       "
@@ -639,7 +678,7 @@ if !exists("*s:KnopVerboseEcho()")
     return -1
   endfunction " s:KrlSearchProc()
 
-  function <SID>KrlGoDefinition()
+  function <SID>KrlGoDefinition() abort
     augroup KrlCleanBufferList
       " work around where buffer list is not cleaned if knopVerbose is enabled
       autocmd!
@@ -682,9 +721,10 @@ if !exists("*s:KnopVerboseEcho()")
         return s:KrlSearchVar(l:declPrefix,l:currentWord)
         "
       elseif l:currentWord =~ '^enumval.*'
-        " TODO mach das moeglich
         let l:currentWord = substitute(l:currentWord,'^enumval','','')
-        call s:KnopVerboseEcho([l:currentWord,"appear to be an ENUM VALUE. The search for declarations of enums by their values is not supported (yet?)."],1)
+        call s:KnopVerboseEcho([l:currentWord,"appear to be an ENUM VALUE."],1)
+        return s:KrlSearchEnumVal('\v\c^\s*(global\s+)?enum\s+\w+\s+[0-9a-zA-Z_, \t]*',substitute(l:currentWord,'^#','',''))
+        "
       elseif l:currentWord =~ '^header.*'
         let l:currentWord = substitute(l:currentWord,'^header','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a HEADER. No search performed."],1)
@@ -730,7 +770,7 @@ if !exists("*s:KnopVerboseEcho()")
 
   " Auto Form {{{
 
-  function s:KrlGetGlobal(sAction)
+  function s:KrlGetGlobal(sAction) abort
     if a:sAction=~'^[lg]'
       let l:sGlobal = a:sAction
     else
@@ -744,7 +784,7 @@ if !exists("*s:KnopVerboseEcho()")
     return ''
   endfunction " s:KrlGetGlobal()
 
-  function s:KrlGetType(sAction)
+  function s:KrlGetType(sAction) abort
     if a:sAction =~ '^.[adf]'
       let l:sType = substitute(a:sAction,'^.\(\w\).','\1','')
     else
@@ -760,21 +800,21 @@ if !exists("*s:KnopVerboseEcho()")
     return ''
   endfunction " s:KrlGetType()
 
-  function s:KrlGetNameAndOpenFile(suffix)
+  function s:KrlGetNameAndOpenFile(suffix) abort
     let l:sFilename = fnameescape(bufname("%"))
     let l:sName = substitute(input("\nName?\n Type %<enter> to use the current file name,\n or <space><enter> for word under cursor.\n> "),'[^ 0-9a-zA-Z_%]*','','g')
     if l:sName==""
       return ''
       "
     elseif l:sName=~'^%$' " sName from current file name
-      let l:sName = substitute(l:sFilename,'\v^.*(<\w+)\.\w\w\w$','\1','')
+      let l:sName = substitute(l:sFilename,'\v^.*(<\$?\w+)\.\w\w\w$','\1','')
     elseif l:sName=~'^ $' " sName from current word
       let l:sName = expand("<cword>")
     endif
-    let l:sName = substitute(l:sName,'\W*','','g')
-    if a:suffix!~substitute(l:sFilename,'^.*\.\(\w\w\w\)$','\1','')
+    let l:sName = substitute(l:sName,'[^0-9a-zA-Z_$]*','','g')
+    if substitute(l:sFilename,'^.*\.\(\w\w\w\)$','\1','') !~ a:suffix
       let l:suffix = substitute(a:suffix,'\\c\\v(src|sub)','src','')
-      let l:sFilename = substitute(l:sFilename,'\v^(.*)<\w+\.\w\w\w$','\1'.l:sName.'.'.l:suffix,'')
+      let l:sFilename = substitute(l:sFilename,'\v^(.*)<\$?\w+\.\w\w\w$','\1'.l:sName.'.'.l:suffix,'')
     endif
     if fnameescape(bufname("%"))!=l:sFilename
       if filereadable(glob(l:sFilename))
@@ -793,7 +833,7 @@ if !exists("*s:KnopVerboseEcho()")
     return l:sName
   endfunction " s:KrlGetNameAndOpenFile()
 
-  function s:KrlGetDataType(sAction)
+  function s:KrlGetDataType(sAction) abort
     if a:sAction=~'..[abcfiprx6]'
       let l:sDataType = substitute(a:sAction,'..\(\w\)','\1','')
     else
@@ -823,7 +863,7 @@ if !exists("*s:KnopVerboseEcho()")
     return substitute(l:sDataType,'[^0-9a-zA-Z_\[\],]*','','g')
   endfunction " s:KrlGetDataType()
 
-  function s:KrlGetReturnVar(sDataType)
+  function s:KrlGetReturnVar(sDataType) abort
     if a:sDataType=~'\c^bool\>'
       return "bResult"
     elseif a:sDataType=~'\c^int\>'
@@ -846,7 +886,7 @@ if !exists("*s:KnopVerboseEcho()")
     return substitute(a:sDataType,'^\(..\).*','\l\1','')."Result"
   endfunction " s:KrlGetReturnVar()
 
-  function s:KrlPositionForEdit()
+  function s:KrlPositionForEdit() abort
     if !exists("g:krlPositionSet") | let g:krlPositionSet = 0 | endif
     if g:krlPositionSet==1 | return | endif
     let l:startline = getline('.')
@@ -972,7 +1012,7 @@ if !exists("*s:KnopVerboseEcho()")
     endif
   endfunction " s:KrlPositionForEdit()
 
-  function s:KrlPositionForEditWrapper()
+  function s:KrlPositionForEditWrapper() abort
     if exists("g:krlPositionSet")
       unlet g:krlPositionSet
     endif
@@ -981,7 +1021,7 @@ if !exists("*s:KnopVerboseEcho()")
     call s:KnopVerboseEcho("KrlPositionForEdit finished",1)
   endfunction " s:KrlPositionForEditWrapper()
 
-  function s:KrlPositionForRead()
+  function s:KrlPositionForRead() abort
     call s:KrlPositionForEditWrapper()
     if getline('.')=~'^\s*$'
           \&& line('.')!=line('$')
@@ -989,7 +1029,7 @@ if !exists("*s:KnopVerboseEcho()")
     endif
   endfunction " s:KrlPositionForRead()
 
-  function s:KrlReadBody(sBodyFile,sType,sName,sGlobal,sDataType,sReturnVar)
+  function s:KrlReadBody(sBodyFile,sType,sName,sGlobal,sDataType,sReturnVar) abort
     let l:sBodyFile = glob(fnameescape(g:krlPathToBodyFiles)).a:sBodyFile
     " if !filereadable(glob(l:sBodyFile))
     if !filereadable(l:sBodyFile)
@@ -1036,14 +1076,14 @@ if !exists("*s:KnopVerboseEcho()")
     endif
   endfunction " s:KrlReadBody()
 
-  function s:KrlDefaultDefdatBody(sName,sGlobal)
+  function s:KrlDefaultDefdatBody(sName,sGlobal) abort
     call s:KrlPositionForEditWrapper()
     call setline('.',"defdat ".a:sName.a:sGlobal)
     normal! o
     call setline('.',";")
     normal! o
     call setline('.',"enddat")
-    call search('\s*defdat ','bW')
+    call search('\c^\s*defdat ','bW')
     if exists("b:did_indent")
       execute ",+2substitute/^/ /"
       silent normal! 2k3==
@@ -1055,9 +1095,11 @@ if !exists("*s:KnopVerboseEcho()")
     return
   endfunction " s:KrlDefaultDefdatBody()
 
-  function s:KrlDefaultDefBody(sName,sGlobal)
+  function s:KrlDefaultDefBody(sName,sGlobal) abort
     call s:KrlPositionForEditWrapper()
-    call setline('.',a:sGlobal."def ".a:sName.'()')
+    let l:sGlobal = a:sGlobal
+    if line(".")==1 | let l:sGlobal = '' | endif " assume this is the first def in this file, no global needed
+    call setline('.',l:sGlobal."def ".a:sName.'()')
     normal! o
     call setline('.',";")
     normal! o
@@ -1073,9 +1115,11 @@ if !exists("*s:KnopVerboseEcho()")
     call search(';','W')
   endfunction " s:KrlDefaultDefBody()
 
-  function s:KrlDefaultDeffctBody(sName,sGlobal,sDataType,sReturnVar)
+  function s:KrlDefaultDeffctBody(sName,sGlobal,sDataType,sReturnVar) abort
     call s:KrlPositionForEditWrapper()
-    call setline('.',a:sGlobal."deffct ".a:sDataType." ".a:sName.'()')
+    let l:sGlobal = a:sGlobal
+    if line(".")==1 | let l:sGlobal = '' | endif " assume this is the first def in this file, no global needed
+    call setline('.',l:sGlobal."deffct ".a:sDataType." ".a:sName.'()')
     normal! o
     call setline('.',"decl ".a:sDataType." ".a:sReturnVar)
     let l:sReturnVar = a:sReturnVar
@@ -1103,7 +1147,7 @@ if !exists("*s:KnopVerboseEcho()")
     return
   endfunction " s:KrlDefaultDeffctBody()
 
-  function <SID>KrlAutoForm(sAction)
+  function <SID>KrlAutoForm(sAction) abort
     " check input
     if a:sAction !~ '^[ lg][ adf][ abcfiprx6]$' | return | endif
     "
@@ -1183,7 +1227,7 @@ if !exists("*s:KnopVerboseEcho()")
 
   " List Def/Usage {{{
 
-  function <SID>KrlListDefinition()
+  function <SID>KrlListDefinition() abort
     augroup KrlCleanBufferList
       " work around where buffer list is not cleaned if knopVerbose is enabled
       autocmd!
@@ -1221,7 +1265,7 @@ if !exists("*s:KnopVerboseEcho()")
     endif
   endfunction " <SID>KrlListDefinition()
 
-  function <SID>KrlListUsage()
+  function <SID>KrlListUsage() abort
     augroup KrlCleanBufferList
       " work around where buffer list is not cleaned if knopVerbose is enabled
       autocmd!
@@ -1230,48 +1274,60 @@ if !exists("*s:KnopVerboseEcho()")
     "
     if search('\w','cW',line("."))
       let l:currentWord = s:KrlCurrentWordIs()
+      let l:type = ''
       "
       if l:currentWord =~ '^sysvar.*'
+        let l:type = 'SYSVAR'
         let l:currentWord = substitute(l:currentWord,'^sysvar','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a KSS VARIABLE"])
         let l:currentWord = substitute(l:currentWord,'\$','\\$','g') " escape any dollars in var name
       elseif l:currentWord =~ '^header.*'
+        let l:type = 'HEADER'
         let l:currentWord = substitute(l:currentWord,'^header','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a HEADER."])
         let l:currentWord = substitute(l:currentWord,'&','\\&','g') " escape any & in var name
       elseif l:currentWord =~ '^var.*'
+        let l:type = 'USERVAR'
         let l:currentWord = substitute(l:currentWord,'^var','','')
         let l:currentWord = substitute(l:currentWord,'\$','\\$','g') " escape embeddend dollars in var name (e.g. TMP_$STOPM)
         call s:KnopVerboseEcho([l:currentWord,"appear to be a user defined VARIABLE"])
       elseif l:currentWord =~ '\v^%(sys)?%(proc|func)'
-        let l:type = "DEF"
+        let l:type = 'DEF'
         if l:currentWord =~ '^sys'
-          let l:type = "KSS " . l:type
+          let l:type = 'KSS ' . l:type
         endif
         if l:currentWord =~ '^\v%(sys)?func'
-          let l:type = l:type . "FCT"
+          let l:type = l:type . 'FCT'
         endif
         let l:currentWord = substitute(l:currentWord,'\v^%(sys)?%(proc|func)','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a ".l:type])
       elseif l:currentWord =~ '^enumval.*'
+        let l:type = 'ENUMVALUE'
         let l:currentWord = substitute(l:currentWord,'^enumval','','')
+        let l:currentWord = substitute(l:currentWord,'\v(#)(\w+)','(\1\2|(decl\\s+)?(global\\s+)?enum\\s+\\w+\\s+[0-9a-zA-Z_, \t]*\2)','') " search also without # to find the declaration
         call s:KnopVerboseEcho([l:currentWord,"appear to be an ENUM VALUE."])
       elseif l:currentWord =~ '^num.*'
+        let l:type = 'NUMERIC'
         let l:currentWord = substitute(l:currentWord,'^num','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a NUMBER."])
       elseif l:currentWord =~ '^string.*'
+        let l:type = 'STRING'
         let l:currentWord = substitute(l:currentWord,'^string','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a STRING."])
       elseif l:currentWord =~ '^comment.*'
+        let l:type = 'COMMENT'
         let l:currentWord = substitute(l:currentWord,'^comment','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a COMMENT."])
       elseif l:currentWord =~ '^inst.*'
+        let l:type = 'INSTRUCTION'
         let l:currentWord = substitute(l:currentWord,'^inst','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a KRL KEYWORD."])
       elseif l:currentWord =~ '^bool.*'
+        let l:type = 'BOOL'
         let l:currentWord = substitute(l:currentWord,'^bool','','')
         call s:KnopVerboseEcho([l:currentWord,"appear to be a BOOL VALUE."])
       else
+        let l:type = 'NONE'
         let l:currentWord = substitute(l:currentWord,'^none','','')
         call s:KnopVerboseEcho([l:currentWord,"Unable to determine what to search for at current cursor position. No search performed!"],1)
         return
@@ -1283,15 +1339,19 @@ if !exists("*s:KnopVerboseEcho()")
       if !<SID>KrlIsVkrc()
         let l:nonecomment = '^[^;]*'
       endif
-      if s:KnopSearchPathForPatternNTimes('\c\v'.l:nonecomment.'<'.l:currentWord.'>',s:KnopPreparePath(&path,'*.src').' '.s:KnopPreparePath(&path,'*.sub').' '.s:KnopPreparePath(&path,'*.dat').' ','','krl')==0
+      if s:KnopSearchPathForPatternNTimes('\c\v'.l:nonecomment.'<'.l:currentWord.'>',s:KnopPreparePath(&path,'*.[sS][rR][cC]').' '.s:KnopPreparePath(&path,'*.[sS][uU][bB]').' '.s:KnopPreparePath(&path,'*.[dD][aA][tT]').' ','','krl')==0
         call setqflist(s:KnopUniqueListItems(getqflist()))
-        " rule out DECL ENUM
+        " rule out ENUM declaration if not looking for ENUM values
         let l:qftmp1 = []
-        for l:i in getqflist()
-          if get(l:i,'text') !~ '\v\c^\s*(decl\s+)?enum>'
-            call add(l:qftmp1,l:i)
-          endif
-        endfor
+        if l:type != 'ENUMVALUE'
+          for l:i in getqflist()
+            if get(l:i,'text') !~ '\v\c^\s*(global\s+)?enum>'
+              call add(l:qftmp1,l:i)
+            endif
+          endfor
+        else
+          let l:qftmp1 = getqflist()
+        endif
         " rule out if l:currentWord appear after &header
         let l:qftmp2 = []
         for l:i in l:qftmp1
@@ -1324,7 +1384,7 @@ if !exists("*s:KnopVerboseEcho()")
   " Function Text Object {{{
 
   if get(g:,'krlMoveAroundKeyMap',1) " depends on move around key mappings
-    function <SID>KrlFunctionTextObject(inner,withcomment)
+    function <SID>KrlFunctionTextObject(inner,withcomment) abort
       if a:inner==1
         let l:n = 1
       else
@@ -1356,7 +1416,7 @@ if !exists("*s:KnopVerboseEcho()")
   " Fold Text Object {{{
 
   if exists("loaded_matchit") " depends on matchit (or matchup)
-    function <SID>KrlFoldTextObject(inner)
+    function <SID>KrlFoldTextObject(inner) abort
       let l:col = col('.')
       let l:line = line('.')
       let l:foundFold = 0
@@ -1387,7 +1447,7 @@ if !exists("*s:KnopVerboseEcho()")
         if a:inner == 1
           silent normal! k
           " ggf fold oeffnen der innerhalb des fold ist dessen inhalt geloescht werden soll 
-          silent normal! zo
+          silent! normal! zo
           normal! '<
           silent normal 0V%
           " eigentlich will ich an der stelle nur <esc> druecken um die visual
@@ -1410,7 +1470,7 @@ if !exists("*s:KnopVerboseEcho()")
   " Comment Text Object {{{
 
   if get(g:,'krlMoveAroundKeyMap',1) " depends on move around key mappings
-    function <SID>KrlCommentTextObject(around)
+    function <SID>KrlCommentTextObject(around) abort
       if getline('.')!~'^\s*;' && !search('^\s*;',"sW")
         return
       endif
@@ -1438,10 +1498,11 @@ endif " !exists("*s:KnopVerboseEcho()")
 " default on; no option
 setlocal commentstring=;%s
 setlocal comments=:;
-setlocal suffixes+=.dat
 if has("win32")
+  setlocal suffixes+=.dat
   setlocal suffixesadd+=.src,.sub,.dat
 else
+  setlocal suffixes+=.dat,.Dat,.DAT
   setlocal suffixesadd+=.src,.Src,.SRC,.sub,.Sub,.SUB,.dat,.Dat,.DAT
 endif
 let b:undo_ftplugin = "setlocal com< cms< su< sua<"
@@ -1618,7 +1679,7 @@ let s:pathToCurrentFile = substitute(expand("%:p:h"),'\\','/','g')
 " complete custom files
 if exists('g:krlCompleteCustom')
   for s:customCompleteAdditions in g:krlCompleteCustom
-    let s:file = substitute(s:customCompleteAdditions,'^.*[\\/]\(\w\+\.\)\(\w\+\)$','\1\2','')
+    let s:file = substitute(s:customCompleteAdditions,'^.*[\\/]\(\$?\w\+\.\)\(\w\+\)$','\1\2','')
     call s:KnopAddFileToCompleteOption(s:customCompleteAdditions,s:pathList,s:pathToCurrentFile.'/'.s:file,)
   endfor
 endif
@@ -1626,10 +1687,9 @@ endif
 " complete standard files
 if get(g:,'krlCompleteStd',1)
   "
-  "
   " <filename>.dat
-  if expand("%:p:t") !~ '\.dat$'
-    call s:KnopAddFileToCompleteOption(substitute(expand("%:p:t"),'\.s\%(rc\|ub\)$','.dat',''),[s:pathToCurrentFile])
+  if expand("%:p:t") !~ '\c\.dat$'
+    call s:KnopAddFileToCompleteOption(substitute(expand("%:p:t"),'\c\.s\%(rc\|ub\)$','.dat',''),[s:pathToCurrentFile])
   endif
   " R1/System/$config.dat
   call s:KnopAddFileToCompleteOption('R1/System/$config.dat',s:pathList,s:pathToCurrentFile.'/'.'$config.dat')
@@ -1674,20 +1734,20 @@ if <SID>KrlIsVkrc() && get(g:,'krlConcealFoldTail',1)
   endif
 endif
 
-if has("folding") && get(g:,'krlFoldLevel',1)
+if has("folding")
 
   if !exists("*KrlFoldText")
 
-    function KrlFoldText()
+    function KrlFoldText() abort
       return substitute(getline(v:foldstart), '\v\c%(;\s*<FOLD>\s+|;[^;]*$)', '', 'g')
     endfunction
 
-    function <SID>KrlFoldLevel(lvl)
+    function <SID>KrlFoldLevel(lvl) abort
       " g:krlFoldLevel may be used as input for a:lvl
 
       setlocal foldtext=KrlFoldText()
 
-      if get(g:,'krlFoldMethodSyntax',1)
+      if get(g:,'krlFoldMethodSyntax',1) && exists("g:syntax_on")
         syn sync fromstart
         setlocal foldmethod=syntax
       else
@@ -1757,7 +1817,7 @@ if has("folding") && get(g:,'krlFoldLevel',1)
 
   let b:undo_ftplugin = b:undo_ftplugin." fdm< fdt< fmr< fdl<"
 
-endif " has("folding") && get(g:,'krlFoldLevel',1)
+endif " has("folding")
 
 " }}} Vim Settings
 
@@ -1765,13 +1825,18 @@ endif " has("folding") && get(g:,'krlFoldLevel',1)
 
 " endwise support
 if exists("loaded_endwise")
-  if get(g:,'krlEndwiseUpperCase',0)
-    let b:endwise_addition  = '\=submatch(0)=~"DEF" ? "END" : submatch(0)=~"CASE" ? "ENDSWITCH" : submatch(0)=~"REPEAT" ? "UNTIL <condition>" : "END" . submatch(0)'
-  else
-    let b:endwise_addition  = '\=submatch(0)=~"def" ? "end" : submatch(0)=~"case" ? "endswitch" : submatch(0)=~"repeat" ? "until <condition>" : "end" . submatch(0)'
-  endif
-  let b:endwise_words     = 'def,deffct,defdat,then,while,for,repeat,case'
-  let b:endwise_pattern   = '^\s*\(\(global\s\+\)\?\zsdef\|\(global\s\+\)\?def\zs\(dat\|fct\)\|\zsif\|\zswhile\|\zsfor\|\zscase\|\zsrepeat\)\>\ze'
+  let b:endwise_addition  = '\=submatch(0)=~#"DEF\\>" ? "END" '
+  let b:endwise_addition .= ': submatch(0)=~#"CASE" ? "ENDSWITCH" '
+  let b:endwise_addition .= ': submatch(0)=~#"DEFAULT" ? "ENDSWITCH" '
+  let b:endwise_addition .= ': submatch(0)=~#"REPEAT" ? "UNTIL <condition>" '
+  let b:endwise_addition .= ': submatch(0)=~"def\\>" ? "end" '
+  let b:endwise_addition .= ': submatch(0)=~"case" ? "endswitch" '
+  let b:endwise_addition .= ': submatch(0)=~"default" ? "endswitch" '
+  let b:endwise_addition .= ': submatch(0)=~"repeat" ? "until <condition>" '
+  let b:endwise_addition .= ': submatch(0)=~"\\u" ? "END" . toupper(submatch(0)) '
+  let b:endwise_addition .= ': "end" . tolower(submatch(0))'
+  let b:endwise_words     = 'def,deffct,defdat,then,while,for,repeat,case,default'
+  let b:endwise_pattern   = '^\s*\(\(global\s\+\)\?\zsdef\|\(global\s\+\)\?def\zs\(dat\|fct\)\|\zsif\|\zswhile\|\zsfor\|\zscase\|\zsdefault\|\zsrepeat\)\>\ze'
   let b:endwise_syngroups = 'krlConditional,krlTypedef,krlRepeat'
 endif
 
@@ -1787,7 +1852,10 @@ if exists("loaded_matchit") " depends on matchit (or matchup)
         \.'^\s*\<switch\>.*:^\s*\<case\>.*:^\s*\<default\>.*:^\s*\<endswitch\>.*,'
         \.'^\s*\(global\s\+\)\?\<def\(fct\)\?\>.*:^\s*\<resume\>.*:^\s*\<return\>.*:^\s*\<end\(fct\)\?\>.*,'
         \.'^\s*\<defdat\>.*:^\s*\<enddat\>.*,'
-        \.'^\s*\<spline\>.*:^\s*\<endspline\>.*,'
+        \.'^\s*\<\(ptp_\)\?spline\>.*:^\s*\<endspline\>.*,'
+        \.'^\s*\<skip\>.*:^\s*\<endskip\>.*,'
+        \.'^\s*\<time_block\s\+start\>.*:^\s*\<time_block\s\+part\>.*:^\s*\<time_block\s\+end\>.*,'
+        \.'^\s*\<const_vel\s\+start\>.*:^\s*\<const_vel\s\+end\>.*,'
         \.'\<fold\>:\<endfold\>'
         " \.'^\s*;\s*\<fold\>.*:^\s*;\s*\<endfold\>.*'    " doesn't work because of syntax item krlFoldComment
   let b:match_ignorecase = 1 " KRL does ignore case
@@ -1959,7 +2027,7 @@ if get(g:,'krlAutoFormKeyMap',0)
   nnoremap <silent><buffer> <leader>ngf6  :call <SID>KrlAutoForm("gf6")<cr>
 endif " g:krlAutoFormKeyMap
 
-if has("folding") && get(g:,'krlFoldLevel',1)
+if has("folding")
   if get(g:,'krlFoldingKeyMap',0) 
         \|| mapcheck("<F2>","n")=="" && mapcheck("<F3>","n")=="" && mapcheck("<F4>","n")==""
         \&& !hasmapto('<plug>KrlCloseAllFolds','n') && !hasmapto('<plug>KrlCloseLessFolds','n') && !hasmapto('<plug>KrlCloseNoFolds','n')
@@ -1983,13 +2051,16 @@ endif
 " <PLUG> mappings {{{
 
 " Go Definition
-nnoremap <silent><buffer> <plug>KrlGoDef :call <SID>KrlGoDefinition()<CR>:call <SID>KrlCleanBufferList()<CR>
+" nnoremap <silent><buffer> <plug>KrlGoDef :call <SID>KrlGoDefinition()<CR>:call <SID>KrlCleanBufferList()<CR>
+nnoremap <silent><buffer> <plug>KrlGoDef :call <SID>KrlGoDefinition()<CR>
 
 " list all DEFs of current file
-nnoremap <silent><buffer> <plug>KrlListDef :call <SID>KrlListDefinition()<CR>:call <SID>KrlCleanBufferList()<CR>
+" nnoremap <silent><buffer> <plug>KrlListDef :call <SID>KrlListDefinition()<CR>:call <SID>KrlCleanBufferList()<CR>
+nnoremap <silent><buffer> <plug>KrlListDef :call <SID>KrlListDefinition()<CR>
 
 " list usage
-nnoremap <silent><buffer> <plug>KrlListUse :call <SID>KrlListUsage()<CR>:call <SID>KrlCleanBufferList()<CR>
+" nnoremap <silent><buffer> <plug>KrlListUse :call <SID>KrlListUsage()<CR>:call <SID>KrlCleanBufferList()<CR>
+nnoremap <silent><buffer> <plug>KrlListUse :call <SID>KrlListUsage()<CR>
 
 " auto form
 nnoremap <silent><buffer> <plug>KrlAutoForm                 :call <SID>KrlAutoForm("   ")<cr>
@@ -2038,7 +2109,7 @@ if get(g:,'krlMoveAroundKeyMap',1) " depends on move around key mappings
 endif
 
 " folding
-if has("folding") && get(g:,'krlFoldLevel',1)
+if has("folding")
   nnoremap <silent><buffer> <plug>KrlCloseAllFolds  :call <SID>KrlFoldLevel(2)<CR>
   nnoremap <silent><buffer> <plug>KrlCloseLessFolds :call <SID>KrlFoldLevel(1)<CR>
   nnoremap <silent><buffer> <plug>KrlCloseNoFolds   :call <SID>KrlFoldLevel(0)<CR>

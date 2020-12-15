@@ -84,12 +84,13 @@ A: Most optional features are enabled by default now.
 Q: I'm here to feed my kids, not to read. How do I get rid of stuff?  
 A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
 
-    let g:krlFormatComments = 0 " don't break comment lines automatically
-    let g:krlCommentIndent = 1 " indent comments starting in 1st column too
     let g:krlShortenQFPath = 0 " don't shorten paths in quickfix
     let g:krlAutoComment = 0 " don't continue comments with o, O or Enter
+    let g:krlFormatComments = 0 " don't break comment lines automatically
+    let g:krlCommentIndent = 1 " indent comments starting in 1st column too
+    let g:krlIndentBetweenDef = 0 " don't indent between DEF(fct|dat)?
     let g:krlSpaceIndent = 0 " don't change 'sts', 'sw', 'et' and 'sr'
-    "let g:krlFoldLevel = 0 " switch folding off completely
+    "let g:krlFoldLevel = 0 " close no folds on startup
     "let g:krlFoldLevel = 1 " close movement folds on startup (default)
     let g:krlFoldLevel = 2 " close all folds on startup
     let g:krlKeyWord = 0 " don't treat $, # and & as word char
@@ -97,12 +98,11 @@ A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
 Q: Which keys get mapped to what? Will that override my own mappings?  
 A: krl-for-vim will not override existing mappings unless the corresponding
    option is explicitly set. To use different key bindings use the
-   `<PLUG>`mapping. Otherwise krl-for-vim create the followin mappings: >
+   `<PLUG>` mapping. Otherwise krl-for-vim create the followin mappings: >
 
     <F2> Open all folds
     <F3> Open none movement folds
     <F4> Close all folds
-            Depend on g:krlFoldLevel not existing or >=1.
             Override existing mapping with
         let g:krlFoldingKeyMap = 1
 
