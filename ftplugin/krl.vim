@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.2
-" Last Change: 30. Nov 2020
+" Last Change: 15. Dec 2020
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -558,25 +558,35 @@ if !exists("*s:KnopVerboseEcho()")
 
   function s:KrlSearchEnumVal(declPrefix,currentWord) abort
     "
+    let l:qf = []
     " search corrosponding dat file
     call s:KnopVerboseEcho("Search local data list...")
     let l:filename = substitute(fnameescape(bufname("%")),'\c\.src$','.[dD][aA][tT]','')
     if filereadable(glob(l:filename))
       if (s:KnopSearchPathForPatternNTimes(a:declPrefix.'<'.a:currentWord.">",l:filename,'','krl') == 0)
         call s:KnopVerboseEcho("Found local data list declaration. The quickfix window will open. See :he quickfix-window",1)
-        return 0
+        let l:qf = getqflist()
         "
       endif
     else
       call s:KnopVerboseEcho(["File ",l:filename," not readable"])
     endif " search corrosponding dat file
     "
-    " third search global data lists
+    " also search global data lists
     call s:KnopVerboseEcho("Search global data lists...")
     if (s:KnopSearchPathForPatternNTimes(a:declPrefix.'<'.a:currentWord.">",s:KrlPathWithGlobalDataLists(),'','krl') == 0)
       call s:KnopVerboseEcho("Found global data list declaration. The quickfix window will open. See :he quickfix-window",1)
-      return 0
+      let l:qf = l:qf + getqflist()
       "
+    endif
+    "
+    if l:qf != []
+      call setqflist(l:qf)
+      if s:KnopOpenQf('krl')==-1
+        call s:KnopVerboseEcho("No match found")
+        return -1
+      endif
+      return 0
     endif
     "
     call s:KnopVerboseEcho("Nothing found.",1)
