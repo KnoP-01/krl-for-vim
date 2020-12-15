@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.2
-" Last Change: 27. Oct 2020
+" Last Change: 15. Dec 2020
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -359,7 +359,7 @@ syn keyword krlBuildInFunction contained Sync SyncCmd CancelProgSync
 " remote
 syn keyword krlBuildInFunction contained RemoteCmd RemoteRead 
 " msg/dlg
-syn keyword krlBuildInFunction contained IsMessageSet clear_KrlMsg get_MsgBuffer exists_KrlDlg set_KrlDlg set_KrlDlgAnswer exists_KrlMsg set_KrlMsg 
+syn keyword krlBuildInFunction contained IsMessageSet clear_KrlMsg get_MsgBuffer exists_KrlDlg exists_KrlMsg set_KrlDlg set_KrlDlgAnswer set_KrlMsg 
 " robvers
 syn keyword krlBuildInFunction contained maximize_UsedxRobvers set_UsedxRobvers 
 " md_foo
