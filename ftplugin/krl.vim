@@ -549,7 +549,7 @@ if !exists("*s:KnopVerboseEcho()")
   function s:KrlSearchVkrcBin(currentWord) abort
     call s:KnopVerboseEcho("Search binary signal definitions...")
     let l:binNumber = substitute(a:currentWord,'\cbin\(in\)\?','','')
-    if a:currentWord=~'binin'
+    if a:currentWord=~?'binin'
       if (s:KnopSearchPathForPatternNTimes('\v\c^\s*\$bin_in\[\s*'.l:binNumber.'\s*\]\s*\=',s:KrlPathWithGlobalDataLists(),'1','krl') == 0)
         call s:KnopOpenQf('krl')
         call s:KnopVerboseEcho("BIN_IN found.",1)
