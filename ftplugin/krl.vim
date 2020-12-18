@@ -333,8 +333,8 @@ if !exists("*s:KnopVerboseEcho()")
 
   " Krl Helper {{{
 
-  function s:KrlAlterIsKeyWord() abort
-    if !get(g:,'krlKeyWord',1)
+  function s:KrlAlterIsKeyWord(force) abort
+    if !get(g:,'krlKeyWord',1) || a:force
       " temporary set iskeyword
       let s:keepIsKeyWordBufNr = bufnr()
       let s:keepIsKeyWord = &iskeyword
@@ -420,7 +420,7 @@ if !exists("*s:KnopVerboseEcho()")
     let l:strLine = getline(".")
     "
     " position the cursor at the start of the current word
-    call s:KrlAlterIsKeyWord()
+    call s:KrlAlterIsKeyWord(0)
     if search('\<','bcsW',l:numLine)
       "
       " init
@@ -1354,7 +1354,7 @@ if !exists("*s:KnopVerboseEcho()")
         return
         "
       endif
-      call s:KrlAlterIsKeyWord()
+      call s:KrlAlterIsKeyWord(1)
       let l:nonecomment = ''
       if !<SID>KrlIsVkrc()
         let l:nonecomment = '^[^;]*'
