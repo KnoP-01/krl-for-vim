@@ -1,8 +1,8 @@
 " Kuka Robot Language syntax file for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 2.2.2
-" Last Change: 15. Dec 2020
+" Version: 2.2.3
+" Last Change: 18. Dec 2020
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -60,6 +60,8 @@ endif
 
 " krl does ignore case
 syn case ignore
+" take #, $ and & into keyword (syntax only)
+syn iskeyword @,48-57,_,192-255,#,$,&
 " }}} init
 
 " Comment and Folding {{{ 

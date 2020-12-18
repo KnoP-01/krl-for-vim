@@ -1,8 +1,8 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 2.2.2
-" Last Change: 15. Dec 2020
+" Version: 2.2.3
+" Last Change: 18. Dec 2020
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -333,6 +333,24 @@ if !exists("*s:KnopVerboseEcho()")
 
   " Krl Helper {{{
 
+  function s:KrlAlterIsKeyWord() abort
+    if !get(g:,'krlKeyWord',1)
+      " temporary set iskeyword
+      let s:keepIsKeyWordBufNr = bufnr()
+      let s:keepIsKeyWord = &iskeyword
+      set iskeyword+=#,$,&
+    endif
+  endfunction
+
+  function s:KrlResetIsKeyWord() abort
+    if exists("s:keepIsKeyWord")
+      " reset iskeyword too keept value if altered
+      call setbufvar(s:keepIsKeyWordBufNr, "&iskeyword", s:keepIsKeyWord)
+      unlet s:keepIsKeyWord
+      unlet s:keepIsKeyWordBufNr
+    endif
+  endfunction
+
   function <SID>KrlCleanBufferList() abort
     if exists("g:knopTmpFile")
       let l:knopTmpFile = substitute(g:knopTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
@@ -402,6 +420,7 @@ if !exists("*s:KnopVerboseEcho()")
     let l:strLine = getline(".")
     "
     " position the cursor at the start of the current word
+    call s:KrlAlterIsKeyWord()
     if search('\<','bcsW',l:numLine)
       "
       " init
@@ -422,6 +441,7 @@ if !exists("*s:KnopVerboseEcho()")
       "
       " get word at cursor
       let l:word = expand("<cword>")
+      call s:KrlResetIsKeyWord()
       "
       " count string chars " before the current char
       let l:i = 0
@@ -505,6 +525,7 @@ if !exists("*s:KnopVerboseEcho()")
         endif
       endif
     endif
+    call s:KrlResetIsKeyWord()
     return "none"
   endfunction " s:KrlCurrentWordIs()
 
@@ -1333,8 +1354,7 @@ if !exists("*s:KnopVerboseEcho()")
         return
         "
       endif
-      let l:keepisk = &isk
-      set isk+=#,$,& " this is set globaly here because of <$, <& or <# for vimgrep
+      call s:KrlAlterIsKeyWord()
       let l:nonecomment = ''
       if !<SID>KrlIsVkrc()
         let l:nonecomment = '^[^;]*'
@@ -1373,7 +1393,7 @@ if !exists("*s:KnopVerboseEcho()")
       else
         call s:KnopVerboseEcho("Nothing found.",1)
       endif
-      let &isk = l:keepisk
+      call s:KrlResetIsKeyWord()
     else
       call s:KnopVerboseEcho("Unable to determine what to search for at current cursor position. No search performed.",1)
     endif
