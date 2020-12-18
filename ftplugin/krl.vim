@@ -233,7 +233,7 @@ if !exists("*s:KnopVerboseEcho()")
     let l:path = substitute(l:path, '\*\* ', '**/'.a:file.' ', "g") " append a / to **, . and ..
     let l:path = substitute(l:path, '\.\. ', '../'.a:file.' ', "g")
     let l:path = substitute(l:path, '\. ', './'.a:file.' ', "g")
-    call s:KnopVerboseEcho(l:path)
+    call s:KnopVerboseEcho('path prepared: ' . l:path)
     return l:path
   endfunction " s:KnopPreparePath()
 
