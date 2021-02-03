@@ -20,13 +20,13 @@
 # krl-for-vim
 
 **READ [FAQ][2] FIRST** if you want more than just syntax highlight and 
-automatic indenting. It is a quick overview over the most important options and
-mappings provided by KRL for Vim. For more details see the [help][3] file.
+automatic indenting. It is a quick overview over the most important options 
+and mappings provided by KRL for Vim. For more details see the [help][3] file.
 
 ## Introduction:
 
 KRL for [Vim][10] (7.4 or later) is a collection of Vim scripts to help
-programing [KUKA industrial robots][9].
+programming [KUKA industrial robots][9].
 
 It provides
 * syntax highlighting,
@@ -35,16 +35,16 @@ It provides
 * support for commentary [vimscript #3695][7], matchit [vimscript #39][8], 
   matchup [vimscript #5624][11] and endwise [vimscript #2386][12],
 * mappings and settings to navigate through code in a backup folder structure,
-* text objects for functions and folds,
-* optimized folding and concealing for viewing VRKC and
+* text objects for functions, comments and folds,
+* optimized folding and concealing for viewing VRKC,
 * completion of words from known or custom global files like $config.dat,
-* mappings to insert a body of a new DEF, DEFFCT or DEFDAT based on user
-  defined templates or hopefully sane defaults.
+* mappings to insert a body of a new DEF, DEFFCT or DEFDAT based on user 
+    defined templates or hopefully sane defaults.
 
-**Note:** Keep your files to be edited in one folder or in a regular robot
-backup folder structure. KRL for Vim modifies 'path' accordingly. Since
-version 2.0.0 KRC1 backups are supported too.  
-**Note to Linux users:** Keep your files to be edited on a FAT file system. 
+**Note:** Keep your files to edit in one folder or in a regular robot
+backup folder structure. KRL for Vim modifies 'path' accordingly.  
+Since version 2.0.0 KRC1 backups are supported too.  
+**Note to Linux users:** Keep your files to edit on a FAT file system. 
 Some features need the case insensitive file system to work properly.
 
 
@@ -97,27 +97,25 @@ to use the help within Vim after installation. >
 
 ## FAQ
 
-Q: Since version 2.0.0 everything's weird. How so?  
-A: Most optional features are enabled by default now.  
+Q: How do I disable an annoying feature of krl-for-vim?  
+A: Disable feature in your `vimrc`, see [krl-options][6] for details: >
 
-Q: I'm here to feed my kids, not to read. How do I get rid of stuff?  
-A: Disable stuff in your `vimrc`, see [krl-options][6] for details: >
-
-    let g:krlShortenQFPath = 0 " don't shorten paths in quickfix
-    let g:krlAutoComment = 0 " don't continue comments with o, O or Enter
-    let g:krlFormatComments = 0 " don't break comment lines automatically
-    let g:krlCommentIndent = 1 " indent comments starting in 1st column too
+    let g:krlShortenQFPath    = 0 " don't shorten paths in quickfix
+    let g:krlAutoComment      = 0 " don't continue comments with o, O or Enter
+    let g:krlFormatComments   = 0 " don't break comment lines automatically
+    let g:krlCommentIndent    = 1 " indent comments starting in 1st column too
     let g:krlIndentBetweenDef = 0 " don't indent between DEF(fct|dat)?
-    let g:krlSpaceIndent = 0 " don't change 'sts', 'sw', 'et' and 'sr'
-    "let g:krlFoldLevel = 0 " close no folds on startup
-    "let g:krlFoldLevel = 1 " close movement folds on startup (default)
-    let g:krlFoldLevel = 2 " close all folds on startup
-    let g:krlKeyWord = 0 " don't treat $, # and & as word char
+    let g:krlSpaceIndent      = 0 " don't change 'sts', 'sw', 'et' and 'sr'
+    "let g:krlFoldLevel       = 0 " close no folds on startup
+    "let g:krlFoldLevel       = 1 " close movement folds on startup (default)
+    let g:krlFoldLevel        = 2 " close all folds on startup
+    let g:krlKeyWord          = 0 " don't treat $, # and & as word char
 
 Q: Which keys get mapped to what? Will that override my own mappings?  
 A: krl-for-vim will not override existing mappings unless the corresponding
-   option is explicitly set. To use different key bindings use the
-   `<PLUG>` mapping. Otherwise krl-for-vim create the followin mappings: >
+   option is explicitly set. To use different key bindings see  
+   [krl-key-mappings][13] for <Plug> mappings.  
+   Otherwise krl-for-vim create the following mappings: >
 
     <F2> Open all folds
     <F3> Open none movement folds
@@ -127,9 +125,9 @@ A: krl-for-vim will not override existing mappings unless the corresponding
 
     gd Go to or show definition of variable or def/deffct.
             Does work on fold lines for SPSMAKRO, UP, bin, binin and Marker.
-            Does override existing mappings and Vim's default.
-            Disable override existing mapping and Vim's default with
-        let g:krlGoDefinitionKeyMap = 0
+            Does override Vim's default.
+            Override existing mapping with
+        let g:krlGoDefinitionKeyMap = 1
 
     <leader>u List all significant references of word under cursor.
             Override existing mapping with
@@ -145,26 +143,26 @@ A: krl-for-vim will not override existing mappings unless the corresponding
     ][ Move around functions. Takes a count.
     [; Move around comments. Takes a count.
     ]; Move around comments. Takes a count.
-            Does override existing mappings and overshadow Vim's default.
-            Disable override existing mapping and Vim's default with
+            Does override existing mappings and Vim's default.
+            Disable override existing mappings and Vim's default with
         let g:krlMoveAroundKeyMap = 0
 
     if Inner function text object.
     af Around function text object.
     aF Around function text object including preceding comments.
-            Depend on g:krlMoveAroundKeyMap not existing or >=1.
+            Depends on g:krlMoveAroundKeyMap not existing or =1.
             Override existing mapping with
         let g:krlFunctionTextObject = 1
 
     io Inner fold text object. Takes a count for nested folds.
     ao Around fold text object. Takes a count for nested folds.
-            Depend on matchit.
+            Depends on matchit/matchup.
             Override existing mapping with
         let g:krlFoldTextObject = 1
 
     ic Inner comment text object.
     ac Around comment text object.
-            Depend on g:krlMoveAroundKeyMap not existing or =1.
+            Depends on g:krlMoveAroundKeyMap not existing or =1.
             Override existing mapping with
         let g:krlCommentTextObject = 1
 
@@ -174,14 +172,14 @@ A: krl-for-vim will not override existing mappings unless the corresponding
 
 Q: Does krl-for-vim provide a mapping for indenting a complete file?  
 A: No, but you may put the following in your .vimrc or
-   ~/.vim/after/ftplugin/krl.vim: >
+   `~/.vim/after/ftplugin/krl.vim`: >
 
     nnoremap ANYKEY gg=G``zz
 
 Q: Does krl-for-vim provide a mapping to quickly switch between the
    corresponding dat- and src-file?  
 A: No, but you may put the following in your .vimrc or
-   ~/.vim/after/ftplugin/krl.vim: >
+   `~/.vim/after/ftplugin/krl.vim`: >
 
     nnoremap ANYKEY :if expand('%')=~'\.dat$' <bar> e %:s?\.dat$?.src? <bar> else <bar> e %:s?\.src$?.dat? <bar> endif<CR>
 
@@ -225,13 +223,14 @@ any questions.
 
 [1]: https://github.com/KnoP-01/krl-for-vim/releases/latest
 [2]: https://github.com/KnoP-01/krl-for-vim#FAQ
-[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L213
+[3]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L212
 [4]: https://www.vim.org/scripts/script.php?script_id=5344
 [5]: https://github.com/KnoP-01/krl-for-vim/issues
-[6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L231
+[6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L230
 [7]: https://www.vim.org/scripts/script.php?script_id=3695
 [8]: https://www.vim.org/scripts/script.php?script_id=39
 [9]: https://www.kuka.com/en-de/products/robot-systems/industrial-robots
 [10]: https://www.vim.org/
 [11]: https://www.vim.org/scripts/script.php?script_id=5624
 [12]: https://github.com/tpope/vim-endwise
+[13]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L242
