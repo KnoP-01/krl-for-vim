@@ -1,8 +1,8 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 2.2.3
-" Last Change: 18. Dec 2020
+" Version: 2.2.4
+" Last Change: 03. Feb 2021
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -1974,9 +1974,9 @@ endif
 " if the mapping does not exist and there is no plug-mapping just map it,
 " otherwise look for the config variable
 
-if get(g:,'krlGoDefinitionKeyMap',1) 
-      \&& !hasmapto('<plug>KrlGoDef','n')
-  " Go Definition; The condition is different because gd is a vim command
+if get(g:,'krlGoDefinitionKeyMap',0) 
+      \|| mapcheck("gd","n")=="" && !hasmapto('<plug>KrlGoDef','n')
+  " Go Definition
   nmap <silent><buffer> gd <plug>KrlGoDef
 endif
 if get(g:,'krlListDefKeyMap',0)
