@@ -113,7 +113,7 @@ A: Disable feature in your `vimrc`, see [krl-options][6] for details: >
 
 Q: Which keys get mapped to what? Will that override my own mappings?  
 A: krl-for-vim will not override existing mappings unless the corresponding
-   option is explicitly set. To use different key bindings see 
+   option is explicitly set. To use different key bindings see :help 
    [krl-key-mappings][13] for <Plug> mappings.  
    Otherwise krl-for-vim create the following mappings: >
 
