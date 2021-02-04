@@ -50,7 +50,7 @@ Some features need the case insensitive file system to work properly.
 
 ## Installation:
 
-### Installation with vim-plug:  ~  
+### Installation with [vim-plug][14]:  ~  
 
 Put this in your .vimrc:  >
 
@@ -234,3 +234,4 @@ any questions.
 [11]: https://www.vim.org/scripts/script.php?script_id=5624
 [12]: https://github.com/tpope/vim-endwise
 [13]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L242
+[14]: https://github.com/junegunn/vim-plug
