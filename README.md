@@ -14,8 +14,8 @@
                                            |___ ___\ |    \_____   |    /  |
                                             |  \__ |  \___________/     | o \__
                                             |______|  |           |     \______\
-        industrial robot programming                  |           |      |     |         
-                                                      |___________|      |_____|         
+        industrial robot programming                  |           |      |     |
+                                                      |___________|      |_____|
 ```
 # krl-for-vim
 
@@ -170,7 +170,7 @@ A: krl-for-vim will not override existing mappings unless the corresponding
             Override existing mapping with
         let g:krlAutoFormKeyMap = 1
 
-Q: Does krl-for-vim provide a mapping for indenting a complete file?  
+Q: Does krl-for-vim provide a mapping for indenting the whole file?  
 A: No, but you may put the following in your .vimrc or
    `~/.vim/after/ftplugin/krl.vim`: >
 
