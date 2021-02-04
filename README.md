@@ -33,7 +33,7 @@ It provides
 * indenting,
 * folding,
 * support for commentary [vimscript #3695][7], matchit [vimscript #39][8], 
-  matchup [vimscript #5624][11] and endwise [vimscript #2386][12],
+    matchup [vimscript #5624][11] and endwise [vimscript #2386][12],
 * mappings and settings to navigate through code in a backup folder structure,
 * text objects for functions, comments and folds,
 * optimized folding and concealing for viewing VRKC,
