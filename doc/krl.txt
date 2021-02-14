@@ -1,4 +1,4 @@
-*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 04. Feb 2021
+*krl.txt*	Kuka Robot Language for Vim version 7.4	Last change: 14. Feb 2021
 
 
 		  VIM REFERENCE MANUAL    by Patrick Meiser-Knosowski
@@ -6,23 +6,23 @@
 
 
 >
-                                             _           _______
-                                            /.\\        /  ___  \_________  _
-         _   __   ___      _                \_/ \       | /   \     ____  \/ |   _____   
-        | | /  | |   \    | |                 \  \      | | O |  _________/\_|  /  | o\  
-        | |/  /  |  _ |   | |                  \--\     | \___/ /             _/  _/  /  
-        |    /   | | ||   | |                  | o |     \      \       /\   /.\ / | |   
-        |    \   | |_| \  | |___               /--/       \  \\  \      \/\  \_//  | |   
-        |  _  \  |  __  | |     |             /  /         \  \\  \      \ \      /  |   
-        |_| \__\ |_|  \_| |_____|           _/  /           \   _  \      \-\     |  o\_ 
-                                           / \ /            |  /.\  |     |o|     /_____\
-                 for Vim                  | o |_      _____/   \_/  |     /-/     |     |
-               by Knosowski                \_/__|__  |____   ______/     / /      |_____|
-                                           |___ ___\ |    \_____   |    /  |
-                                            |  \__ |  \___________/     | o \__
-                                            |______|  |           |     \______\
-        industrial robot programming                  |           |      |     |
-                                                      |___________|      |_____|
+                                              _           _______
+                                             /.\\        /  ___  \_________  _
+          _   __   ___      _                \_/ \       | /   \     ____  \/ |   _____   
+         | | /  | |   \    | |                 \  \      | | O |  _________/\_|  /  | o\  
+         | |/  /  |  _ |   | |                  \--\     | \___/ /             _/  _/  /  
+         |    /   | | ||   | |                  | o |     \      \       /\   /.\ / | |   
+         |    \   | |_| \  | |___               /--/       \  \\  \      \/\  \_//  | |   
+         |  _  \  |  __  | |     |             /  /         \  \\  \      \ \      /  |   
+         |_| \__\ |_|  \_| |_____|           _/  /           \   _  \      \-\     |  o\_ 
+                                            / \ /            |  /.\  |     |o|     /_____\
+                  for Vim                  | o |_      _____/   \_/  |     /-/     |     |
+                by Knosowski                \_/__|__  |____   ______/     / /      |_____|
+                                            |___ ___\ |    \_____   |    /  |
+                                             |  \__ |  \___________/     | o \__
+                                             |______|  |           |     \______\
+         industrial robot programming                  |           |      |     |
+                                                       |___________|      |_____|
 
 
 ==============================================================================
@@ -183,7 +183,7 @@ A: krl-for-vim will not override existing mappings unless the corresponding
             Override existing mapping with
         let g:krlAutoFormKeyMap = 1
 
-Q: Does krl-for-vim provide a mapping for indenting a complete file?  
+Q: Does krl-for-vim provide a mapping for indenting the whole file?  
 A: No, but you may put the following in your .vimrc or
    `~/.vim/after/ftplugin/krl.vim`: >
 
@@ -314,7 +314,7 @@ Index: |krl-index|
 g:krlShowError:
 ---------------
 
-Disable error highlighting:  >
+Disable error highlighting for better performance:  >
     let g:krlShowError = 0
 
 If omitted or set to 1 a few syntax errors, mainly false usages of =, ==, <=
@@ -354,7 +354,7 @@ Continue and/or BuildInFunction:  >
 `krlSysvars`            contains all variables starting with $.
 `krlContinue`           contains the continue instruction.
 `krlMovement`           contains movement instructions like ptp, lin and
-                      movement modifiers like c_ptp and c_dis.
+                          movement modifiers like c_ptp and c_dis.
 
 If you like it colorful and dark background you may try the 
 colorscheme tortus or tortusless which makes use of these groups:
@@ -367,6 +367,11 @@ tortus or tortusless and reset for any other colorscheme.
 Index: |krl-index|
 ==============================================================================
                         *krl-indent*
+You may map >
+    nnoremap <ANYKEY> gg=G``zz 
+to indent the whole file with one key stroke. 
+
+Index: |krl-index|
                         *g:krlSpaceIndent*
 g:krlSpaceIndent:
 -----------------
@@ -527,7 +532,7 @@ Note: This mapping overshadows the default Vim command |gd|.
 
     `gd`: Jump to or shows variable or def/deffct declarations.
 
-To force this mapping off for KRL-files and make Vims default available: >
+To force this mappings for KRL-files if `gd` is already mapped: >
     let g:krlGoDefinitionKeyMap = 0
 
 Alternativ <Plug> mapping to put into .vimrc or `~/.vim/after/ftplugin/krl.vim`: >
@@ -642,7 +647,7 @@ Index: |krl-index|
 g:knop[RL]hsQuickfix:
 ---------------------
 
-Note: g:krl[RL]hsQuickfix is synonym for g:knop[RL]hsQuickfix.
+Note: g:krl[RL]hsQuickfix is synonym for `g:knop[RL]hsQuickfix`.
 Use the g:knop* variable!
 
 Where to open the |quickfix-window| the first time.
@@ -686,7 +691,7 @@ PowerOn/        |  +-Program/                         |  +-Mada/
                     +-Mada/                               +-Mada/  
 
 
-krl-for-vim does looks up to 5 levels upward for a `KRC/` folder. If found
+krl-for-vim does look up to 5 levels upward for a `KRC/` folder. If found
 `/absolut/path/to/KRC/**` gets added to 'path'. See |starstar|.
 If not found krl-for-vim looks up to 4 levels upward for `R1/` and 2 levels up
 for `STEU/` folders. If found `/absolut/path/R1/**` and `/absolut/path/Steu/**`
@@ -781,10 +786,10 @@ Add custom files to 'complete': >
 Note: Make sure to use forward slashes (`/`) as path separator, also on
 Windows!
 
-You should add the path relative to `KRC/`. Even if you put all the files
-you edit are in the same directory, they will be found. You may also add just
-a file name, However, in that case the file will only be found if present in
-the same directory as the current file. 
+You should add the path relative to `KRC/`. 
+Even if you put all the files you edit are in the same directory, they will 
+be found. You may also add just a file name, However, in that case the file 
+will only be found if present in the same directory as the current file. 
 
 Enable |g:krlVerbose| to see what files are actually added.
 
@@ -1094,12 +1099,12 @@ Example defdat.dat:  >
 
 Note the <Markers> in the example body files. Markers have to be put in
 <>. Any marker but | may be present multiple times or omitted.
-Markers:  global    substituted with "global " (or " public" if defdat) or ""
-          name      substituted with "<entered name>"
-          type      substituted with "def", "deffct" or "defdat"
-          datatype  substituted with the "<chosen data type>"
-          returnvar substituted with a varname in the form of "[prefix]Result"
-          |         put cursor here when finished
+Markers:  <global>    substituted with "global " or " public" if defdat or ""
+          <name>      substituted with entered "<name>"
+          <type>      substituted with "def", "deffct" or "defdat"
+          <datatype>  substituted with the chosen "<data type>"
+          <returnvar> substituted with a varname in the form of "[prefix]Result"
+          <|>         put cursor here when finished
 
 Note that comments or anything below the END line is not supported and may
 have unexpected results!
