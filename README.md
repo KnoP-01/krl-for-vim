@@ -227,11 +227,11 @@ any questions.
 [4]: https://www.vim.org/scripts/script.php?script_id=5344
 [5]: https://github.com/KnoP-01/krl-for-vim/issues
 [6]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L230
-[7]: https://www.vim.org/scripts/script.php?script_id=3695
+[7]: https://github.com/tpope/vim-commentary
 [8]: https://www.vim.org/scripts/script.php?script_id=39
 [9]: https://www.kuka.com/en-de/products/robot-systems/industrial-robots
 [10]: https://www.vim.org/
-[11]: https://www.vim.org/scripts/script.php?script_id=5624
+[11]: https://github.com/andymass/vim-matchup
 [12]: https://github.com/tpope/vim-endwise
 [13]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L242
 [14]: https://github.com/junegunn/vim-plug
