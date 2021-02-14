@@ -125,7 +125,8 @@ A: krl-for-vim will not override existing mappings unless the corresponding
 
     gd Go to or show definition of variable or def/deffct.
             Does work on fold lines for SPSMAKRO, UP, bin, binin and Marker.
-            Does override Vim's default.
+            Does override Vim's default. Make Vim's default available with 
+        nnoremap gd gd
             Override existing mapping with
         let g:krlGoDefinitionKeyMap = 1
 
