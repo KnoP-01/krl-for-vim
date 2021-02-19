@@ -1,8 +1,8 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 2.2.4
-" Last Change: 03. Feb 2021
+" Version: 2.2.3
+" Last Change: 19. Feb 2021
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -248,29 +248,42 @@ if !exists("*s:KnopVerboseEcho()")
     return 1
   endfunction " s:KnopQfCompatible()
 
+  function! KnopEraseQFPaths(info) abort
+    let l:items = getqflist({'id': a:info.id, 'items': 1}).items
+    let l:resultQF = []
+    for l:idx in range(a:info.start_idx - 1, a:info.end_idx - 1)
+      let l:item = l:items[l:idx]
+      call add(l:resultQF, item.text[l:item.col - 1 : ])
+    endfor
+    return l:resultQF
+  endfunction
+
+  function! KnopFormatQFPaths(info) abort
+    let l:items = getqflist({'id': a:info.id, 'items': 1}).items
+    let l:resultQF = []
+    for l:idx in range(a:info.start_idx - 1, a:info.end_idx - 1)
+      let l:item = l:items[l:idx]
+      let l:line = fnamemodify(bufname(l:item.bufnr),':.')
+      if get(g:,'knopShortenQFPath',1) && strlen(l:line)>40
+        let l:line = pathshorten(l:line,3)
+      endif
+      let l:line .= "|" . l:item.lnum . " col " . l:item.col . "| "
+      let l:line .= l:item.text
+      call add( l:resultQF, l:line )
+    endfor
+    return l:resultQF
+  endfunction
+
   let g:knopPositionQf=1
-  function s:KnopOpenQf(useSyntax) abort
+  function s:KnopOpenQf(useSyntax,...) abort
     if getqflist()==[] | return -1 | endif
+    if !exists("a:1")
+      call setqflist([], ' ', {'items' : getqflist(), 'quickfixtextfunc' : 'KnopFormatQFPaths', 'nr': "$"})
+    endif
     cwindow 4
     if getbufvar('%', "&buftype")!="quickfix"
       let l:getback=1
       copen
-    endif
-    if get(g:,'knopShortenQFPath',1)
-      setlocal modifiable
-      silent! %substitute/\v\c^([^|]{40,})/\=pathshorten(submatch(1))/
-      0
-      if !exists("g:knopTmpFile")
-        let g:knopTmpFile=tempname()
-        augroup knopDelTmpFile
-          au!
-          au VimLeavePre * call delete(g:knopTmpFile)
-          au VimLeavePre * call delete(g:knopTmpFile . "~")
-        augroup END
-      endif
-      execute 'silent save! ' . g:knopTmpFile
-      setlocal nomodifiable
-      setlocal nobuflisted " to be able to remove from buffer list after writing the temp file
     endif
     augroup KnopOpenQf
       au!
@@ -350,37 +363,6 @@ if !exists("*s:KnopVerboseEcho()")
       unlet s:keepIsKeyWordBufNr
     endif
   endfunction
-
-  function <SID>KrlCleanBufferList() abort
-    if exists("g:knopTmpFile")
-      let l:knopTmpFile = substitute(g:knopTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
-    endif
-    if exists("g:krlTmpFile")
-      let l:krlTmpFile = substitute(g:krlTmpFile,'.*[\\/]\(VI\w\+\.tmp\)','\1','')
-    endif
-    let l:b = {}
-    for l:b in getbufinfo({'buflisted':1})
-      " unlist temp file buffer
-      if exists("g:knopTmpFile")
-            \&& l:b["name"] =~ l:knopTmpFile . '$'
-            \&& !l:b["hidden"]
-        call setbufvar(l:b["bufnr"],"&buflisted",0)
-      endif
-      if exists("g:krlTmpFile")
-            \&& l:b["name"] =~ l:krlTmpFile . '$'
-            \&& !l:b["hidden"]
-        call setbufvar(l:b["bufnr"],"&buflisted",0)
-      endif
-      " delete those strange empty unnamed buffers
-      if l:b['name']=='' && l:b['windows']==[] && !l:b['changed']
-        execute "silent bwipeout! " . l:b["bufnr"]
-      endif
-    endfor
-    augroup KrlCleanBufferList
-      " work around where buffer list is not cleaned if knopVerbose is enabled
-      autocmd!
-    augroup END
-  endfunction " <SID>KrlCleanBufferList()
 
   function <SID>KrlIsVkrc() abort
     if bufname("%") =~ '\c\v(folge|up|makro(saw|sps|step|trigger)?)\d*.src'
@@ -700,11 +682,6 @@ if !exists("*s:KnopVerboseEcho()")
   endfunction " s:KrlSearchProc()
 
   function <SID>KrlGoDefinition() abort
-    augroup KrlCleanBufferList
-      " work around where buffer list is not cleaned if knopVerbose is enabled
-      autocmd!
-      autocmd CursorMoved * call <SID>KrlCleanBufferList()
-    augroup END
     "
     let l:declPrefix = '\c\v^\s*((global\s+)?(const\s+)?(bool|int|real|char|frame|pos|axis|e6pos|e6axis|signal|channel)\s+[a-zA-Z0-9_,\[\] \t]*|(decl\s+)?(global\s+)?(struc|enum)\s+|decl\s+(global\s+)?(const\s+)?\w+\s+[a-zA-Z0-9_,\[\] \t]*)'
     "
@@ -1249,49 +1226,16 @@ if !exists("*s:KnopVerboseEcho()")
   " List Def/Usage {{{
 
   function <SID>KrlListDefinition() abort
-    augroup KrlCleanBufferList
-      " work around where buffer list is not cleaned if knopVerbose is enabled
-      autocmd!
-      autocmd CursorMoved * call <SID>KrlCleanBufferList()
-    augroup END
     " list defs in qf
     if s:KnopSearchPathForPatternNTimes('\v\c^\s*(global\s+)?def(fct)?>','%','','krl')==0
-      if getqflist()==[] | return | endif
-      " put cursor back after manipulating qf
-      if getbufvar('%', "&buftype")!="quickfix"
-        let l:getback=1
-        noautocmd copen
-      endif
-      if getbufvar('%', "&buftype")!="quickfix" | return | endif
-      setlocal modifiable
-      silent %substitute/\v\c^.*\|\s*(%(global\s+)?def%(fct)?>)/\1/
-      0
-      if !exists("g:krlTmpFile")
-        let g:krlTmpFile=tempname()
-        augroup krlDelTmpFile
-          au!
-          au VimLeavePre * call delete(g:krlTmpFile)
-          au VimLeavePre * call delete(g:krlTmpFile . "~")
-        augroup END
-      endif
-      execute 'silent save! ' . g:krlTmpFile
-      setlocal nomodifiable
-      setlocal nobuflisted " to be able to remove from buffer list after writing the temp file
-      if exists("l:getback")
-        unlet l:getback
-        wincmd p
-      endif
+      call setqflist([], ' ', {'items' : getqflist(), 'quickfixtextfunc' : 'KnopEraseQFPaths', 'nr': "$"})
+      call s:KnopOpenQf('krl',"don't format'")
     else
       call s:KnopVerboseEcho("Nothing found.",1)
     endif
   endfunction " <SID>KrlListDefinition()
 
   function <SID>KrlListUsage() abort
-    augroup KrlCleanBufferList
-      " work around where buffer list is not cleaned if knopVerbose is enabled
-      autocmd!
-      autocmd CursorMoved * call <SID>KrlCleanBufferList()
-    augroup END
     "
     if search('\w','cW',line("."))
       let l:currentWord = s:KrlCurrentWordIs()
@@ -2071,15 +2015,12 @@ endif
 " <PLUG> mappings {{{
 
 " Go Definition
-" nnoremap <silent><buffer> <plug>KrlGoDef :call <SID>KrlGoDefinition()<CR>:call <SID>KrlCleanBufferList()<CR>
 nnoremap <silent><buffer> <plug>KrlGoDef :call <SID>KrlGoDefinition()<CR>
 
 " list all DEFs of current file
-" nnoremap <silent><buffer> <plug>KrlListDef :call <SID>KrlListDefinition()<CR>:call <SID>KrlCleanBufferList()<CR>
 nnoremap <silent><buffer> <plug>KrlListDef :call <SID>KrlListDefinition()<CR>
 
 " list usage
-" nnoremap <silent><buffer> <plug>KrlListUse :call <SID>KrlListUsage()<CR>:call <SID>KrlCleanBufferList()<CR>
 nnoremap <silent><buffer> <plug>KrlListUse :call <SID>KrlListUsage()<CR>
 
 " auto form
