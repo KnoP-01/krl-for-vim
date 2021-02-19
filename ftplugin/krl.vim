@@ -265,7 +265,7 @@ if !exists("*s:KnopVerboseEcho()")
       let l:item = l:items[l:idx]
       let l:line = fnamemodify(bufname(l:item.bufnr),':.')
       if get(g:,'knopShortenQFPath',1) && strlen(l:line)>40
-        let l:line = pathshorten(l:line,3)
+        let l:line = pathshorten(l:line,5)
       endif
       let l:line .= "|" . l:item.lnum . " col " . l:item.col . "| "
       let l:line .= l:item.text
