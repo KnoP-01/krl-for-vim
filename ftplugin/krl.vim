@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.3
-" Last Change: 19. Feb 2021
+" Last Change: 03. Mar 2021
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -349,7 +349,7 @@ if !exists("*s:KnopVerboseEcho()")
   function s:KrlAlterIsKeyWord(force) abort
     if !get(g:,'krlKeyWord',1) || a:force
       " temporary set iskeyword
-      let s:keepIsKeyWordBufNr = bufnr()
+      let s:keepIsKeyWordBufNr = bufnr("%")
       let s:keepIsKeyWord = &iskeyword
       set iskeyword+=#,$,&
     endif
