@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.3
-" Last Change: 18. Dec 2020
+" Last Change: 04. Mar 2021
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -336,6 +336,8 @@ syn keyword krlBuildInFunction contained timer_limit
 syn keyword krlBuildInFunction contained tool_adj 
 syn keyword krlBuildInFunction contained FRand 
 syn keyword krlBuildInFunction contained ExecFunc eb_test EB EK EO LK mbx_rec 
+" safe robot
+syn keyword krlbuildinfunction contained get_AxesMask get_BrakeTest_Time
 " math
 syn keyword krlBuildInFunction contained Abs Sin Cos Acos Tan Atan Atan2 Sqrt
 syn keyword krlBuildInFunction contained Forward Inverse inv_pos
