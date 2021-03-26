@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.3
-" Last Change: 03. Mar 2021
+" Last Change: 27. Mar 2021
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -1848,25 +1848,25 @@ endif
 
 if get(g:,'krlMoveAroundKeyMap',1)
   " Move around functions
-  nnoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 'bs')        <Bar>unlet b:knopCount<CR>:normal! zt<CR>
-  onoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>.*\n\zs', 'bsW')<Bar>unlet b:knopCount<CR>
-  xnoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1<Bar>exe "normal! gv"                                                                            <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 'bsW')     <Bar>unlet b:knopCount<CR>
-  nnoremap <silent><buffer> ]] :<C-U>let b:knopCount=v:count1<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 's')         <Bar>unlet b:knopCount<CR>:normal! zt<CR>
-  onoremap <silent><buffer> ]] :<C-U>let b:knopCount=v:count1<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>', 'sW')        <Bar>unlet b:knopCount<CR>
-  xnoremap <silent><buffer> ]] :<C-U>let b:knopCount=v:count1<Bar>exe "normal! gv"                                                                            <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>.*\n', 'seWz')<Bar>unlet b:knopCount<CR>
-  nnoremap <silent><buffer> [] :<C-U>let b:knopCount=v:count1<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>', 'bs')                    <Bar>unlet b:knopCount<CR>:normal! zb<CR>
-  onoremap <silent><buffer> [] :<C-U>let b:knopCount=v:count1<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>\n^(.\|\n)', 'bseW')        <Bar>unlet b:knopCount<CR>
-  xnoremap <silent><buffer> [] :<C-U>let b:knopCount=v:count1<Bar>exe "normal! gv"                                                                            <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>', 'bsW')                 <Bar>unlet b:knopCount<CR>
-  nnoremap <silent><buffer> ][ :<C-U>let b:knopCount=v:count1<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>', 's')                     <Bar>unlet b:knopCount<CR>:normal! zb<CR>
-  onoremap <silent><buffer> ][ :<C-U>let b:knopCount=v:count1<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v\ze^\s*end(fct\|dat)?>', 'sW')                 <Bar>unlet b:knopCount<CR>
-  xnoremap <silent><buffer> ][ :<C-U>let b:knopCount=v:count1<Bar>exe "normal! gv"                                                                            <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>(\n)?', 'seWz')           <Bar>unlet b:knopCount<CR>
+  nnoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1                     <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>'         , 'bs'  )<Bar>unlet b:knopCount<CR>:normal! zt<CR>
+  onoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1                     <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>.*\n\zs'  , 'bsW' )<Bar>unlet b:knopCount<CR>
+  xnoremap <silent><buffer> [[ :<C-U>let b:knopCount=v:count1<Bar>exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>'         , 'bsW' )<Bar>unlet b:knopCount<CR>
+  nnoremap <silent><buffer> ]] :<C-U>let b:knopCount=v:count1                     <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>'         , 's'   )<Bar>unlet b:knopCount<CR>:normal! zt<CR>
+  onoremap <silent><buffer> ]] :<C-U>let b:knopCount=v:count1                     <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>'         , 'sW'  )<Bar>unlet b:knopCount<CR>
+  xnoremap <silent><buffer> ]] :<C-U>let b:knopCount=v:count1<Bar>exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*(global\s+)?def(fct\|dat)?>.*\n'     , 'seWz')<Bar>unlet b:knopCount<CR>
+  nnoremap <silent><buffer> [] :<C-U>let b:knopCount=v:count1                     <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>'                     , 'bs'  )<Bar>unlet b:knopCount<CR>:normal! zb<CR>
+  onoremap <silent><buffer> [] :<C-U>let b:knopCount=v:count1                     <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>\n^(.\|\n)'           , 'bseW')<Bar>unlet b:knopCount<CR>
+  xnoremap <silent><buffer> [] :<C-U>let b:knopCount=v:count1<Bar>exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>'                     , 'bsW' )<Bar>unlet b:knopCount<CR>
+  nnoremap <silent><buffer> ][ :<C-U>let b:knopCount=v:count1                     <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>'                     , 's'   )<Bar>unlet b:knopCount<CR>:normal! zb<CR>
+  onoremap <silent><buffer> ][ :<C-U>let b:knopCount=v:count1                     <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v\ze^\s*end(fct\|dat)?>'                  , 'sW'  )<Bar>unlet b:knopCount<CR>
+  xnoremap <silent><buffer> ][ :<C-U>let b:knopCount=v:count1<Bar>exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\c\v^\s*end(fct\|dat)?>(\n)?'                , 'seWz')<Bar>unlet b:knopCount<CR>
   " Move around comments
-  nnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v(^\s*;.*\n)@<!(^\s*;)', 'bs')    <Bar>unlet b:knopCount<cr>
-  onoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v(^\s*;.*\n)@<!(^\s*;)', 'bsW')   <Bar>unlet b:knopCount<cr>
-  xnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>exe "normal! gv"                                                            <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v(^\s*;.*\n)@<!(^\s*;)', 'bsW')      <Bar>unlet b:knopCount<cr>
-  nnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\n\s*([^;\t ]\|$)', 's')  <Bar>unlet b:knopCount<cr>
-  onoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\n(\s*[^;\t ]\|$)', 'seW')<Bar>exec "normal! =="                                                              <Bar>unlet b:knopCount<cr>
-  xnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>exe "normal! gv"                                                            <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\n\ze\s*([^;\t ]\|$)', 'seW')<Bar>unlet b:knopCount<cr>
+  nnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1                     <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v(^\s*;.*\n)@<!(^\s*;)'                     , 'bs'  )<Bar>unlet b:knopCount<cr>
+  onoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1                     <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v(^\s*;.*\n)@<!(^\s*;)'                     , 'bsW' )<Bar>unlet b:knopCount<cr>
+  xnoremap <silent><buffer> [; :<C-U>let b:knopCount=v:count1<Bar>exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v(^\s*;.*\n)@<!(^\s*;)'                     , 'bsW' )<Bar>unlet b:knopCount<cr>
+  nnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1                     <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\n\s*([^;\t ]\|$)'                  , 's'   )<Bar>unlet b:knopCount<cr>
+  onoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1                     <Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\n(\s*[^;\t ]\|$)'                  , 'seW' )<Bar>unlet b:knopCount<cr>
+  xnoremap <silent><buffer> ]; :<C-U>let b:knopCount=v:count1<Bar>exe "normal! gv"<Bar>call <SID>KnopNTimesSearch(b:knopCount, '\v^\s*;.*\n\ze\s*([^;\t ]\|$)'               , 'seW' )<Bar>unlet b:knopCount<cr>
   " inner and around function text objects
   if get(g:,'krlFunctionTextObject',0)
         \|| mapcheck("aF","x")=="" && !hasmapto('<plug>KrlTxtObjAroundFuncInclCo','x')
