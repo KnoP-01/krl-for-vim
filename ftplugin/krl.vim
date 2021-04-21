@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
 " Version: 2.2.3
-" Last Change: 27. Mar 2021
+" Last Change: 21. Apr 2021
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -1632,6 +1632,7 @@ if get(g:,'krlPath',1)
 
   execute "setlocal path+=".s:krlpath
   setlocal path-=/usr/include
+  setlocal path-=.
   let b:undo_ftplugin = b:undo_ftplugin." pa<"
 
 endif " get(g:,'krlPath',1)
