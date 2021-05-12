@@ -1,8 +1,8 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
-" Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
+" Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
 " Version: 2.2.3
-" Last Change: 21. Apr 2021
+" Last Change: 29. Apr 2021
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "

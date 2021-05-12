@@ -1,8 +1,8 @@
 " Kuka Robot Language indent file for Vim
 " Language: Kuka Robot Language
-" Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
+" Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
 " Version: 2.2.2
-" Last Change: 20. Sep 2020
+" Last Change: 29. Apr 2021
 " Credits: Based on indent/vim.vim
 "
 " Suggestions of improvement are very welcome. Please email me!
