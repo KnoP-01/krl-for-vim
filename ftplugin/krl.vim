@@ -1631,9 +1631,7 @@ if get(g:,'krlPath',1)
     let s:krlpath='./**'
   endif
 
-  execute "setlocal path+=".s:krlpath
-  setlocal path-=/usr/include
-  setlocal path-=.
+  execute "setlocal path=".s:krlpath
   let b:undo_ftplugin = b:undo_ftplugin." pa<"
 
 endif " get(g:,'krlPath',1)
