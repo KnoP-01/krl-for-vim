@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
 " Version: 2.2.3
-" Last Change: 29. Apr 2021
+" Last Change: 13. Oct 2021
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -62,6 +62,8 @@ endif
 syn case ignore
 " take #, $ and & into keyword (syntax only)
 syn iskeyword @,48-57,_,192-255,#,$,&
+" spell checking
+syn spell notoplevel
 " }}} init
 
 " Comment and Folding {{{ 
@@ -82,7 +84,7 @@ syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ containedin=krlFold " contains
 " move fold comment until second ;
 syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*<s?%(ptp|lin|circ|spl)(_rel)?>[^;]*/ containedin=krlFold contains=krlInteger,krlFloat,krlMovement,krlDelimiter
 " Comment without Fold, also includes endfold lines and fold line part after second ;
-syn match krlComment /\c\v;\s*%(<fold>)@!.*$/ containedin=krlFold contains=krlTodo,krlDebug
+syn match krlComment /\c\v;\s*%(<fold>)@!.*$/ containedin=krlFold contains=krlTodo,krlDebug,@Spell
 " Commented out Fold line: "; ;FOLD PTP..."
 syn match krlComment /\c\v^\s*;\s*;.*$/ contains=krlTodo,krlDebug
 highlight default link krlFoldComment Comment
@@ -167,7 +169,7 @@ highlight default link krlHexInt Number
 syn match krlFloat /\v\W@1<=[+-]?\d+\.?\d*%(\s*[eE][+-]?\d+)?/ containedin=krlStructVal
 highlight default link krlFloat Float
 " String
-syn region krlString start=/"/ end=/"/ oneline containedin=krlStructVal
+syn region krlString start=/"/ end=/"/ oneline containedin=krlStructVal contains=@Spell
 highlight default link krlString String
 syn match krlSpecialChar /[|]/ containedin=krlString
 highlight default link krlSpecialChar SpecialChar
@@ -356,7 +358,7 @@ syn keyword krlBuildInFunction contained cal_to_rdc rdc_file_to_hd
 syn keyword krlBuildInFunction contained delete_pid_on_rdc delete_rdc_content 
 syn keyword krlBuildInFunction contained create_rdc_archive restore_rdc_archive 
 " ioctl
-syn keyword krlBuildInFunction contained IoCtl CioCtl 
+syn keyword krlBuildInFunction contained IOCtl cIOCtl 
 syn keyword krlBuildInFunction contained WSpaceGive WSpaceTake 
 " sync
 syn keyword krlBuildInFunction contained Sync SyncCmd CancelProgSync 
