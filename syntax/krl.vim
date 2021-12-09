@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
 " Version: 2.2.3
-" Last Change: 13. Oct 2021
+" Last Change: 09. Dec 2021
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -83,6 +83,13 @@ highlight default link krlDebug Debug
 syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ containedin=krlFold " contains=krlSingleQuoteString
 " move fold comment until second ;
 syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*<s?%(ptp|lin|circ|spl)(_rel)?>[^;]*/ containedin=krlFold contains=krlInteger,krlFloat,krlMovement,krlDelimiter
+" continues movement as part of a move fold comment
+syn keyword krlContinue CONT containedin=krlFoldComment
+if g:krlGroupName
+  highlight default link krlContinue Movement
+else
+  highlight default link krlContinue Special
+endif
 " Comment without Fold, also includes endfold lines and fold line part after second ;
 syn match krlComment /\c\v;\s*%(<fold>)@!.*$/ containedin=krlFold contains=krlTodo,krlDebug,@Spell
 " Commented out Fold line: "; ;FOLD PTP..."
