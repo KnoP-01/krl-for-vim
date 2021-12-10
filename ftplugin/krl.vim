@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
 " Version: 2.2.3
-" Last Change: 29. Apr 2021
+" Last Change: 10. Dec 2021
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -1504,18 +1504,23 @@ endif " format comments
 if get(g:,'krlPath',1)
 
   let s:pathcurrfile = s:KnopFnameescape4Path(substitute(expand("%:p:h"), '\\', '/', 'g'))
-  if s:pathcurrfile =~ '\v\c\/krc%(\/[^/]+){,4}$'
+  if s:pathcurrfile =~ '\v\c\/krc%(\/[^/]+){,5}$'
+    " KRC found. Use that one
     let s:krlpath=substitute(s:pathcurrfile, '\c\v(\/krc)\/%(%(<krc>)@!.)*$', '\1/**,' ,'g')
-  elseif s:pathcurrfile =~ '\v\c\/r1%(\/[^/]+){,3}$'
-        \&& (     s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/TP',''))
-        \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/System',''))
-        \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/Mada',''))
+  elseif s:pathcurrfile =~ '\v\c\/r1%(\/[^/]+){,4}$'
+        \&& (     s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/Mada',''))
         \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/Program',''))
+        \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/System',''))
+        \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/TP',''))
+        \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/Folgen',''))
+        \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/Makros',''))
+        \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/UPs',''))
+        \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v%(\/r1)\/%(%(<r1>)@!.)*$','/R1/VW_User',''))
         \     ||  s:KnopDirExists(substitute(s:pathcurrfile,   '\c\v(\/MaDa)%(\/r1)\/%(%(<r1>)@!.)*$','\1',''))
         \     ||  s:KnopDirExists(substitute(s:pathcurrfile,'\c\v(\/PowerOn)%(\/r1)\/%(%(<r1>)@!.)*$','\1',''))
         \    )
     if s:pathcurrfile =~ '\c\v\/MaDa\/R1$'
-      " krc1 MaDa/R1/
+      " krc1 MaDa/R1/ found, search for PowerOn as well
       let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/MaDa)\/R1$', '\1' ,'g')
       let s:krlpath=s:pathcurrfile. '/**,'
       let s:pathcurrfile = substitute(s:pathcurrfile, '\cMaDa$', 'PowerOn' ,'')
@@ -1523,7 +1528,7 @@ if get(g:,'krlPath',1)
         let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
       endif
     elseif s:pathcurrfile =~ '\c\v\/PowerOn\/R1$'
-      " krc1 PowerOn/R1/
+      " krc1 PowerOn/R1/ found, search for MaDa as well
       let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/PowerOn)\/R1$', '\1' ,'g')
       let s:krlpath=s:pathcurrfile. '/**,'
       let s:pathcurrfile = substitute(s:pathcurrfile, '\cPowerOn$', 'MaDa' ,'')
@@ -1531,17 +1536,17 @@ if get(g:,'krlPath',1)
         let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
       endif
     else
-      " > krc1
-      let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/r1)\/%(%(<r1>)@!.)*$', '\1' ,'g')
+      " > krc1 R1 found, search for STEU as well
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/R1)\/%(%(<R1>)@!.)*$', '\1' ,'g')
       let s:krlpath=s:pathcurrfile. '/**,'
-      let s:pathcurrfile = substitute(s:pathcurrfile, '\cr1$', 'STEU' ,'')
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\cR1$', 'STEU' ,'')
       if s:KnopDirExists(s:pathcurrfile)
         let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
       endif
     endif
-  elseif s:pathcurrfile =~ '\v\c\/steu%(\/[^/]+){,1}$'
+  elseif s:pathcurrfile =~ '\v\c\/Steu%(\/[^/]+){,1}$'
     if s:pathcurrfile =~ '\c\v\/MaDa\/Steu$'
-      " krc1 MaDa/Steu/
+      " krc1 MaDa/Steu/ found, search for PowerOn as well
       let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/MaDa)\/Steu$', '\1' ,'g')
       let s:krlpath=s:pathcurrfile. '/**,'
       let s:pathcurrfile = substitute(s:pathcurrfile, '\cMaDa$', 'PowerOn' ,'')
@@ -1549,7 +1554,7 @@ if get(g:,'krlPath',1)
         let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
       endif
     elseif s:pathcurrfile =~ '\c\v\/PowerOn\/Steu$'
-      " krc1 PowerOn/Steu/
+      " krc1 PowerOn/Steu/ found, search for MaDa as well
       let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/PowerOn)\/Steu$', '\1' ,'g')
       let s:krlpath=s:pathcurrfile. '/**,'
       let s:pathcurrfile = substitute(s:pathcurrfile, '\cPowerOn$', 'MaDa' ,'')
@@ -1557,77 +1562,20 @@ if get(g:,'krlPath',1)
         let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
       endif
     else
-      " > krc1
-      let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/steu)\/%(%(<steu>)@!.)*$', '\1' ,'g')
+      " > krc1 STEU found, search for R1 as well
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/Steu)\/%(%(<Steu>)@!.)*$', '\1' ,'g')
       let s:krlpath=s:pathcurrfile. '/**,'
-      let s:pathcurrfile = substitute(s:pathcurrfile, '\csteu$', 'R1' ,'')
+      let s:pathcurrfile = substitute(s:pathcurrfile, '\cSteu$', 'R1' ,'')
       if s:KnopDirExists(s:pathcurrfile)
         let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
       endif
     endif
-  elseif s:pathcurrfile =~ '\v\c\/program%(\/[^/]+){,2}$'
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/program)\/%(%(<program>)@!.)*$', '\1' ,'g')
+  elseif s:pathcurrfile =~ '\v\c\/%(Mada|Program|System|TP|Folgen|Makros|UPs|VW_User)%(\/[^/]+){,3}$'
+    let s:pathcurrfile = substitute(s:pathcurrfile, '\v\c\/%(Mada|Program|System|TP|Folgen|Makros|UPs|VW_User)%(\/[^/]+){,3}$', '' ,'g')
     let s:krlpath=s:pathcurrfile. '/**,'
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\cprogram$', 'System' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-    endif
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\csystem$', 'Mada' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-    endif
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\cmada$', 'TP' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-    endif
-  elseif s:pathcurrfile =~ '\v\c\/system%(\/[^/]+){,2}$'
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/system)\/%(%(<system>)@!.)*$', '\1' ,'g')
-    let s:krlpath=s:pathcurrfile. '/**,'
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\csystem$', 'Program' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-    endif
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\cprogram$', 'Mada' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-    endif
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\cmada$', 'TP' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-    endif
-  elseif s:pathcurrfile =~ '\v\c\/mada%(\/[^/]+){,2}$'
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/mada)\/%(%(<mada>)@!.)*$', '\1' ,'g')
-    let s:krlpath=s:pathcurrfile. '/**,'
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\cmada$', 'Program' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-    endif
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\cprogram$', 'System' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-    endif
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\csystem$', 'TP' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-    endif
-  elseif s:pathcurrfile =~ '\v\c\/tp%(\/[^/]+){,2}$'
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\c\v(\/tp)\/%(%(<tp>)@!.)*$', '\1' ,'g')
-    let s:krlpath=s:pathcurrfile. '/**,'
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\ctp$', 'Program' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-    endif
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\cprogram$', 'System' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-    endif
-    let s:pathcurrfile = substitute(s:pathcurrfile, '\csystem$', 'Mada' ,'')
-    if s:KnopDirExists(s:pathcurrfile)
-      let s:krlpath=s:krlpath. s:pathcurrfile. '/**,'
-    endif
   else
     " ACHTUNG: behalte die problematik im Auge das . der Pfad zur aktuellen
-    " Datei ist, und nicht das actuelle working directory!
+    " Datei ist, und nicht das aktuelle working directory!
     let s:krlpath='./**'
   endif
 
