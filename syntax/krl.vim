@@ -80,16 +80,19 @@ highlight default link krlDebug Debug
 " Comment
 " NOTE1: Comment highlighting must harmonize with ftplugin/krl.vim folding (see krlFold)
 " none move fold comment until second ;
-syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ containedin=krlFold " contains=krlSingleQuoteString
+syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ containedin=krlFold contains=krlSingleQuoteString,krlInteger,krlFloat,krlMovement,krlDelimiter,krlBoolean
 " move fold comment until second ;
 syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*<s?%(ptp|lin|circ|spl)(_rel)?>[^;]*/ containedin=krlFold contains=krlInteger,krlFloat,krlMovement,krlDelimiter
 " continues movement as part of a move fold comment
-syn keyword krlContinue CONT containedin=krlFoldComment
+syn keyword krlFoldHighlights CONT IN SYN OUT containedin=krlFoldComment
+syn match krlFoldHighlights /\c\v<(M|F|E|A|t|i|UP|SPSMAKRO)\d+/ containedin=krlFoldComment
 if g:krlGroupName
-  highlight default link krlContinue Movement
+  highlight default link krlFoldHighlights Sysvars
 else
-  highlight default link krlContinue Special
+  " default color for Fold Highlights
 endif
+syn keyword krlVkrcFoldConstants EIN AUS containedin=krlFoldComment
+highlight default link krlVkrcFoldConstants Boolean
 " Comment without Fold, also includes endfold lines and fold line part after second ;
 syn match krlComment /\c\v;\s*%(<fold>)@!.*$/ containedin=krlFold contains=krlTodo,krlDebug,@Spell
 " Commented out Fold line: "; ;FOLD PTP..."
@@ -181,8 +184,8 @@ highlight default link krlString String
 syn match krlSpecialChar /[|]/ containedin=krlString
 highlight default link krlSpecialChar SpecialChar
 " String within a fold line " NOT USED may be used in krlComment for none move folds
-" syn region krlSingleQuoteString start=/'/ end=/'/ oneline contained
-" highlight default link krlSingleQuoteString String
+syn region krlSingleQuoteString start=/'/ end=/'/ oneline contained
+highlight default link krlSingleQuoteString String
 " Enum
 syn match krlEnumVal /#\s*\a\w*/ containedin=krlStructVal
 highlight default link krlEnumVal Constant
