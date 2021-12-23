@@ -1,8 +1,8 @@
 " Kuka Robot Language syntax file for Vim
 " Language: Kuka Robot Language
-" Maintainer: Patrick Meiser-Knosowski <knosowski@graeff.de>
-" Version: 2.2.3
-" Last Change: 18. Dec 2020
+" Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
+" Version: 2.2.5
+" Last Change: 23. Dec 2021
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -62,6 +62,8 @@ endif
 syn case ignore
 " take #, $ and & into keyword (syntax only)
 syn iskeyword @,48-57,_,192-255,#,$,&
+" spell checking
+syn spell notoplevel
 " }}} init
 
 " Comment and Folding {{{ 
@@ -78,11 +80,21 @@ highlight default link krlDebug Debug
 " Comment
 " NOTE1: Comment highlighting must harmonize with ftplugin/krl.vim folding (see krlFold)
 " none move fold comment until second ;
-syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ containedin=krlFold " contains=krlSingleQuoteString
+syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ containedin=krlFold contains=krlSingleQuoteString,krlInteger,krlFloat,krlMovement,krlDelimiter,krlBoolean
 " move fold comment until second ;
 syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*<s?%(ptp|lin|circ|spl)(_rel)?>[^;]*/ containedin=krlFold contains=krlInteger,krlFloat,krlMovement,krlDelimiter
+" continues movement as part of a move fold comment
+syn keyword krlFoldHighlights CONT IN SYN OUT containedin=krlFoldComment
+syn match krlFoldHighlights /\c\v<(M|F|E|A|t|i|UP|SPSMAKRO)\d+/ containedin=krlFoldComment
+if g:krlGroupName
+  highlight default link krlFoldHighlights Sysvars
+else
+  " default color for Fold Highlights
+endif
+syn keyword krlVkrcFoldConstants EIN AUS containedin=krlFoldComment
+highlight default link krlVkrcFoldConstants Boolean
 " Comment without Fold, also includes endfold lines and fold line part after second ;
-syn match krlComment /\c\v;\s*%(<fold>)@!.*$/ containedin=krlFold contains=krlTodo,krlDebug
+syn match krlComment /\c\v;\s*%(<fold>)@!.*$/ containedin=krlFold contains=krlTodo,krlDebug,@Spell
 " Commented out Fold line: "; ;FOLD PTP..."
 syn match krlComment /\c\v^\s*;\s*;.*$/ contains=krlTodo,krlDebug
 highlight default link krlFoldComment Comment
@@ -154,26 +166,26 @@ highlight default link krlDelimiter Delimiter
 " Boolean
 syn keyword krlBoolean true false containedin=krlStructVal
 highlight default link krlBoolean Boolean
-" Integer
-syn match krlInteger /\W\@1<=[+-]\?\d\+/ containedin=krlStructVal
-highlight default link krlInteger Number
 " Binary integer
 syn match krlBinaryInt /'b[01]\+'/ containedin=krlStructVal
 highlight default link krlBinaryInt Number
 " Hexadecimal integer
 syn match krlHexInt /'h[0-9a-fA-F]\+'/ containedin=krlStructVal
 highlight default link krlHexInt Number
+" Integer
+syn match krlInteger /\W\@1<=[+-]\?\d\+/ containedin=krlStructVal,krlFloat contains=krlArithOperator
+highlight default link krlInteger Number
 " Float
 syn match krlFloat /\v\W@1<=[+-]?\d+\.?\d*%(\s*[eE][+-]?\d+)?/ containedin=krlStructVal
 highlight default link krlFloat Float
 " String
-syn region krlString start=/"/ end=/"/ oneline containedin=krlStructVal
+syn region krlString start=/"/ end=/"/ oneline containedin=krlStructVal contains=@Spell
 highlight default link krlString String
 syn match krlSpecialChar /[|]/ containedin=krlString
 highlight default link krlSpecialChar SpecialChar
 " String within a fold line " NOT USED may be used in krlComment for none move folds
-" syn region krlSingleQuoteString start=/'/ end=/'/ oneline contained
-" highlight default link krlSingleQuoteString String
+syn region krlSingleQuoteString start=/'/ end=/'/ oneline contained
+highlight default link krlSingleQuoteString String
 " Enum
 syn match krlEnumVal /#\s*\a\w*/ containedin=krlStructVal
 highlight default link krlEnumVal Constant
@@ -336,6 +348,8 @@ syn keyword krlBuildInFunction contained timer_limit
 syn keyword krlBuildInFunction contained tool_adj 
 syn keyword krlBuildInFunction contained FRand 
 syn keyword krlBuildInFunction contained ExecFunc eb_test EB EK EO LK mbx_rec 
+" safe robot
+syn keyword krlbuildinfunction contained get_AxesMask get_BrakeTest_Time
 " math
 syn keyword krlBuildInFunction contained Abs Sin Cos Acos Tan Atan Atan2 Sqrt
 syn keyword krlBuildInFunction contained Forward Inverse inv_pos
@@ -354,7 +368,7 @@ syn keyword krlBuildInFunction contained cal_to_rdc rdc_file_to_hd
 syn keyword krlBuildInFunction contained delete_pid_on_rdc delete_rdc_content 
 syn keyword krlBuildInFunction contained create_rdc_archive restore_rdc_archive 
 " ioctl
-syn keyword krlBuildInFunction contained IoCtl CioCtl 
+syn keyword krlBuildInFunction contained IOCtl cIOCtl 
 syn keyword krlBuildInFunction contained WSpaceGive WSpaceTake 
 " sync
 syn keyword krlBuildInFunction contained Sync SyncCmd CancelProgSync 
