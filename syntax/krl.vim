@@ -85,7 +85,7 @@ syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*/ containedin=krlFold contains=k
 syn match krlFoldComment /\c\v^\s*;\s*fold>[^;]*<s?%(ptp|lin|circ|spl)(_rel)?>[^;]*/ containedin=krlFold contains=krlInteger,krlFloat,krlMovement,krlDelimiter
 " continues movement as part of a move fold comment
 syn keyword krlFoldHighlights CONT IN SYN OUT containedin=krlFoldComment
-syn match krlFoldHighlights /\c\v<(M|F|E|A|t|i|UP|SPSMAKRO)\d+/ containedin=krlFoldComment
+syn match krlFoldHighlights /\c\v<(M|F|E|A|t|i|bin|binin|UP|SPSMAKRO)\d+>/ containedin=krlFoldComment
 if g:krlGroupName
   highlight default link krlFoldHighlights Sysvars
 else
