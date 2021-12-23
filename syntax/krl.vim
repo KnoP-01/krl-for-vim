@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
 " Version: 2.2.3
-" Last Change: 09. Dec 2021
+" Last Change: 23. Dec 2021
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -163,15 +163,15 @@ highlight default link krlDelimiter Delimiter
 " Boolean
 syn keyword krlBoolean true false containedin=krlStructVal
 highlight default link krlBoolean Boolean
-" Integer
-syn match krlInteger /\W\@1<=[+-]\?\d\+/ containedin=krlStructVal
-highlight default link krlInteger Number
 " Binary integer
 syn match krlBinaryInt /'b[01]\+'/ containedin=krlStructVal
 highlight default link krlBinaryInt Number
 " Hexadecimal integer
 syn match krlHexInt /'h[0-9a-fA-F]\+'/ containedin=krlStructVal
 highlight default link krlHexInt Number
+" Integer
+syn match krlInteger /\W\@1<=[+-]\?\d\+/ containedin=krlStructVal,krlFloat contains=krlArithOperator
+highlight default link krlInteger Number
 " Float
 syn match krlFloat /\v\W@1<=[+-]?\d+\.?\d*%(\s*[eE][+-]?\d+)?/ containedin=krlStructVal
 highlight default link krlFloat Float
