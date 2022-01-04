@@ -1,8 +1,8 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
-" Version: 2.2.5
-" Last Change: 23. Dec 2021
+" Version: 2.2.6
+" Last Change: 04. Jan 2022
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -315,6 +315,9 @@ if !exists("*s:KnopVerboseEcho()")
       execute ':noautocmd ' . a:n . 'vimgrep /' . a:Pattern . '/j ' . a:path
     catch /^Vim\%((\a\+)\)\=:E303/
       call s:KnopVerboseEcho(":vimgrep stopped with E303. No match found")
+      return -1
+    catch /^Vim\%((\a\+)\)\=:E479/
+      call s:KnopVerboseEcho(":vimgrep stopped with E479. No match found")
       return -1
     catch /^Vim\%((\a\+)\)\=:E480/
       call s:KnopVerboseEcho(":vimgrep stopped with E480. No match found")
