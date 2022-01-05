@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
 " Version: 2.2.6
-" Last Change: 04. Jan 2022
+" Last Change: 05. Jan 2022
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -383,6 +383,9 @@ if !exists("*s:KnopVerboseEcho()")
     call setloclist(0,[])
     try
       execute ':noautocmd lvimgrep /\c\v^\s*defdat\s+(\w+\s+public|\$\w+)/j ' . s:KnopPreparePath(&path,'*.[dD][aA][tT]')
+    catch /^Vim\%((\a\+)\)\=:E479/
+      call s:KnopVerboseEcho(":lvimgrep stopped with E479! No global data lists found in \'path\'.")
+      return ' '
     catch /^Vim\%((\a\+)\)\=:E480/
       call s:KnopVerboseEcho(":lvimgrep stopped with E480! No global data lists found in \'path\'.")
       return ' '
