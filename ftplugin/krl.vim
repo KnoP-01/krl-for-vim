@@ -1,8 +1,8 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
-" Version: 2.2.6
-" Last Change: 05. Jan 2022
+" Version: 2.2.7
+" Last Change: 18. Mar 2022
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -1642,10 +1642,9 @@ unlet s:pathList
 unlet s:pathToCurrentFile
 
 " folding
-if <SID>KrlIsVkrc() && get(g:,'krlConcealFoldTail',1)
-" if get(g:,'krlConcealFoldTail',1)
+if get(g:,'krlConcealFoldTail',1)
   " NOTE1: must harmonize with syntax/krl.vim Comment (see krlFold) 
-  syn match krlConcealFoldTail /\c\v;%(--|\s*<fold>|\s*<endfold>)@!.*$/ transparent containedin=krlComment conceal cchar=*
+  syn match krlConcealFoldTail /\c\v(^;\s*fold[^;]*)@100<=;%(--|\s*<fold>|\s*<endfold>)@!.*$/ transparent containedin=krlComment conceal cchar=*
   if &conceallevel==#0
     set conceallevel=1
     let b:undo_ftplugin = b:undo_ftplugin." cole<"
