@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
 " Version: 2.2.7
-" Last Change: 21. Mar 2022
+" Last Change: 22. Mar 2022
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -146,6 +146,9 @@ if !exists("*s:KnopVerboseEcho()")
     let l:out = fnameescape( a:in )
     let l:out = substitute(l:out, '\\#', '#', "g") " # and % will get escaped by fnameescape() but must not be escaped for set path...
     let l:out = substitute(l:out, '\\%', '%', "g")
+    if !has("win32")
+      let l:out = substitute(l:out, '\$', '\\$', "g") " escape $ sign only on none windows
+    endif
     let l:out = substitute(l:out, '\\ ', '\\\\\\ ', 'g') " escape spaces with three backslashes
     let l:out = substitute(l:out, ',', '\\\\,', 'g') " escape comma and semicolon with two backslashes
     let l:out = substitute(l:out, ';', '\\\\;', "g")
