@@ -234,5 +234,5 @@ have any questions.
 [10]: https://www.vim.org/
 [11]: https://github.com/andymass/vim-matchup
 [12]: https://github.com/tpope/vim-endwise
-[13]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L242
+[13]: https://github.com/KnoP-01/krl-for-vim/blob/master/doc/krl.txt#L262
 [14]: https://github.com/junegunn/vim-plug
