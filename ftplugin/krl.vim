@@ -2,7 +2,7 @@
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
 " Version: 2.2.7
-" Last Change: 22. Mar 2022
+" Last Change: 25. Mar 2022
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -1654,7 +1654,7 @@ unlet s:pathToCurrentFile
 " folding
 if get(g:,'krlConcealFoldTail',1)
   " NOTE1: must harmonize with syntax/krl.vim Comment (see krlFold) 
-  syn match krlConcealFoldTail /\c\v(^;\s*fold[^;]*)@100<=;%(--|\s*<fold>|\s*<endfold>)@!.*$/ transparent containedin=krlComment conceal cchar=*
+  syn match krlConcealFoldTail /\c\v(^\s*;\s*fold[^;]*)@100<=;%(--|\s*<fold>|\s*<endfold>)@!.*$/ transparent containedin=krlComment conceal cchar=*
   if &conceallevel==#0
     set conceallevel=1
     let b:undo_ftplugin = b:undo_ftplugin." cole<"
