@@ -1,15 +1,10 @@
 " Kuka Robot Language syntax file for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
-" Version: 2.2.5
-" Last Change: 23. Dec 2021
+" Version: 3.0.0
+" Last Change: 15. Apr 2022
 " Credits: Thanks for contributions to this to Michael Jagusch
 "          Thanks for beta testing to Thomas Baginski
-"
-" Suggestions of improvement are very welcome. Please email me!
-"
-" TODO: - see and use :h :syn-iskeyword
-"       - give errors meaningful names
 "
 " Note to self:
 " for testing perfomance
@@ -19,43 +14,26 @@
 "     hold down CTRL-U until reaching top
 "     :syntime report
 
-
 " Init {{{
 " Remove any old syntax stuff that was loaded (5.x) or quit when a syntax file
 " was already loaded (6.x).
-if version < 600
+if v:version < 600
   syntax clear
 elseif exists("b:current_syntax")
   finish
 endif
 
-let s:keepcpo= &cpo
+let s:keepcpo = &cpo
 set cpo&vim
 
-" if krlGroupName exists it overrides krlNoHighlight and krlNoHighLink
-if exists("g:krlGroupName")
-  silent! unlet g:krlNoHighLink
-  silent! unlet g:krlNoHighlight
-endif
-" if krlNoHighLink exists it overrides krlNoHighlight and it's pushed to krlGroupName
-if exists("g:krlNoHighLink")
-  silent! unlet g:krlNoHighlight
-  let g:krlGroupName = g:krlNoHighLink
-  unlet g:krlNoHighLink
-endif
-" if krlNoHighlight still exists it's pushed to krlGroupName
-if exists("g:krlNoHighlight")
-  let g:krlGroupName = g:krlNoHighlight
-  unlet g:krlNoHighlight
-endif
-" if colorscheme is tortus krlNoHighLink defaults to 1
-if (get(g:,'colors_name'," ")=="tortus" || get(g:,'colors_name'," ")=="tortusless") 
+" if colorscheme is tortus(less)? krlGroupName defaults to 1
+if get(g:, 'colors_name', " ") =~ '\<tortus'
       \&& !exists("g:krlGroupName")
   let g:krlGroupName=1 
 endif
 " krlGroupName defaults to 0 if it's not initialized yet or 0
-if !get(g:,"krlGroupName",0)
-  let g:krlGroupName=0 
+if !get(g:, "krlGroupName", 0)
+  let g:krlGroupName = 0 
 endif
 
 " krl does ignore case
@@ -120,15 +98,18 @@ highlight default link krlCompOperator Operator
 " Geometric operator
 " Do not move the : operator
 " Must be present befor krlParamdef
-syn match krlGeomOperator /[:]/ " containedin=krlLabel,krlParamdef
+syn match krlGeomOperator /[:]/ 
+" syn match krlGeomOperator /[:]/ containedin=krlLabel,krlParamdef
 highlight default link krlGeomOperator Operator
 " }}} Operator
 
 " Type, StorageClass and Typedef {{{
-" any type (preceded by 'decl')
+" any type (preceded by decl, struc, enum or deffct)
 " TODO optimize performance
-syn match krlAnyType /\v%(%(DECL\s+|STRUC\s+|ENUM\s+)|%(GLOBAL\s+)|%(CONST\s+)|%(DEFFCT\s+))+\w+>/ contains=krlStorageClass,krlType,krlTypedef
-highlight default link krlAnyType Type
+" syn match krlAnyType /\v%(%(DECL\s+|STRUC\s+|ENUM\s+)|%(GLOBAL\s+)|%(CONST\s+)|%(DEFFCT\s+))+\w+>/ contains=krlStorageClass,krlType,krlTypedef
+" syn match krlAnyType /\v%(decl\s+|struc\s+|enum\s+)%(global\s+)?%(const\s+)?\w+>/ contains=krlStorageClass,krlType,krlTypedef
+" syn match krlAnyType /\v%(global\s+)?DEFFCT\s+\w+>/ contains=krlStorageClass,krlType,krlTypedef
+" highlight default link krlAnyType Type
 " Simple data types
 syn keyword krlType bool char real int containedin=krlAnyType
 " External program and function
@@ -137,7 +118,9 @@ syn keyword krlType ext extfct extfctp extp containedin=krlAnyType
 syn keyword krlType signal channel containedin=krlAnyType
 highlight default link krlType Type
 " StorageClass
-syn keyword krlStorageClass decl global const struc enum contained
+" the contained version is for krlAnyType. Unfortunatly krlAnyType isn't working
+" syn keyword krlStorageClass decl global const struc enum contained
+syn keyword krlStorageClass decl global const struc enum
 highlight default link krlStorageClass StorageClass
 " .dat file public
 syn keyword krlDatStorageClass public
@@ -150,9 +133,7 @@ syn match krlParamdef /[:]\s*out\>/
 highlight default link krlParamdef StorageClass
 " Not a typedef but I like to have those highlighted
 " different then types, structures or strorage classes
-syn match krlTypedef /\c\v<DEFFCT>(\s+\w+(\[\d+(,\d+){,2}\])?\s+\w+\s*\()@=/
-" syn keyword krlTypedef DEFFCT
-syn keyword krlTypedef DEF ENDFCT DEFDAT ENDDAT
+syn keyword krlTypedef DEF DEFFCT ENDFCT DEFDAT ENDDAT
 syn match krlTypedef /^\s*END\>/
 highlight default link krlTypedef Typedef
 " }}} Type, StorageClass and Typedef
@@ -318,9 +299,10 @@ else
   highlight default link krlMovement Special
 endif
 " movement modifiers
-syn match krlMoveMod /\c\v^\s*TIME_BLOCK\s+(START|PART|END)/
-syn match krlMoveMod /\c\v^\s*CONST_VEL\s+(START|END)/
-syn keyword krlMoveMod ptp_spline spline endspline
+syn match krlMoveBlockInst /\c\v^\s*TIME_BLOCK\s+(START|PART|END)/
+syn match krlMoveBlockInst /\c\v^\s*CONST_VEL\s+(START|END)/
+syn keyword krlMoveBlockInst ptp_spline spline endspline
+highlight default link krlMoveBlockInst Statement
 syn keyword krlMoveMod ca c_ptp c_dis c_vel c_ori c_spl
 if g:krlGroupName
   highlight default link krlMoveMod Movement
@@ -408,7 +390,7 @@ highlight default link krlFunction Function
 " }}} Function
 
 " Error {{{
-if get(g:,'krlShowError',1)
+if get(g:, 'krlShowError', 1)
   " some more or less common typos
   "
   " vars or funcs >24 chars are not possible in krl. a234567890123456789012345
