@@ -1,29 +1,20 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
-" Version: 2.2.7
-" Last Change: 17. Apr 2022
+" Version: 2.2.8
+" Last Change: 18. Apr 2022
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
 " Suggestions of improvement are very welcome. Please email me!
 "
-" TODO: - endwise add skip, ptp_spline, TIME_BLOCK and CONST_VEL
-"       - set buftype=nofile bufhidden=delete instead of temp file for altered
-"         quick fix
-"       - test compatiblity with quickfix-reflector
-"       - proper altering of quickfix: see :help quickfix-window then /filled
-"       - use /\%( where possible
 "
 " ToDo's {{{
-" BUG:  - matchit fold, text object fold doesn't work
-" TODO: - see and use :h :syn-iskeyword
-" TODO  - Clean .dat or highlight unused data in .dat (if .src is present)
+" TODO  - endwise add skip, ptp_spline, TIME_BLOCK and CONST_VEL
+"       - test compatiblity with quickfix-reflector
+"       - Clean .dat or highlight unused data in .dat (if .src is present)
 "       - make search for enum value declaration possible. Problem: there may be
 "         more then one enum that uses this value
-"       - find bug foldmethod=Manual. 2. mal die selbe datei oeffnen o.ae.
-"       - remove or hide *.tmp files from buffer list
-"       - 
 " }}} ToDo's
 
 " Init {{{
@@ -1652,11 +1643,11 @@ unlet s:pathList
 unlet s:pathToCurrentFile
 
 " folding
-if get(g:,'krlConcealFoldTail',1)
+if has("conceal") && get(g:,'krlConcealFoldTail',1)
   " NOTE1: must harmonize with syntax/krl.vim Comment (see krlFold) 
   syn match krlConcealFoldTail /\c\v(^\s*;\s*fold[^;]*)@150<=;%(--|\s*<fold>|\s*<endfold>)@!.*$/ transparent containedin=krlComment conceal cchar=*
   if &conceallevel==#0
-    set conceallevel=1
+    setlocal conceallevel=1
     let b:undo_ftplugin = b:undo_ftplugin." cole<"
   endif
 endif
@@ -1691,7 +1682,7 @@ if has("folding")
           silent! syn clear krlFold
           syn region krlFold start=/\c\v^\s*;\s*fold>.*$/ end=/\c\v^\s*;\s*endfold>.*$/ transparent fold keepend extend
           setlocal foldlevel=0
-        endif " &foldmethod
+        endif
         return
 
       elseif a:lvl == 1
@@ -1705,9 +1696,9 @@ if has("folding")
             else
               setlocal foldmarker=FOLD,ENDFOLD foldlevel=0
             endif
-          else " <SID>KrlIsVkrc()
+          else
             setlocal foldmarker=%CMOVE,ENDFOLD foldlevel=0
-          endif " <SID>KrlIsVkrc()
+          endif
 
         elseif &foldmethod=~'syntax'
 
@@ -1724,7 +1715,7 @@ if has("folding")
             setlocal foldlevel=0
           endif " <SID>KrlIsVkrc()
 
-        endif " &foldmethod
+        endif
         return
 
       endif " a:lvl
