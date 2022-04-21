@@ -29,15 +29,13 @@ ftdetect, syntax, indent, folding and some ftplugin stuff. To get the full
 functionality (go definition, list references, list functions and auto form)
 get it from:
 
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* Vim9 \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
-\*\*\* [https://github.com/KnoP-01/krl-for-vim9][15] \*\*\*
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* Vim9 \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*  
+\*\*\* [https://github.com/KnoP-01/krl-for-vim9][15] \*\*\*  
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*  
 
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
-\* This repo as well as
-\* https://github.com/KnoP-01/krl-for-vim
-\* will not continue to be maintained!
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* 
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*  
+\* This repo will not continue to be maintained!  
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*   
 
 KRL for [Vim][10] (7.4 or 8.x) is a collection of Vim scripts to help
 programming [KUKA industrial robots][9].
