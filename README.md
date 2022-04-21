@@ -1,3 +1,16 @@
+# IMPORTANT!
+Note: `Vim 9` will already contain some features of this plugin, namely
+ftdetect, syntax, indent, folding and some ftplugin stuff. To get the full
+functionality (go definition, list references, list functions and auto form)
+get it from:
+
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* Vim9 \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*  
+\*\*\* [https://github.com/KnoP-01/krl-for-vim9][15] \*\*\*  
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*  
+
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*  
+\* This repo will not continue to be maintained!  
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*  
 ```
                                              _           _______
                                             /.\\        /  ___  \_________  _
@@ -24,18 +37,6 @@ automatic indenting. It is a quick overview over the most important options
 and mappings provided by KRL for Vim. For more details see the [help][3] file.
 
 ## Introduction:
-Note: `Vim 9` will already contain some features of this plugin, namely
-ftdetect, syntax, indent, folding and some ftplugin stuff. To get the full
-functionality (go definition, list references, list functions and auto form)
-get it from:
-
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* Vim9 \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*  
-\*\*\* [https://github.com/KnoP-01/krl-for-vim9][15] \*\*\*  
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*  
-
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*  
-\* This repo will not continue to be maintained!  
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*   
 
 KRL for [Vim][10] (7.4 or 8.x) is a collection of Vim scripts to help
 programming [KUKA industrial robots][9].
