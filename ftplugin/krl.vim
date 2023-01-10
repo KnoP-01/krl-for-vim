@@ -1,8 +1,8 @@
 " Kuka Robot Language file type plugin for Vim
 " Language: Kuka Robot Language
 " Maintainer: Patrick Meiser-Knosowski <knosowski@graeffrobotics.de>
-" Version: 2.2.8
-" Last Change: 18. Apr 2022
+" Version: 2.2.9
+" Last Change: 10. Jan 2023
 " Credits: Peter Oddings (KnopUniqueListItems/xolox#misc#list#unique)
 "          Thanks for beta testing to Thomas Baginski
 "
@@ -1318,6 +1318,7 @@ if !exists("*s:KnopVerboseEcho()")
         if l:type != 'ENUMVALUE'
           for l:i in getqflist()
             if get(l:i,'text') !~ '\v\c^\s*(global\s+)?enum>'
+                  \|| get(l:i,'text') =~ '\v\c^\s*(global\s+)?enum\s+'.l:currentWord
               call add(l:qftmp1,l:i)
             endif
           endfor
