@@ -1,3 +1,4 @@
+# This is for Vim versions \<Vim9.x. For Vim 9.0 and later versions use: https://github.com/KnoP-01/krl-for-vim9  
 ```
                                              _           _______
                                             /.\\        /  ___  \_________  _
